@@ -1,13 +1,11 @@
-import java.util.ArrayList;
 import java.util.List;
 
-public class InputParser<T> {
-
-    static List<Trip> parse(List<String> input) {
-        List<Trip> list = new ArrayList<Trip>();
-        for (String line : input) {
-            list.add(new Trip(line.split(" ")));
+public class InputParser {
+    public static Trip[] parse(List<String> input) {
+        Trip[] tripArr = new Trip[input.size()];
+        for (int i = 0; i < input.size(); i++) {
+            tripArr[i] = new Trip(input.get(i).split("\t"));
         }
-        return list;
+        return tripArr;
     }
 }

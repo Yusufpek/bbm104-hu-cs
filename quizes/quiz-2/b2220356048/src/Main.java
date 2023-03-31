@@ -1,9 +1,10 @@
-import java.util.List;
 
 class Main {
     public static void main(String[] args) {
-        IO io = new IO("", "");
-        List<Trip> trips = InputParser.parse(io.readInputFile());
+        IO io = new IO("input.txt", "output.txt");
+        TripSchedule trips = new TripSchedule(InputParser.parse(io.readInputFile()));
+        TripController tripController = new TripController(io, trips);
+        io.writeToFile();
     }
 
 }

@@ -1,35 +1,60 @@
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Trip {
-    String name;
-    String time;
-    int duration;
+    public String tripName;
+    public Date departureTime;
+    public Date arrivalTime;
+    public int duration;
+    public String state;
 
     Trip(String[] inputText) {
-        this.name = inputText[0];
-        this.time = inputText[1];
+        this.tripName = inputText[0];
         this.duration = Integer.parseInt(inputText[2]);
+        this.state = TripController.STATE_IDLE;
+        try {
+            this.departureTime = dateFormat.parse(inputText[1]);
+            this.arrivalTime = calculateArriveTime();
+        } catch (ParseException e) {
+            System.out.println("Date Time Parse Error: " + e.toString());
+        }
     }
 
-    public String getName() {
-        return name;
+    private Date calculateArriveTime() {
+        // get the deparure time in seconds unit
+        // add druation in seconds unit (minute * 60 = seconds)
+        // convert to milliseconds
+        return new Date((getDepartureTime() + duration * (60)) * 1000);
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public int getDepartureTime() {
+        // return seconds from milliseconds
+        return (int) departureTime.getTime() / 1000;
     }
 
-    public String getTime() {
-        return time;
+    public int getArrivalTime() {
+        // return seconds from milliseconds
+        return (int) arrivalTime.getTime() / 1000;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public String getState() {
+        return state;
     }
 
-    public int getDuration() {
-        return duration;
+    public void setState(String state) {
+        this.state = state;
     }
 
-    public void setDuration(int duration) {
-        this.duration = duration;
+    // Printing arrival and departure time sentences
+
+    public String arrivalString() {
+        return String.format("%s arrive at %s   Trip State:%s", tripName, dateFormat.format(arrivalTime), state);
     }
+
+    public String departureString() {
+        return String.format("%s depart at %s   Trip State:%s", tripName, dateFormat.format(departureTime), state);
+    }
+
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
 }
