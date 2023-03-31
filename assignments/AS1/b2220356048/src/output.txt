@@ -1,0 +1,19 @@
+Game board:
+B W O H D B
+G R R B Y Y
+G Y Y W P N
+W L L D D W
+L R Y R * W
+
+Your movement is:
+U U U U U L R R U L U U R U
+
+Your output is:
+B W O H D B
+G R X   D Y
+G Y X W X N
+W L X L P W
+L R Y D X W
+
+Game Over !
+Score: 25
