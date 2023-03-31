@@ -1,0 +1,9 @@
+Departure order:
+S224Y depart at 10:10   Trip State:IDLE
+S22LY depart at 10:20   Trip State:IDLE
+S22IG depart at 11:25   Trip State:IDLE
+
+Arrival order:
+S22LY arrive at 10:35  Trip State:IDLE
+S224Y arrive at 11:20   Trip State:IDLE
+S22IG arrive at 12:55   Trip State:IDLE
