@@ -49,11 +49,11 @@ public class Trip {
     // Printing arrival and departure time sentences
 
     public String arrivalString() {
-        return String.format("%s arrive at %s   Trip State:%s", tripName, dateFormat.format(arrivalTime), state);
+        return String.format("%s arrive at %s\tTrip State:%s", tripName, dateFormat.format(arrivalTime), state);
     }
 
     public String departureString() {
-        return String.format("%s depart at %s   Trip State:%s", tripName, dateFormat.format(departureTime), state);
+        return String.format("%s depart at %s\tTrip State:%s", tripName, dateFormat.format(departureTime), state);
     }
 
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
