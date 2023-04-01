@@ -12,7 +12,7 @@ public class Trip {
     Trip(String[] inputText) {
         this.tripName = inputText[0];
         this.duration = Integer.parseInt(inputText[2]);
-        this.state = TripController.STATE_IDLE;
+        this.state = TripController.STATE_IDLE; // get the states values from trip controller
         try {
             this.departureTime = dateFormat.parse(inputText[1]);
             this.arrivalTime = calculateArrival();
