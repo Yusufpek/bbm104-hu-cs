@@ -15,13 +15,13 @@ public class Trip {
         this.state = TripController.STATE_IDLE;
         try {
             this.departureTime = dateFormat.parse(inputText[1]);
-            this.arrivalTime = calculateArriveTime();
+            this.arrivalTime = calculateArrival();
         } catch (ParseException e) {
             System.out.println("Date Time Parse Error: " + e.toString());
         }
     }
 
-    private Date calculateArriveTime() {
+    private Date calculateArrival() {
         // get the deparure time in seconds unit
         // add druation in seconds unit (minute * 60 = seconds)
         // convert to milliseconds
