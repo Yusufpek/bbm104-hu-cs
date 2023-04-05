@@ -9,7 +9,7 @@ public class ColorLamp extends Lamp {
      */
     ColorLamp(String name, String initialStatus, String colorCode, String brightness) {
         super(name, initialStatus);
-        this.colorCode = Integer.parseInt(colorCode);
+        this.colorCode = Integer.decode(colorCode);
         this.setBrightness(Integer.parseInt(brightness));
     }
 
@@ -40,11 +40,15 @@ public class ColorLamp extends Lamp {
         return colorCode;
     }
 
+    public String getColorCodeString() {
+        return Integer.toHexString(colorCode);
+    }
+
     /**
      * @param colorCode
      */
-    public void setColorCode(int colorCode) {
-        this.colorCode = colorCode;
+    public void setColorCode(String colorCode) {
+        this.colorCode = Integer.decode(colorCode);
     }
 
     @Override
