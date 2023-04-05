@@ -1,5 +1,6 @@
 public class Camera extends SmartDevice {
     private int mbPerMinute; // consumed megabyts per minute
+    private double usedMegabytes; // consumed megabyts per minute
 
     /**
      * @param name
@@ -34,7 +35,20 @@ public class Camera extends SmartDevice {
      * @param duration time of the device how much it is open
      * @return used megabytes
      */
-    public double usedMegabyts(double duration) {
-        return mbPerMinute * duration;
+    public void calculateUsedMegabyts(double duration) {
+        setUsedMegabytes(getUsedMegabytes() + mbPerMinute * duration);
+    }
+
+    public double getUsedMegabytes() {
+        return usedMegabytes;
+    }
+
+    public void setUsedMegabytes(double usedMegabytes) {
+        this.usedMegabytes = usedMegabytes;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s and used %.2fMB of storage so far", super.toString(), getUsedMegabytes());
     }
 }

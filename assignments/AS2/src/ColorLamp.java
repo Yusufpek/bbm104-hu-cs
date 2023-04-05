@@ -47,4 +47,17 @@ public class ColorLamp extends Lamp {
         this.colorCode = colorCode;
     }
 
+    @Override
+    public String toString() {
+        String colorText = "";
+        if (colorCode != 0) {
+            colorText = "" + colorCode;
+        } else {
+            colorText = getKelvin() + "K";
+        }
+        return String.format(
+                "%s and its color value is %s with %s%s brightness, and its time to switch its status is %s",
+                super.toString(), colorText, getBrightness(), "%",
+                getSwitchtimeString());
+    }
 }

@@ -40,5 +40,5 @@ public class TimeController {
         this.now = new Date(now.getTime() + minute * 60 * 1000);
     }
 
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_hh:mm:ss");
+    public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_hh:mm:ss");
 }

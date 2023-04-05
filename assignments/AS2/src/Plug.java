@@ -1,5 +1,7 @@
 public class Plug extends SmartDevice {
-    private int ampere;
+    private double ampere;
+    private double watt;
+    private final int VOLT = 220; // constant volt value
 
     Plug(String name) {
         super(name, DeviceType.PLUG);
@@ -9,7 +11,7 @@ public class Plug extends SmartDevice {
         super(name, initialStatus, DeviceType.PLUG);
     }
 
-    Plug(String name, String initialStatus, int ampere) {
+    Plug(String name, String initialStatus, double ampere) {
         super(name, initialStatus, DeviceType.PLUG);
         this.ampere = ampere;
     }
@@ -22,18 +24,31 @@ public class Plug extends SmartDevice {
      * 
      * @return consumed watt
      */
-    public double calculateWatt(double duration) {
+    public void calculateWatt(double duration) {
         // Watt = V * i * t
-        return VOLT * ampere * duration;
+        setWatt(getWatt() + VOLT * ampere * duration);
     }
 
-    private int VOLT = 220; // constant volt value
-
-    public int getAmpere() {
+    public double getAmpere() {
         return ampere;
     }
 
-    public void setAmpere(int ampere) {
+    public void setAmpere(double ampere) {
         this.ampere = ampere;
+    }
+
+    public double getWatt() {
+        return watt;
+    }
+
+    public void setWatt(double watt) {
+        this.watt = watt;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "%s and consumend %,.2fW so far (excluding current device), and its time to switch its status is %s",
+                super.toString(), watt, getSwitchtimeString());
     }
 }

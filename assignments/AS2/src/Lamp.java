@@ -1,6 +1,6 @@
 public class Lamp extends SmartDevice {
-    private int brightness;
-    private int kelvin;
+    private int brightness = 100;
+    private int kelvin = 4000;
 
     /**
      * @param name
@@ -51,4 +51,11 @@ public class Lamp extends SmartDevice {
         this.kelvin = kelvin;
     }
 
+    @Override
+    public String toString() {
+        return String.format(
+                "%s and its kelvin value is %sK with %s%s brightness, and its time to switch its status is %s",
+                super.toString(), kelvin, brightness, "%",
+                getSwitchtimeString());
+    }
 }

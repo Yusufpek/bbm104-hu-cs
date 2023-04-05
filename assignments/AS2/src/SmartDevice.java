@@ -7,7 +7,7 @@ import java.util.Date;
 
 public abstract class SmartDevice {
     private String name;
-    private String initialStatus;
+    private String status = "Off";
     private DeviceType deviceType;
     private Date switchtime;
 
@@ -23,7 +23,7 @@ public abstract class SmartDevice {
      */
     SmartDevice(String name, String initialStatus, DeviceType type) {
         this.name = name;
-        this.initialStatus = initialStatus;
+        this.status = initialStatus;
         this.deviceType = type;
     }
 
@@ -42,6 +42,11 @@ public abstract class SmartDevice {
         }
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s %s is %s and", getDeviceType(), name, status.toLowerCase());
+    }
+
     /*
      * 
      * Getters and setter for variables
@@ -52,15 +57,21 @@ public abstract class SmartDevice {
         return switchtime;
     }
 
-    public String getInitialStatus() {
-        return initialStatus;
+    public String getSwitchtimeString() {
+        if (switchtime == null)
+            return null;
+        return TimeController.dateFormat.format(switchtime);
+    }
+
+    public String getStatus() {
+        return status;
     }
 
     /**
-     * @param initialStatus
+     * @param status
      */
-    public void setInitialStatus(String initialStatus) {
-        this.initialStatus = initialStatus;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getName() {
