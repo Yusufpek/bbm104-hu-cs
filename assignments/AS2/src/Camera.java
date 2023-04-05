@@ -3,6 +3,13 @@ public class Camera extends SmartDevice {
 
     /**
      * @param name
+     */
+    Camera(String name) {
+        super(name, DeviceType.CAMERA);
+    }
+
+    /**
+     * @param name
      * @param mbPerMinute
      */
     Camera(String name, int mbPerMinute) {
