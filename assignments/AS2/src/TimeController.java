@@ -10,25 +10,32 @@ public class TimeController {
      */
     TimeController(String time) {
         try {
+            if (!dateFormat.format(dateFormat.parse(time)).equals(time)) {
+                throw new ParseException("wrong date", 0); // throw error
+            }
             this.now = dateFormat.parse(time);
             System.out.println(String.format("SUCCESS: Time has been set to %s!", time));
         } catch (ParseException e) {
-            System.out.println("Error, wrong date !");
-            e.printStackTrace();
+            System.out.println("ERROR: Time format is not correct!");
         }
     }
 
+    /**
+     * @param time
+     */
     void setTime(String time) {
         try {
             Date newDate = dateFormat.parse(time);
             if (newDate.getTime() - this.now.getTime() < 0) {
                 System.out.println("ERROR: Time cannot be reversed!");
+            } else if (!dateFormat.format(dateFormat.parse(time)).equals(time)) {
+                throw new ParseException("wrong date", 0); // throw error
             } else {
                 this.now = newDate;
+                System.out.println("Time set as " + getTime());
             }
         } catch (ParseException e) {
-            System.out.println("Error, wrong date !");
-            e.printStackTrace();
+            System.out.println("ERROR: Time format is not correct!");
         }
     }
 
@@ -40,5 +47,9 @@ public class TimeController {
         this.now = new Date(now.getTime() + minute * 60 * 1000);
     }
 
-    public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_hh:mm:ss");
+    String getTime() {
+        return dateFormat.format(now);
+    }
+
+    public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
 }
