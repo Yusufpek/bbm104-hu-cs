@@ -60,8 +60,8 @@ public class ColorLamp extends Lamp {
             colorText = getKelvin() + "K";
         }
         return String.format(
-                "%s and its color value is %s with %s%s brightness, and its time to switch its status is %s",
-                super.toString(), colorText, getBrightness(), "%",
+                "%sand its color value is %s with %s%s brightness, and its time to switch its status is %s",
+                super.toString().substring(0, super.toString().indexOf("and")), colorText, getBrightness(), "%",
                 getSwitchtimeString());
     }
 }

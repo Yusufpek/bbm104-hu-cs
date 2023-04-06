@@ -54,7 +54,7 @@ public class Lamp extends SmartDevice {
     @Override
     public String toString() {
         return String.format(
-                "%s and its kelvin value is %sK with %s%s brightness, and its time to switch its status is %s",
+                "%s its kelvin value is %sK with %s%s brightness, and its time to switch its status is %s",
                 super.toString(), kelvin, brightness, "%",
                 getSwitchtimeString());
     }
