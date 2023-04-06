@@ -28,7 +28,7 @@ public abstract class SmartDevice {
     }
 
     // return the device type string by lookin enum value
-    public String getDeviceType() {
+    public String getDeviceTypeString() {
         if (deviceType == DeviceType.PLUG) {
             return "Smart Plug";
         } else if (deviceType == DeviceType.CAMERA) {
@@ -42,9 +42,14 @@ public abstract class SmartDevice {
         }
     }
 
+    // return the device type
+    public DeviceType getDeviceType() {
+        return this.deviceType;
+    }
+
     @Override
     public String toString() {
-        return String.format("%s %s is %s and", getDeviceType(), name, status.toLowerCase());
+        return String.format("%s %s is %s and", getDeviceTypeString(), name, status.toLowerCase());
     }
 
     /*
@@ -100,7 +105,7 @@ public abstract class SmartDevice {
     }
 
     // set constant the device type
-    enum DeviceType {
+    static enum DeviceType {
         PLUG,
         CAMERA,
         LAMP,
