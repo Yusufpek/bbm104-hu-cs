@@ -52,6 +52,21 @@ public class CommandController {
                     case COMMAND_PLUG_IN:
                         itemController.plugIn(parsedLine[1], parsedLine[2]);
                         break;
+                    case COMMAND_KELVIN:
+                        itemController.setKelvin(parsedLine[1], parsedLine[2]);
+                        break;
+                    case COMMAND_WHITE:
+                        itemController.setWhite(parsedLine[1], parsedLine[2], parsedLine[3]);
+                        break;
+                    case COMMAND_COLOR:
+                        itemController.setColor(parsedLine[1], parsedLine[2]);
+                        break;
+                    case COMMAND_SWITCH_TIME:
+                        itemController.setSwitchTime(parsedLine[1], parsedLine[2]);
+                        break;
+                    case COMMAND_NAME:
+                        itemController.changeName(parsedLine[1], parsedLine[2]);
+                        break;
                     case COMMAND_REPORT:
                         System.out.println("Time is: " + timeController.getTime());
                         itemController.devices.forEach(device -> System.out.println(device.toString()));
@@ -92,6 +107,11 @@ public class CommandController {
     private final String COMMAND_SWITCH = "Switch";
     private final String COMMAND_PLUG_IN = "PlugIn";
     private final String COMMAND_BRIGHTNESS = "SetBrightness";
+    private final String COMMAND_WHITE = "SetWhite";
+    private final String COMMAND_KELVIN = "SetKelvin";
+    private final String COMMAND_COLOR = "SetColorCode";
+    private final String COMMAND_SWITCH_TIME = "SetSwitchTime";
+    private final String COMMAND_NAME = "ChangeName";
     // Error Messages
     static public final String ERROR_COMMAND = "ERROR: Erroneous command!";
     static public final String ERROR_NOP = "ERROR: There is nothing to switch!";

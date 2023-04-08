@@ -71,8 +71,6 @@ public class Lamp extends SmartDevice {
     boolean checkKelvin(String kelvinStr) {
         try {
             int kelvin = Integer.parseInt(kelvinStr);
-            System.out.println("kelvin value: " + kelvin);
-            System.out.println("condition result: " + (kelvin > 6500 || kelvin < 2000));
             if (kelvin > 6500 || kelvin < 2000) {
                 System.out.println("ERROR: Kelvin value must be in range of 2000K-6500K!");
                 return false;

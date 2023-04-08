@@ -1,3 +1,4 @@
+import java.text.ParseException;
 import java.util.Date;
 
 /*
@@ -102,6 +103,17 @@ public abstract class SmartDevice {
      */
     public void setSwitchtime(Date switchtime) {
         this.switchtime = switchtime;
+    }
+
+    /**
+     * @param switchtime
+     */
+    public void setSwitchtime(String switchtime) {
+        try {
+            this.switchtime = TimeController.dateFormat.parse(switchtime);
+        } catch (ParseException e) {
+            System.out.println("Wrong date !");
+        }
     }
 
     // set constant the device type

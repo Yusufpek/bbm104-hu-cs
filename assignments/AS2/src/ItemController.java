@@ -11,7 +11,32 @@ public class ItemController {
         this.devices = new ArrayList<SmartDevice>();
     }
 
+    void setSwitchTime(String name, String date) {
+        SmartDevice device = getItemByName(name);
+        if (device == null) {
+            System.out.println(NO_DEVICE_ERROR);
+            return;
+        }
+        device.setSwitchtime(date);
+
+        sortDevices();
+    }
+
+    void changeName(String name, String newName) {
+        if (name.equals(newName)) {
+            System.out.println("Names are same !");
+        }
+
+        SmartDevice device = getItemByName(name);
+        if (device == null) {
+            System.out.println(NO_DEVICE_ERROR);
+            return;
+        }
+        device.setName(newName);
+    }
+
     void switchItem(Date time) {
+        System.out.println("switch item function");
         for (SmartDevice device : devices) {
             if (device.getSwitchtime() != null && device.getSwitchtime().before(time)) {
                 System.out
@@ -36,6 +61,45 @@ public class ItemController {
         device.setStatus(status);
     }
 
+    void setWhite(String name, String kelvin, String brightness) {
+        SmartDevice device = getItemByName(name);
+        if (device == null) {
+            System.out.println(NO_DEVICE_ERROR);
+            return;
+        }
+        if (deviceTypeCheck(device, SmartDevice.DeviceType.LAMP)
+                || deviceTypeCheck(device, SmartDevice.DeviceType.COLOR_LAMP)) {
+            ((Lamp) device).setKelvin(kelvin);
+            ((Lamp) device).setBrightness(brightness);
+        } else
+            deviceTypeErrorMessage(device);
+    }
+
+    void setKelvin(String name, String kelvin) {
+        SmartDevice device = getItemByName(name);
+        if (device == null) {
+            System.out.println(NO_DEVICE_ERROR);
+            return;
+        }
+        if (deviceTypeCheck(device, SmartDevice.DeviceType.LAMP)
+                || deviceTypeCheck(device, SmartDevice.DeviceType.COLOR_LAMP))
+            ((Lamp) device).setKelvin(kelvin);
+        else
+            deviceTypeErrorMessage(device);
+    }
+
+    void setColor(String name, String color) {
+        SmartDevice device = getItemByName(name);
+        if (device == null) {
+            System.out.println(NO_DEVICE_ERROR);
+            return;
+        }
+        if (deviceTypeCheck(device, SmartDevice.DeviceType.COLOR_LAMP))
+            ((ColorLamp) device).setColorCode(color);
+        else
+            deviceTypeErrorMessage(device);
+    }
+
     void setBrightness(String name, String brightness) {
         SmartDevice device = getItemByName(name);
         if (device == null) {
@@ -44,6 +108,8 @@ public class ItemController {
         }
         if (deviceTypeCheck(device, SmartDevice.DeviceType.LAMP))
             ((Lamp) device).setBrightness(brightness);
+        else
+            deviceTypeErrorMessage(device);
     }
 
     void plugIn(String name, String ampere) {
@@ -52,8 +118,10 @@ public class ItemController {
             System.out.println(NO_DEVICE_ERROR);
             return;
         }
-        if (!deviceTypeCheck(device, SmartDevice.DeviceType.PLUG))
+        if (!deviceTypeCheck(device, SmartDevice.DeviceType.PLUG)) {
+            deviceTypeErrorMessage(device);
             return;
+        }
         ((Plug) device).setAmpere(ampere);
     }
 
@@ -67,6 +135,11 @@ public class ItemController {
         System.out.println("SUCCESS: Information about removed smart device is as follows:");
         System.out.println(device.toString());
         sortDevices();
+    }
+
+    void deviceTypeErrorMessage(SmartDevice device) {
+        System.out.println(
+                String.format("ERROR: This device is not a %s!", device.getDeviceTypeString().toLowerCase()));
     }
 
     void addItem(String[] arr) {
@@ -206,8 +279,6 @@ public class ItemController {
     boolean deviceTypeCheck(SmartDevice device, SmartDevice.DeviceType type) {
         if (device.getDeviceType() == type)
             return true;
-        else
-            System.out.println(String.format("ERROR: This device is not a smart %s!", type.toString().toLowerCase()));
         return false;
     }
 
