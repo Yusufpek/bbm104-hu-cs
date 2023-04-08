@@ -1,4 +1,5 @@
 public class ColorLamp extends Lamp {
+    private final int MAX_HEX = 214748347; // maximum color code value in integer
     private int colorCode;
 
     /**
@@ -10,7 +11,7 @@ public class ColorLamp extends Lamp {
     ColorLamp(String name, String initialStatus, String colorCode, String brightness) {
         super(name, initialStatus);
         this.colorCode = Integer.decode(colorCode);
-        this.setBrightness(Integer.parseInt(brightness));
+        this.setBrightness(brightness);
     }
 
     /**
@@ -44,11 +45,25 @@ public class ColorLamp extends Lamp {
         return Integer.toHexString(colorCode);
     }
 
-    /**
-     * @param colorCode
-     */
-    public void setColorCode(String colorCode) {
+    public boolean setColorCode(String colorCode) {
+        if (!checkColorCode(colorCode))
+            return false;
         this.colorCode = Integer.decode(colorCode);
+        return true;
+    }
+
+    boolean checkColorCode(String colorCode) {
+        try {
+            int color = Integer.decode(colorCode);
+            if (!(color > 0 && color < MAX_HEX)) {
+                System.out.println("ERROR: Color code value must be in range of 0x0-0xFFFFFF");
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println(CommandController.ERROR_COMMAND);
+            return false;
+        }
+        return true;
     }
 
     @Override

@@ -33,8 +33,11 @@ public class Plug extends SmartDevice {
         return ampere;
     }
 
-    public void setAmpere(double ampere) {
-        this.ampere = ampere;
+    public boolean setAmpere(String ampere) {
+        if (!checkAmpere(ampere))
+            return false;
+        this.ampere = Double.parseDouble(ampere);
+        return true;
     }
 
     public double getWatt() {
@@ -43,6 +46,19 @@ public class Plug extends SmartDevice {
 
     public void setWatt(double watt) {
         this.watt = watt;
+    }
+
+    boolean checkAmpere(String ampereStr) {
+        try {
+            double ampere = Double.parseDouble(ampereStr);
+            if (ampere < 0) {
+                System.out.println("ERROR: Ampere value must be a positive number!");
+                return false;
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override

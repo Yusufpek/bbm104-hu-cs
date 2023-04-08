@@ -12,6 +12,7 @@ public class CommandController {
     }
 
     void parseCommands() {
+        String lastLine = "";
         for (String line : commands) {
             System.out.println("COMMAND: " + line);
             String[] parsedLine = line.split("\t");
@@ -23,7 +24,7 @@ public class CommandController {
             }
             // if there is no time controller do not look for any commands.
             // if there is a set initial time command time controller is not null.
-            if (timeController != null) {
+            else if (timeController != null && timeController.now != null) {
                 // commands
                 switch (parsedLine[0]) {
                     case COMMAND_SET_TIME:
@@ -34,12 +35,7 @@ public class CommandController {
                         itemController.switchItem(timeController.now);
                         break;
                     case COMMAND_NOP:
-                        Date time = itemController.devices.get(0).getSwitchtime();
-                        if (time == null) {
-                            System.out.println(ERROR_NOP);
-                        }
-                        timeController.setTime(time);
-                        itemController.switchItem(timeController.now);
+                        nopCommand();
                         break;
                     case COMMAND_ADD:
                         itemController.addItem(parsedLine);
@@ -47,20 +43,42 @@ public class CommandController {
                     case COMMAND_REMOVE:
                         itemController.removeItem(parsedLine[1]);
                         break;
+                    case COMMAND_BRIGHTNESS:
+                        itemController.setBrightness(parsedLine[1], parsedLine[2]);
+                        break;
+                    case COMMAND_SWITCH:
+                        itemController.setStatus(parsedLine[1], parsedLine[2]);
+                        break;
+                    case COMMAND_PLUG_IN:
+                        itemController.plugIn(parsedLine[1], parsedLine[2]);
+                        break;
                     case COMMAND_REPORT:
-                        System.out.println("z report");
+                        System.out.println("Time is: " + timeController.getTime());
+                        itemController.devices.forEach(device -> System.out.println(device.toString()));
                         break;
                     default:
                         System.out.println(ERROR_COMMAND);
                         break;
                 }
             }
+            lastLine = line;
         }
+        // if last command is not z report, write the z report
+        if (!lastLine.equals(COMMAND_REPORT))
+            itemController.devices.forEach(device -> System.out.println(device.toString()));
+    }
 
-        System.out.println("Commands read");
-        System.out.println("Next is items");
-        for (SmartDevice string : itemController.devices) {
-            System.out.println(string.getName());
+    private void nopCommand() {
+        try {
+            Date time = itemController.devices.get(0).getSwitchtime();
+            if (time == null) {
+                System.out.println(ERROR_NOP);
+                return;
+            }
+            timeController.setTime(time);
+            itemController.switchItem(timeController.now);
+        } catch (IndexOutOfBoundsException exception) {
+            System.out.println(ERROR_NOP);
         }
     }
 
@@ -71,6 +89,9 @@ public class CommandController {
     private final String COMMAND_REMOVE = "Remove";
     private final String COMMAND_NOP = "Nop";
     private final String COMMAND_REPORT = "ZReport";
+    private final String COMMAND_SWITCH = "Switch";
+    private final String COMMAND_PLUG_IN = "PlugIn";
+    private final String COMMAND_BRIGHTNESS = "SetBrightness";
     // Error Messages
     static public final String ERROR_COMMAND = "ERROR: Erroneous command!";
     static public final String ERROR_NOP = "ERROR: There is nothing to switch!";

@@ -36,19 +36,52 @@ public class Lamp extends SmartDevice {
     /**
      * @param brightness which has to be in [0,100]
      */
-    public void setBrightness(int brightness) {
-        this.brightness = brightness;
+    public boolean setBrightness(String brightness) {
+        if (!checkBrightness(brightness))
+            return false;
+        this.brightness = Integer.parseInt(brightness);
+        return true;
     }
 
     public int getKelvin() {
         return kelvin;
     }
 
-    /**
-     * @param kelvin
-     */
-    public void setKelvin(int kelvin) {
-        this.kelvin = kelvin;
+    public boolean setKelvin(String kelvin) {
+        if (!checkKelvin(kelvin))
+            return false;
+        this.kelvin = Integer.parseInt(kelvin);
+        return true;
+    }
+
+    boolean checkBrightness(String brightnessStr) {
+        try {
+            int brightness = Integer.parseInt(brightnessStr);
+            if (brightness > 100 || brightness < 0) {
+                System.out.println("ERROR: Brightness must be in range of 0%-100%!");
+                return false;
+            }
+            return true;
+        } catch (Exception e) {
+            System.out.println(CommandController.ERROR_COMMAND);
+            return false;
+        }
+    }
+
+    boolean checkKelvin(String kelvinStr) {
+        try {
+            int kelvin = Integer.parseInt(kelvinStr);
+            System.out.println("kelvin value: " + kelvin);
+            System.out.println("condition result: " + (kelvin > 6500 || kelvin < 2000));
+            if (kelvin > 6500 || kelvin < 2000) {
+                System.out.println("ERROR: Kelvin value must be in range of 2000K-6500K!");
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println(CommandController.ERROR_COMMAND);
+            return false;
+        }
+        return true;
     }
 
     @Override

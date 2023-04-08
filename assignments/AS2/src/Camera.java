@@ -47,6 +47,27 @@ public class Camera extends SmartDevice {
         this.usedMegabytes = usedMegabytes;
     }
 
+    public boolean setMBPerMinute(String megabytes) {
+        if (!checkMB(megabytes))
+            return false;
+        this.mbPerMinute = Integer.parseInt(megabytes);
+        return true;
+    }
+
+    boolean checkMB(String megabytes) {
+        try {
+            int megabyte = Integer.parseInt(megabytes);
+            if (megabyte < 0) {
+                System.out.println("ERROR: Megabyte value has to be a positive number!");
+                return false;
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+
+    }
+
     @Override
     public String toString() {
         return String.format("%s and used %.2fMB of storage so far", super.toString(), getUsedMegabytes());

@@ -13,7 +13,7 @@ public class ItemController {
 
     void switchItem(Date time) {
         for (SmartDevice device : devices) {
-            if (device.getSwitchtime().before(time)) {
+            if (device.getSwitchtime() != null && device.getSwitchtime().before(time)) {
                 System.out
                         .println("device status is on: " + device.getName() + " devicetype: " + device.getDeviceType());
                 sortDevices();
@@ -21,42 +21,62 @@ public class ItemController {
         }
     }
 
-    void removeItem(String itemName) {
+    void setStatus(String name, String status) {
+        SmartDevice device = getItemByName(name);
+        if (device == null) {
+            System.out.println(NO_DEVICE_ERROR);
+            return;
+        }
+        if (!checkStatus(status))
+            return;
+        if (device.getStatus().equals(status)) {
+            System.out.println(String.format("ERROR: This device is already switched %s!", status.toLowerCase()));
+            return;
+        }
+        device.setStatus(status);
+    }
+
+    void setBrightness(String name, String brightness) {
+        SmartDevice device = getItemByName(name);
+        if (device == null) {
+            System.out.println(NO_DEVICE_ERROR);
+            return;
+        }
+        if (deviceTypeCheck(device, SmartDevice.DeviceType.LAMP))
+            ((Lamp) device).setBrightness(brightness);
+    }
+
+    void plugIn(String name, String ampere) {
+        SmartDevice device = getItemByName(name);
+        if (device == null) {
+            System.out.println(NO_DEVICE_ERROR);
+            return;
+        }
+        if (!deviceTypeCheck(device, SmartDevice.DeviceType.PLUG))
+            return;
+        ((Plug) device).setAmpere(ampere);
+    }
+
+    void removeItem(String name) {
+        SmartDevice device = getItemByName(name);
+        if (device == null) {
+            System.out.println(NO_DEVICE_ERROR);
+            return;
+        }
+        devices.remove(device);
+        System.out.println("SUCCESS: Information about removed smart device is as follows:");
+        System.out.println(device.toString());
         sortDevices();
     }
 
     void addItem(String[] arr) {
         String type = arr[1];
-        String name = arr[2];
         switch (type) {
             case LAMP:
                 addLamp(arr);
                 break;
             case COLOR_LAMP:
-                if (!checkName(name))
-                    break;
-                ColorLamp clamp = new ColorLamp(name);
-                if (arr.length > 3) {
-                    String status = arr[3];
-                    if (!checkStatus(status))
-                        break;
-                    clamp.setInitialStatus(status);
-                    if (arr.length > 4) {
-                        String kelvin = arr[4];
-                        if (!checkKelvin(kelvin))
-                            break;
-                        clamp.setKelvin(Integer.parseInt(kelvin));
-                        String brightness = arr[5];
-                        if (!checkBrightness(brightness))
-                            break;
-                        clamp = new ColorLamp(name, status, kelvin, brightness);
-                    } else {
-                        clamp = new ColorLamp(name, status);
-                    }
-                } else {
-                    clamp = new ColorLamp(name);
-                }
-                devices.add(clamp);
+                addColorLamp(arr);
                 break;
             case PLUG:
                 addPlug(arr);
@@ -71,48 +91,76 @@ public class ItemController {
     }
 
     void sortDevices() {
-        Collections.sort(devices, Comparator.nullsLast(Comparator.comparing(SmartDevice::getSwitchtime)));
+        Collections.sort(
+                devices,
+                Comparator.comparing(SmartDevice::getSwitchtime, Comparator.nullsLast(Comparator.naturalOrder())));
     }
 
     // arr = command, device type, name, status, kelvin, brightness
     void addLamp(String[] arr) {
-        if (!checkName(arr[2]))
+        if (checkName(arr[2])) {
+            System.out.println(NAME_ERROR);
             return;
+        }
         Lamp lamp = new Lamp(arr[2]);
         if (arr.length > 3) {
             String status = arr[3];
             if (!checkStatus(status))
                 return;
-            lamp.setInitialStatus(status);
+            lamp.setStatus(status);
             if (arr.length > 4) {
-                String kelvin = arr[4];
-                if (!checkKelvin(kelvin))
+                if (!lamp.setKelvin(arr[4]))
                     return;
-                lamp.setKelvin(Integer.parseInt(kelvin));
-                String brightness = arr[5];
-                if (!checkBrightness(brightness))
+                if (!lamp.setBrightness(arr[5]))
                     return;
-                lamp.setBrightness(Integer.parseInt(brightness));
             }
         }
         devices.add(lamp);
     }
 
+    void addColorLamp(String[] arr) {
+        String name = arr[2];
+        ColorLamp clamp = new ColorLamp(name);
+        if (checkName(arr[2])) {
+            System.out.println(NAME_ERROR);
+            return;
+        }
+        if (arr.length > 3) {
+            String status = arr[3];
+            if (!checkStatus(status))
+                return;
+            clamp.setStatus(status);
+            if (arr.length > 4) {
+                if (arr[4].startsWith("0x")) {
+                    if (!clamp.setColorCode(arr[4]))
+                        return;
+                } else {
+                    if (!clamp.setKelvin(arr[4]))
+                        return;
+                }
+                if (!clamp.setBrightness(arr[5]))
+                    return;
+            }
+        }
+        devices.add(clamp);
+        System.out.println("color lamp added " + clamp.getName());
+    }
+
     // arr = command, device type, name, status, ampere
     void addPlug(String[] arr) {
         Plug plug = new Plug(arr[2]);
-        if (!checkName(arr[2]))
+        if (checkName(arr[2])) {
+            System.out.println(NAME_ERROR);
             return;
+        }
         if (arr.length >= 4) {
             String status = arr[3];
             if (!checkStatus(status))
                 return;
-            plug.setInitialStatus(status);
+            plug.setStatus(status);
             if (arr.length == 5) {
-                int ampere = Integer.parseInt(arr[4]);
-                if (!checkAmpere(ampere))
+                if (!plug.setAmpere(arr[4]))
                     return;
-                plug.setAmpere(ampere);
             }
         }
         devices.add(plug);
@@ -120,23 +168,22 @@ public class ItemController {
 
     void addCamera(String[] arr) {
         String name = arr[2];
-        Camera camera;
+        Camera camera = new Camera(name);
         if (arr.length < 4) {
             System.out.println(CommandController.ERROR_COMMAND);
             return;
         }
-        if (!checkName(name))
+        if (checkName(name)) {
+            System.out.println(NAME_ERROR);
             return;
-        int megabyte = Integer.parseInt(arr[3]);
-        if (!checkMB(megabyte))
+        }
+        if (!camera.setMBPerMinute(arr[3]))
             return;
         if (arr.length == 5) {
             String status = arr[4];
             if (!checkStatus(status))
                 return;
-            camera = new Camera(name, megabyte, status);
-        } else {
-            camera = new Camera(name, megabyte);
+            camera.setStatus(status);
         }
         devices.add(camera);
     }
@@ -149,57 +196,37 @@ public class ItemController {
         return true;
     }
 
-    boolean checkKelvin(String kelvinStr) {
-        int kelvin = Integer.parseInt(kelvinStr);
-        if (kelvin > 6500 || kelvin < 2000) {
-            System.out.println("ERROR: Kelvin value must be in range of 2000K-6500K!");
-            return false;
-        }
-        return true;
-    }
-
-    boolean checkBrightness(String brightnessStr) {
-        try {
-            int brightness = Integer.parseInt(brightnessStr);
-            if (brightness > 100 || brightness < 0) {
-                System.out.println("ERROR: Brightness must be in range of 0%-100%!");
-                return false;
-            }
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    boolean checkMB(int megabyte) {
-        if (megabyte < 0) {
-            System.out.println("ERROR: Megabyte value has to be a positive number!");
-            return false;
-        }
-        return true;
-    }
-
-    boolean checkAmpere(int ampere) {
-        if (ampere < 0) {
-            System.out.println("ERROR: Ampere value must be a positive number!");
-            return false;
-        }
-        return true;
-    }
-
     boolean checkName(String name) {
+        SmartDevice device = getItemByName(name);
+        if (device == null)
+            return false;
+        return true;
+    }
+
+    boolean deviceTypeCheck(SmartDevice device, SmartDevice.DeviceType type) {
+        if (device.getDeviceType() == type)
+            return true;
+        else
+            System.out.println(String.format("ERROR: This device is not a smart %s!", type.toString().toLowerCase()));
+        return false;
+    }
+
+    SmartDevice getItemByName(String name) {
         for (SmartDevice device : devices) {
             if (device.getName().equals(name)) {
-                System.out.println("ERROR: There is already a smart device with same name!");
-                return false;
+                return device;
             }
         }
-        return true;
+        return null;
     }
 
     private final String SMART = "Smart";
     private final String LAMP = SMART + "Lamp";
-    private final String COLOR_LAMP = SMART + "Color" + LAMP;
+    private final String COLOR_LAMP = SMART + "ColorLamp";
     private final String PLUG = SMART + "Plug";
     private final String CAMERA = SMART + "Camera";
+
+    //
+    private final String NAME_ERROR = "ERROR: There is already a smart device with same name!";
+    private final String NO_DEVICE_ERROR = "ERROR: There is not such a device!";
 }
