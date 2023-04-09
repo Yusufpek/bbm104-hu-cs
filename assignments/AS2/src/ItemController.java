@@ -24,7 +24,7 @@ public class ItemController {
 
     void changeName(String name, String newName) {
         if (name.equals(newName)) {
-            System.out.println("Names are same !");
+            System.out.println(SAME_NAME_ERROR);
         }
 
         SmartDevice device = getItemByName(name);
@@ -32,17 +32,23 @@ public class ItemController {
             System.out.println(NO_DEVICE_ERROR);
             return;
         }
+        if (getItemByName(newName) != null) {
+            System.out.println(NAME_ERROR);
+            return;
+        }
         device.setName(newName);
     }
 
     void switchItem(Date time) {
-        System.out.println("switch item function");
-        for (SmartDevice device : devices) {
-            if (device.getSwitchtime() != null && device.getSwitchtime().before(time)) {
-                System.out
-                        .println("device status is on: " + device.getName() + " devicetype: " + device.getDeviceType());
-                sortDevices();
+        int index = 0;
+        while (index < devices.size() && devices.get(index).getSwitchtime() != null) {
+            final SmartDevice device = devices.get(index);
+            if (device.getSwitchtime() != null && !device.getSwitchtime().after(time)) {
+                device.setSwitchtime(""); // set null
+            } else {
+                index++;
             }
+            sortDevices();
         }
     }
 
@@ -300,4 +306,5 @@ public class ItemController {
     //
     private final String NAME_ERROR = "ERROR: There is already a smart device with same name!";
     private final String NO_DEVICE_ERROR = "ERROR: There is not such a device!";
+    private final String SAME_NAME_ERROR = "ERROR: Both of the names are the same, nothing changed!";
 }

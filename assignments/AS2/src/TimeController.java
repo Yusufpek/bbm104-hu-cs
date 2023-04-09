@@ -20,10 +20,7 @@ public class TimeController {
         }
     }
 
-    /**
-     * @param time
-     */
-    void setTime(String time) {
+    boolean setTime(String time) {
         try {
             Date newDate = dateFormat.parse(time);
             if (newDate.getTime() - this.now.getTime() < 0) {
@@ -33,10 +30,12 @@ public class TimeController {
             } else {
                 this.now = newDate;
                 System.out.println("Time set as " + getTime());
+                return true;
             }
         } catch (ParseException e) {
             System.out.println("ERROR: Time format is not correct!");
         }
+        return false;
     }
 
     void setTime(Date time) {

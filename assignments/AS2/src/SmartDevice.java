@@ -110,7 +110,10 @@ public abstract class SmartDevice {
      */
     public void setSwitchtime(String switchtime) {
         try {
-            this.switchtime = TimeController.dateFormat.parse(switchtime);
+            if (switchtime.equals(""))
+                this.switchtime = null;
+            else
+                this.switchtime = TimeController.dateFormat.parse(switchtime);
         } catch (ParseException e) {
             System.out.println("Wrong date !");
         }

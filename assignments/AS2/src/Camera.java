@@ -70,6 +70,8 @@ public class Camera extends SmartDevice {
 
     @Override
     public String toString() {
-        return String.format("%s and used %.2fMB of storage so far", super.toString(), getUsedMegabytes());
+        return String.format(
+                "%s and used %.2fMB of storage so far (excluding current device), and its time to switch its status is %s.",
+                super.toString(), getUsedMegabytes(), getSwitchtimeString());
     }
 }

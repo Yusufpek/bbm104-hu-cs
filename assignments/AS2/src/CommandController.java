@@ -26,55 +26,61 @@ public class CommandController {
             // if there is a set initial time command time controller is not null.
             else if (timeController != null && timeController.now != null) {
                 // commands
-                switch (parsedLine[0]) {
-                    case COMMAND_SET_TIME:
-                        timeController.setTime(parsedLine[1]);
-                        break;
-                    case COMMAND_SKIP:
-                        timeController.skipMinutes(Integer.parseInt(parsedLine[1]));
-                        itemController.switchItem(timeController.now);
-                        break;
-                    case COMMAND_NOP:
-                        nopCommand();
-                        break;
-                    case COMMAND_ADD:
-                        itemController.addItem(parsedLine);
-                        break;
-                    case COMMAND_REMOVE:
-                        itemController.removeItem(parsedLine[1]);
-                        break;
-                    case COMMAND_BRIGHTNESS:
-                        itemController.setBrightness(parsedLine[1], parsedLine[2]);
-                        break;
-                    case COMMAND_SWITCH:
-                        itemController.setStatus(parsedLine[1], parsedLine[2]);
-                        break;
-                    case COMMAND_PLUG_IN:
-                        itemController.plugIn(parsedLine[1], parsedLine[2]);
-                        break;
-                    case COMMAND_KELVIN:
-                        itemController.setKelvin(parsedLine[1], parsedLine[2]);
-                        break;
-                    case COMMAND_WHITE:
-                        itemController.setWhite(parsedLine[1], parsedLine[2], parsedLine[3]);
-                        break;
-                    case COMMAND_COLOR:
-                        itemController.setColor(parsedLine[1], parsedLine[2]);
-                        break;
-                    case COMMAND_SWITCH_TIME:
-                        itemController.setSwitchTime(parsedLine[1], parsedLine[2]);
-                        break;
-                    case COMMAND_NAME:
-                        itemController.changeName(parsedLine[1], parsedLine[2]);
-                        break;
-                    case COMMAND_REPORT:
-                        System.out.println("Time is: " + timeController.getTime());
-                        itemController.devices.forEach(device -> System.out.println(device.toString()));
-                        break;
-                    default:
-                        System.out.println(ERROR_COMMAND);
-                        break;
+                try {
+                    switch (parsedLine[0]) {
+                        case COMMAND_SET_TIME:
+                            if (timeController.setTime(parsedLine[1]))
+                                itemController.switchItem(timeController.now);
+                            break;
+                        case COMMAND_SKIP:
+                            timeController.skipMinutes(Integer.parseInt(parsedLine[1]));
+                            itemController.switchItem(timeController.now);
+                            break;
+                        case COMMAND_NOP:
+                            nopCommand();
+                            break;
+                        case COMMAND_ADD:
+                            itemController.addItem(parsedLine);
+                            break;
+                        case COMMAND_REMOVE:
+                            itemController.removeItem(parsedLine[1]);
+                            break;
+                        case COMMAND_BRIGHTNESS:
+                            itemController.setBrightness(parsedLine[1], parsedLine[2]);
+                            break;
+                        case COMMAND_SWITCH:
+                            itemController.setStatus(parsedLine[1], parsedLine[2]);
+                            break;
+                        case COMMAND_PLUG_IN:
+                            itemController.plugIn(parsedLine[1], parsedLine[2]);
+                            break;
+                        case COMMAND_KELVIN:
+                            itemController.setKelvin(parsedLine[1], parsedLine[2]);
+                            break;
+                        case COMMAND_WHITE:
+                            itemController.setWhite(parsedLine[1], parsedLine[2], parsedLine[3]);
+                            break;
+                        case COMMAND_COLOR:
+                            itemController.setColor(parsedLine[1], parsedLine[2]);
+                            break;
+                        case COMMAND_SWITCH_TIME:
+                            itemController.setSwitchTime(parsedLine[1], parsedLine[2]);
+                            break;
+                        case COMMAND_NAME:
+                            itemController.changeName(parsedLine[1], parsedLine[2]);
+                            break;
+                        case COMMAND_REPORT:
+                            System.out.println("Time is: " + timeController.getTime());
+                            itemController.devices.forEach(device -> System.out.println(device.toString()));
+                            break;
+                        default:
+                            System.out.println(ERROR_COMMAND);
+                            break;
+                    }
+                } catch (Exception exception) {
+                    System.out.println(ERROR_COMMAND);
                 }
+
             }
             lastLine = line;
         }
