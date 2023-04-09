@@ -54,6 +54,9 @@ public class CommandController {
                         case COMMAND_PLUG_IN:
                             itemController.plugIn(parsedLine[1], parsedLine[2]);
                             break;
+                        case COMMAND_PLUG_OUT:
+                            itemController.plugOut(parsedLine[1]);
+                            break;
                         case COMMAND_KELVIN:
                             itemController.setKelvin(parsedLine[1], parsedLine[2]);
                             break;
@@ -112,6 +115,7 @@ public class CommandController {
     private final String COMMAND_REPORT = "ZReport";
     private final String COMMAND_SWITCH = "Switch";
     private final String COMMAND_PLUG_IN = "PlugIn";
+    private final String COMMAND_PLUG_OUT = "PlugOut";
     private final String COMMAND_BRIGHTNESS = "SetBrightness";
     private final String COMMAND_WHITE = "SetWhite";
     private final String COMMAND_KELVIN = "SetKelvin";

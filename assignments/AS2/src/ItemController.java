@@ -4,6 +4,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+//TODO: Güç hesaplamaları yapılacak !!!
+
 public class ItemController {
     List<SmartDevice> devices;
 
@@ -78,7 +80,7 @@ public class ItemController {
             ((Lamp) device).setKelvin(kelvin);
             ((Lamp) device).setBrightness(brightness);
         } else
-            deviceTypeErrorMessage(device);
+            deviceTypeErrorMessage(SmartDevice.DeviceType.LAMP);
     }
 
     void setKelvin(String name, String kelvin) {
@@ -91,7 +93,7 @@ public class ItemController {
                 || deviceTypeCheck(device, SmartDevice.DeviceType.COLOR_LAMP))
             ((Lamp) device).setKelvin(kelvin);
         else
-            deviceTypeErrorMessage(device);
+            deviceTypeErrorMessage(SmartDevice.DeviceType.LAMP);
     }
 
     void setColor(String name, String color) {
@@ -103,7 +105,7 @@ public class ItemController {
         if (deviceTypeCheck(device, SmartDevice.DeviceType.COLOR_LAMP))
             ((ColorLamp) device).setColorCode(color);
         else
-            deviceTypeErrorMessage(device);
+            deviceTypeErrorMessage(SmartDevice.DeviceType.COLOR_LAMP);
     }
 
     void setBrightness(String name, String brightness) {
@@ -115,7 +117,7 @@ public class ItemController {
         if (deviceTypeCheck(device, SmartDevice.DeviceType.LAMP))
             ((Lamp) device).setBrightness(brightness);
         else
-            deviceTypeErrorMessage(device);
+            deviceTypeErrorMessage(SmartDevice.DeviceType.LAMP);
     }
 
     void plugIn(String name, String ampere) {
@@ -125,10 +127,27 @@ public class ItemController {
             return;
         }
         if (!deviceTypeCheck(device, SmartDevice.DeviceType.PLUG)) {
-            deviceTypeErrorMessage(device);
+            deviceTypeErrorMessage(SmartDevice.DeviceType.PLUG);
             return;
         }
         ((Plug) device).setAmpere(ampere);
+    }
+
+    void plugOut(String name) {
+        SmartDevice device = getItemByName(name);
+        if (device == null) {
+            System.out.println(NO_DEVICE_ERROR);
+            return;
+        }
+        if (!deviceTypeCheck(device, SmartDevice.DeviceType.PLUG)) {
+            deviceTypeErrorMessage(SmartDevice.DeviceType.PLUG);
+            return;
+        }
+        if (((Plug) device).getAmpere() == 0.0) {
+            System.out.println(PLUG_OUT_ERROR);
+            return;
+        }
+        ((Plug) device).setAmpere("0");
     }
 
     void removeItem(String name) {
@@ -143,9 +162,9 @@ public class ItemController {
         sortDevices();
     }
 
-    void deviceTypeErrorMessage(SmartDevice device) {
+    void deviceTypeErrorMessage(SmartDevice.DeviceType type) {
         System.out.println(
-                String.format("ERROR: This device is not a %s!", device.getDeviceTypeString().toLowerCase()));
+                String.format("ERROR: This device is not a %s!", type.toString().toLowerCase()));
     }
 
     void addItem(String[] arr) {
@@ -307,4 +326,5 @@ public class ItemController {
     private final String NAME_ERROR = "ERROR: There is already a smart device with same name!";
     private final String NO_DEVICE_ERROR = "ERROR: There is not such a device!";
     private final String SAME_NAME_ERROR = "ERROR: Both of the names are the same, nothing changed!";
+    private final String PLUG_OUT_ERROR = "ERROR: This plug has no item to plug out from that plug!";
 }
