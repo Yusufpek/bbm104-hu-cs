@@ -1,18 +1,20 @@
+import java.util.Date;
+
 public class Plug extends SmartDevice {
     private double ampere;
     private double watt;
     private final int VOLT = 220; // constant volt value
 
-    Plug(String name) {
-        super(name, DeviceType.PLUG);
+    Plug(Date now, String name) {
+        super(now, name, DeviceType.PLUG);
     }
 
-    Plug(String name, String initialStatus) {
-        super(name, initialStatus, DeviceType.PLUG);
+    Plug(Date now, String name, String initialStatus) {
+        super(now, name, initialStatus, DeviceType.PLUG);
     }
 
-    Plug(String name, String initialStatus, double ampere) {
-        super(name, initialStatus, DeviceType.PLUG);
+    Plug(Date now, String name, String initialStatus, double ampere) {
+        super(now, name, initialStatus, DeviceType.PLUG);
         this.ampere = ampere;
     }
 

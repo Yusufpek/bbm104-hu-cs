@@ -46,12 +46,19 @@ public class ItemController {
         while (index < devices.size() && devices.get(index).getSwitchtime() != null) {
             final SmartDevice device = devices.get(index);
             if (device.getSwitchtime() != null && !device.getSwitchtime().after(time)) {
+                device.setStatus(changeStatus(device.getStatus()));
                 device.setSwitchtime(""); // set null
             } else {
                 index++;
             }
             sortDevices();
         }
+    }
+
+    String changeStatus(String currentStatus) {
+        if (currentStatus.equals("On"))
+            return "Off";
+        return "On";
     }
 
     void setStatus(String name, String status) {
@@ -191,20 +198,20 @@ public class ItemController {
                 String.format("ERROR: This device is not a %s!", type.toString().toLowerCase()));
     }
 
-    void addItem(String[] arr) {
+    void addItem(Date now, String[] arr) {
         String type = arr[1];
         switch (type) {
             case LAMP:
-                addLamp(arr);
+                addLamp(now, arr);
                 break;
             case COLOR_LAMP:
-                addColorLamp(arr);
+                addColorLamp(now, arr);
                 break;
             case PLUG:
-                addPlug(arr);
+                addPlug(now, arr);
                 break;
             case CAMERA:
-                addCamera(arr);
+                addCamera(now, arr);
                 break;
             default:
                 break;
@@ -219,12 +226,12 @@ public class ItemController {
     }
 
     // arr = command, device type, name, status, kelvin, brightness
-    void addLamp(String[] arr) {
+    void addLamp(Date now, String[] arr) {
         if (checkName(arr[2])) {
             System.out.println(NAME_ERROR);
             return;
         }
-        Lamp lamp = new Lamp(arr[2]);
+        Lamp lamp = new Lamp(now, arr[2]);
         if (arr.length > 3) {
             String status = arr[3];
             if (!checkStatus(status))
@@ -240,9 +247,9 @@ public class ItemController {
         devices.add(lamp);
     }
 
-    void addColorLamp(String[] arr) {
+    void addColorLamp(Date now, String[] arr) {
         String name = arr[2];
-        ColorLamp clamp = new ColorLamp(name);
+        ColorLamp clamp = new ColorLamp(now, name);
         if (checkName(arr[2])) {
             System.out.println(NAME_ERROR);
             return;
@@ -269,8 +276,8 @@ public class ItemController {
     }
 
     // arr = command, device type, name, status, ampere
-    void addPlug(String[] arr) {
-        Plug plug = new Plug(arr[2]);
+    void addPlug(Date now, String[] arr) {
+        Plug plug = new Plug(now, arr[2]);
         if (checkName(arr[2])) {
             System.out.println(NAME_ERROR);
             return;
@@ -288,9 +295,9 @@ public class ItemController {
         devices.add(plug);
     }
 
-    void addCamera(String[] arr) {
+    void addCamera(Date now, String[] arr) {
         String name = arr[2];
-        Camera camera = new Camera(name);
+        Camera camera = new Camera(now, name);
         if (arr.length < 4) {
             System.out.println(CommandController.ERROR_COMMAND);
             return;

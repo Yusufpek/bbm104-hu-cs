@@ -40,7 +40,7 @@ public class CommandController {
                             nopCommand();
                             break;
                         case COMMAND_ADD:
-                            itemController.addItem(parsedLine);
+                            itemController.addItem(timeController.now, parsedLine);
                             break;
                         case COMMAND_REMOVE:
                             itemController.removeItem(parsedLine[1]);

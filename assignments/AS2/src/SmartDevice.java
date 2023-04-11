@@ -11,10 +11,20 @@ public abstract class SmartDevice {
     private String status = "Off";
     private DeviceType deviceType;
     private Date switchtime;
+    private Date oldSwitchtime;
 
-    SmartDevice(String name, DeviceType type) {
+    public Date getOldSwitchtime() {
+        return oldSwitchtime;
+    }
+
+    public void setOldSwitchtime(Date oldSwitchtime) {
+        this.oldSwitchtime = oldSwitchtime;
+    }
+
+    SmartDevice(Date now, String name, DeviceType type) {
         this.name = name;
         this.deviceType = type;
+        oldSwitchtime = now;
     }
 
     /**
@@ -22,7 +32,7 @@ public abstract class SmartDevice {
      * @param initialStatus initial status of device
      * @param type          device type (enum)
      */
-    SmartDevice(String name, String initialStatus, DeviceType type) {
+    SmartDevice(Date now, String name, String initialStatus, DeviceType type) {
         this.name = name;
         this.status = initialStatus;
         this.deviceType = type;
@@ -102,6 +112,7 @@ public abstract class SmartDevice {
      * @param switchtime
      */
     public void setSwitchtime(Date switchtime) {
+        this.oldSwitchtime = this.switchtime;
         this.switchtime = switchtime;
     }
 

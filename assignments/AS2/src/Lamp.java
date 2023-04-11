@@ -1,3 +1,5 @@
+import java.util.Date;
+
 public class Lamp extends SmartDevice {
     private int brightness = 100;
     private int kelvin = 4000;
@@ -8,8 +10,8 @@ public class Lamp extends SmartDevice {
      * @param kelvin
      * @param brightness
      */
-    Lamp(String name, String initialStatus, String kelvin, String brightness) {
-        super(name, initialStatus, DeviceType.LAMP);
+    Lamp(Date now, String name, String initialStatus, String kelvin, String brightness) {
+        super(now, name, initialStatus, DeviceType.LAMP);
         this.kelvin = Integer.parseInt(kelvin);
         this.brightness = Integer.parseInt(brightness);
     }
@@ -17,16 +19,16 @@ public class Lamp extends SmartDevice {
     /**
      * @param name
      */
-    Lamp(String name) {
-        super(name, DeviceType.LAMP);
+    Lamp(Date now, String name) {
+        super(now, name, DeviceType.LAMP);
     }
 
     /**
      * @param name
      * @param initialStatus
      */
-    Lamp(String name, String initialStatus) {
-        super(name, initialStatus, DeviceType.LAMP);
+    Lamp(Date now, String name, String initialStatus) {
+        super(now, name, initialStatus, DeviceType.LAMP);
     }
 
     public int getBrightness() {

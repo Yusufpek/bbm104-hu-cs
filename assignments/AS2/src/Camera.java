@@ -1,3 +1,5 @@
+import java.util.Date;
+
 public class Camera extends SmartDevice {
     private int mbPerMinute; // consumed megabyts per minute
     private double usedMegabytes; // consumed megabyts per minute
@@ -5,16 +7,16 @@ public class Camera extends SmartDevice {
     /**
      * @param name
      */
-    Camera(String name) {
-        super(name, DeviceType.CAMERA);
+    Camera(Date now, String name) {
+        super(now, name, DeviceType.CAMERA);
     }
 
     /**
      * @param name
      * @param mbPerMinute
      */
-    Camera(String name, int mbPerMinute) {
-        super(name, DeviceType.CAMERA);
+    Camera(Date now, String name, int mbPerMinute) {
+        super(now, name, DeviceType.CAMERA);
         this.mbPerMinute = mbPerMinute;
     }
 
@@ -23,8 +25,8 @@ public class Camera extends SmartDevice {
      * @param mbPerMinute
      * @param initialStatus
      */
-    Camera(String name, int mbPerMinute, String initialStatus) {
-        super(name, initialStatus, DeviceType.CAMERA);
+    Camera(Date now, String name, int mbPerMinute, String initialStatus) {
+        super(now, name, initialStatus, DeviceType.CAMERA);
         this.mbPerMinute = mbPerMinute;
     }
 
@@ -52,6 +54,16 @@ public class Camera extends SmartDevice {
             return false;
         this.mbPerMinute = Integer.parseInt(megabytes);
         return true;
+    }
+
+    @Override
+    public void setStatus(String status) {
+        if (status.equals("Off") && this.getStatus().equals("On")) {
+            final long milliSecondsDifference = (this.getSwitchtime().getTime() - this.getOldSwitchtime().getTime());
+            calculateUsedMegabyts(milliSecondsDifference / (1000 * 60));
+        }
+        System.out.println("camera set status");
+        super.setStatus(status);
     }
 
     boolean checkMB(String megabytes) {

@@ -1,3 +1,5 @@
+import java.util.Date;
+
 public class ColorLamp extends Lamp {
     private final int MAX_HEX = 214748347; // maximum color code value in integer
     private int colorCode;
@@ -8,8 +10,8 @@ public class ColorLamp extends Lamp {
      * @param colorCode
      * @param brightness
      */
-    ColorLamp(String name, String initialStatus, String colorCode, String brightness) {
-        super(name, initialStatus);
+    ColorLamp(Date now, String name, String initialStatus, String colorCode, String brightness) {
+        super(now, name, initialStatus);
         this.colorCode = Integer.decode(colorCode);
         this.setBrightness(brightness);
     }
@@ -18,16 +20,17 @@ public class ColorLamp extends Lamp {
      * @param name
      * @param initialStatus
      */
-    ColorLamp(String name, String initialStatus) {
-        super(name, initialStatus);
+    ColorLamp(Date now, String name, String initialStatus) {
+        super(now, name, initialStatus);
         this.setDeviceType(DeviceType.COLOR_LAMP);
     }
 
     /**
+     * @param now
      * @param name
      */
-    ColorLamp(String name) {
-        super(name);
+    ColorLamp(Date now, String name) {
+        super(now, name);
         this.setDeviceType(DeviceType.COLOR_LAMP);
     }
 
