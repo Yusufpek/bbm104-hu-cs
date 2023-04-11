@@ -14,9 +14,9 @@ public class TimeController {
                 throw new ParseException("wrong date", 0); // throw error
             }
             this.now = dateFormat.parse(time);
-            System.out.println(String.format("SUCCESS: Time has been set to %s!", time));
+            IO.outputStrings.add(String.format("SUCCESS: Time has been set to %s!", time));
         } catch (ParseException e) {
-            System.out.println("ERROR: Time format is not correct!");
+            IO.outputStrings.add("ERROR: Time format is not correct!");
         }
     }
 
@@ -24,7 +24,7 @@ public class TimeController {
         try {
             Date newDate = dateFormat.parse(time);
             if (newDate.getTime() - this.now.getTime() < 0) {
-                System.out.println("ERROR: Time cannot be reversed!");
+                IO.outputStrings.add("ERROR: Time cannot be reversed!");
             } else if (!dateFormat.format(dateFormat.parse(time)).equals(time)) {
                 throw new ParseException("wrong date", 0); // throw error
             } else {
@@ -32,7 +32,7 @@ public class TimeController {
                 return true;
             }
         } catch (ParseException e) {
-            System.out.println("ERROR: Time format is not correct!");
+            IO.outputStrings.add("ERROR: Time format is not correct!");
         }
         return false;
     }

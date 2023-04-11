@@ -60,12 +60,12 @@ public class Lamp extends SmartDevice {
         try {
             int brightness = Integer.parseInt(brightnessStr);
             if (brightness > 100 || brightness < 0) {
-                System.out.println("ERROR: Brightness must be in range of 0%-100%!");
+                IO.outputStrings.add("ERROR: Brightness must be in range of 0%-100%!");
                 return false;
             }
             return true;
         } catch (Exception e) {
-            System.out.println(CommandController.ERROR_COMMAND);
+            IO.outputStrings.add(CommandController.ERROR_COMMAND);
             return false;
         }
     }
@@ -74,11 +74,11 @@ public class Lamp extends SmartDevice {
         try {
             int kelvin = Integer.parseInt(kelvinStr);
             if (kelvin > 6500 || kelvin < 2000) {
-                System.out.println("ERROR: Kelvin value must be in range of 2000K-6500K!");
+                IO.outputStrings.add("ERROR: Kelvin value must be in range of 2000K-6500K!");
                 return false;
             }
         } catch (Exception e) {
-            System.out.println(CommandController.ERROR_COMMAND);
+            IO.outputStrings.add(CommandController.ERROR_COMMAND);
             return false;
         }
         return true;

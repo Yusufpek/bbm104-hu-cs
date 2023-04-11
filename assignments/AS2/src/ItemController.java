@@ -14,7 +14,7 @@ public class ItemController {
     void setSwitchTime(String name, String date) {
         SmartDevice device = getItemByName(name);
         if (device == null) {
-            System.out.println(NO_DEVICE_ERROR);
+            IO.outputStrings.add(NO_DEVICE_ERROR);
             return;
         }
         device.setSwitchtime(date);
@@ -24,16 +24,17 @@ public class ItemController {
 
     void changeName(String name, String newName) {
         if (name.equals(newName)) {
-            System.out.println(SAME_NAME_ERROR);
+            IO.outputStrings.add(SAME_NAME_ERROR);
+            return;
         }
 
         SmartDevice device = getItemByName(name);
         if (device == null) {
-            System.out.println(NO_DEVICE_ERROR);
+            IO.outputStrings.add(NO_DEVICE_ERROR);
             return;
         }
         if (getItemByName(newName) != null) {
-            System.out.println(NAME_ERROR);
+            IO.outputStrings.add(NAME_ERROR);
             return;
         }
         device.setName(newName);
@@ -65,16 +66,16 @@ public class ItemController {
     void setStatus(String name, String status, Date time) {
         SmartDevice device = getItemByName(name);
         if (device == null) {
-            System.out.println(NO_DEVICE_ERROR);
+            IO.outputStrings.add(NO_DEVICE_ERROR);
             return;
         }
         if (!checkStatus(status))
             return;
         if (device.getStatus().equals(status)) {
-            System.out.println(String.format("ERROR: This device is already switched %s!", status.toLowerCase()));
+            IO.outputStrings.add(String.format("ERROR: This device is already switched %s!", status.toLowerCase()));
             return;
         }
-        if (deviceTypeCheck(device, SmartDevice.DeviceType.PLUG)) {
+        if (device instanceof Plug) {// (deviceTypeCheck(device, SmartDevice.DeviceType.PLUG)) {
             ((Plug) device).setStatus(time, changeStatus(device.getStatus()));
         } else
             device.setStatus(status);
@@ -83,7 +84,7 @@ public class ItemController {
     void setWhite(String name, String kelvin, String brightness) {
         SmartDevice device = getItemByName(name);
         if (device == null) {
-            System.out.println(NO_DEVICE_ERROR);
+            IO.outputStrings.add(NO_DEVICE_ERROR);
             return;
         }
         if (deviceTypeCheck(device, SmartDevice.DeviceType.LAMP)
@@ -101,7 +102,7 @@ public class ItemController {
     void setKelvin(String name, String kelvin) {
         SmartDevice device = getItemByName(name);
         if (device == null) {
-            System.out.println(NO_DEVICE_ERROR);
+            IO.outputStrings.add(NO_DEVICE_ERROR);
             return;
         }
         if (deviceTypeCheck(device, SmartDevice.DeviceType.LAMP)
@@ -114,18 +115,16 @@ public class ItemController {
     void setColor(String name, String color, String brightness) {
         SmartDevice device = getItemByName(name);
         if (device == null) {
-            System.out.println(NO_DEVICE_ERROR);
+            IO.outputStrings.add(NO_DEVICE_ERROR);
             return;
         }
         if (deviceTypeCheck(device, SmartDevice.DeviceType.COLOR_LAMP)) {
             String oldColorCode = ((ColorLamp) device).getColorCodeString();
-            System.out.println(oldColorCode);
             // if color code is proper but brightness is not change the color code with the
             // old value
             if (((ColorLamp) device).setColorCode(color))
                 if (!((ColorLamp) device).setBrightness(brightness)) {
                     ((ColorLamp) device).setColorCode(oldColorCode);
-                    System.out.println("brightness is wrong");
                 }
         } else
             deviceTypeErrorMessage(SmartDevice.DeviceType.COLOR_LAMP);
@@ -134,19 +133,20 @@ public class ItemController {
     void setColorCode(String name, String color) {
         SmartDevice device = getItemByName(name);
         if (device == null) {
-            System.out.println(NO_DEVICE_ERROR);
+            IO.outputStrings.add(NO_DEVICE_ERROR);
             return;
         }
         if (deviceTypeCheck(device, SmartDevice.DeviceType.COLOR_LAMP))
             ((ColorLamp) device).setColorCode(color);
-        else
+        else {
             deviceTypeErrorMessage(SmartDevice.DeviceType.COLOR_LAMP);
+        }
     }
 
     void setBrightness(String name, String brightness) {
         SmartDevice device = getItemByName(name);
         if (device == null) {
-            System.out.println(NO_DEVICE_ERROR);
+            IO.outputStrings.add(NO_DEVICE_ERROR);
             return;
         }
         if (deviceTypeCheck(device, SmartDevice.DeviceType.LAMP))
@@ -158,7 +158,7 @@ public class ItemController {
     void plugIn(Date now, String name, String ampere) {
         SmartDevice device = getItemByName(name);
         if (device == null) {
-            System.out.println(NO_DEVICE_ERROR);
+            IO.outputStrings.add(NO_DEVICE_ERROR);
             return;
         }
         if (!deviceTypeCheck(device, SmartDevice.DeviceType.PLUG)) {
@@ -166,7 +166,7 @@ public class ItemController {
             return;
         }
         if (((Plug) device).getAmpere() != 0) {
-            System.out.println(PLUG_IN_ERROR);
+            IO.outputStrings.add(PLUG_IN_ERROR);
             return;
         }
         ((Plug) device).plugIn(ampere, now);
@@ -176,7 +176,7 @@ public class ItemController {
     void plugOut(Date now, String name) {
         SmartDevice device = getItemByName(name);
         if (device == null) {
-            System.out.println(NO_DEVICE_ERROR);
+            IO.outputStrings.add(NO_DEVICE_ERROR);
             return;
         }
         if (!deviceTypeCheck(device, SmartDevice.DeviceType.PLUG)) {
@@ -184,7 +184,7 @@ public class ItemController {
             return;
         }
         if (((Plug) device).getAmpere() == 0.0) {
-            System.out.println(PLUG_OUT_ERROR);
+            IO.outputStrings.add(PLUG_OUT_ERROR);
             return;
         }
         ((Plug) device).calculateWatt(now);
@@ -194,17 +194,17 @@ public class ItemController {
     void removeItem(String name) {
         SmartDevice device = getItemByName(name);
         if (device == null) {
-            System.out.println(NO_DEVICE_ERROR);
+            IO.outputStrings.add(NO_DEVICE_ERROR);
             return;
         }
         devices.remove(device);
-        System.out.println("SUCCESS: Information about removed smart device is as follows:");
-        System.out.println(device.toString());
+        IO.outputStrings.add("SUCCESS: Information about removed smart device is as follows:");
+        IO.outputStrings.add(device.toString());
         sortDevices();
     }
 
     void deviceTypeErrorMessage(SmartDevice.DeviceType type) {
-        System.out.println(
+        IO.outputStrings.add(
                 String.format("ERROR: This device is not a smart %s!",
                         type.toString().toLowerCase().replace('_', ' ')));
     }
@@ -239,7 +239,7 @@ public class ItemController {
     // arr = command, device type, name, status, kelvin, brightness
     void addLamp(Date now, String[] arr) {
         if (checkName(arr[2])) {
-            System.out.println(NAME_ERROR);
+            IO.outputStrings.add(NAME_ERROR);
             return;
         }
         Lamp lamp = new Lamp(now, arr[2]);
@@ -262,7 +262,7 @@ public class ItemController {
         String name = arr[2];
         ColorLamp clamp = new ColorLamp(now, name);
         if (checkName(arr[2])) {
-            System.out.println(NAME_ERROR);
+            IO.outputStrings.add(NAME_ERROR);
             return;
         }
         if (arr.length > 3) {
@@ -289,7 +289,7 @@ public class ItemController {
     void addPlug(Date now, String[] arr) {
         Plug plug = new Plug(now, arr[2]);
         if (checkName(arr[2])) {
-            System.out.println(NAME_ERROR);
+            IO.outputStrings.add(NAME_ERROR);
             return;
         }
         if (arr.length >= 4) {
@@ -309,11 +309,11 @@ public class ItemController {
         String name = arr[2];
         Camera camera = new Camera(now, name);
         if (arr.length < 4) {
-            System.out.println(CommandController.ERROR_COMMAND);
+            IO.outputStrings.add(CommandController.ERROR_COMMAND);
             return;
         }
         if (checkName(name)) {
-            System.out.println(NAME_ERROR);
+            IO.outputStrings.add(NAME_ERROR);
             return;
         }
         if (!camera.setMBPerMinute(arr[3]))
@@ -329,7 +329,7 @@ public class ItemController {
 
     boolean checkStatus(String status) {
         if (!status.equals("On") && !status.equals("Off")) {
-            System.out.println(CommandController.ERROR_COMMAND);
+            IO.outputStrings.add(CommandController.ERROR_COMMAND);
             return false;
         }
         return true;

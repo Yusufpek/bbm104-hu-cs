@@ -14,15 +14,15 @@ public class CommandController {
     void parseCommands() {
         String lastLine = "";
         for (String line : commands) {
-            System.out.println("COMMAND: " + line);
+            IO.outputStrings.add("COMMAND: " + line);
             String[] parsedLine = line.split("\t");
             if (parsedLine[0].equals(COMMAND_INITIAL_TIME)) {
                 if (timeController == null)
                     timeController = new TimeController(parsedLine[1]);
                 else
-                    System.out.println(ERROR_COMMAND);// + " in set initial time controller is null");
+                    IO.outputStrings.add(ERROR_COMMAND);// + " in set initial time controller is null");
             } else if (timeController == null) {
-                System.out.println(ERROR_SET_INITIAL_TIME);
+                IO.outputStrings.add(ERROR_SET_INITIAL_TIME);
                 return;
             }
             // if there is no time controller do not look for any commands.
@@ -68,6 +68,7 @@ public class CommandController {
                             break;
                         case COMMAND_COLOR_CODE:
                             itemController.setColorCode(parsedLine[1], parsedLine[2]);
+                            break;
                         case COMMAND_COLOR:
                             itemController.setColor(parsedLine[1], parsedLine[2], parsedLine[3]);
                             break;
@@ -78,35 +79,35 @@ public class CommandController {
                             itemController.changeName(parsedLine[1], parsedLine[2]);
                             break;
                         case COMMAND_REPORT:
-                            System.out.println("Time is:\t" + timeController.getTime());
-                            itemController.devices.forEach(device -> System.out.println(device.toString()));
+                            IO.outputStrings.add("Time is:\t" + timeController.getTime());
+                            itemController.devices.forEach(device -> IO.outputStrings.add(device.toString()));
                             break;
                         default:
-                            System.out.println(ERROR_COMMAND);
+                            IO.outputStrings.add(ERROR_COMMAND);
                             break;
                     }
                 } catch (Exception exception) {
-                    System.out.println(ERROR_COMMAND);// + " in command controller for");
+                    IO.outputStrings.add(ERROR_COMMAND);// + " in command controller for");
                 }
             }
             lastLine = line;
         }
         // if last command is not z report, write the z report
         if (!lastLine.equals(COMMAND_REPORT))
-            itemController.devices.forEach(device -> System.out.println(device.toString()));
+            itemController.devices.forEach(device -> IO.outputStrings.add(device.toString()));
     }
 
     private void nopCommand() {
         try {
             Date time = itemController.devices.get(0).getSwitchtime();
             if (time == null) {
-                System.out.println(ERROR_NOP);
+                IO.outputStrings.add(ERROR_NOP);
                 return;
             }
             timeController.setTime(time);
             itemController.switchItems(timeController.now);
         } catch (IndexOutOfBoundsException exception) {
-            System.out.println(ERROR_NOP);
+            IO.outputStrings.add(ERROR_NOP);
         }
     }
 

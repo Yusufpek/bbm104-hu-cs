@@ -63,7 +63,7 @@ public class Plug extends SmartDevice {
         try {
             double ampere = Double.parseDouble(ampereStr);
             if (ampere <= 0) {
-                System.out.println("ERROR: Ampere value must be a positive number!");
+                IO.outputStrings.add("ERROR: Ampere value must be a positive number!");
                 return false;
             }
             return true;

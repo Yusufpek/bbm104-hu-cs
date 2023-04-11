@@ -6,5 +6,6 @@ class Main {
         List<String> commands = io.readInputFile(true);
         CommandController commandController = new CommandController(commands);
         commandController.parseCommands();
+        io.writeToFile();
     }
 }

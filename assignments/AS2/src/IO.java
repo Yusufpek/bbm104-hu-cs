@@ -9,7 +9,7 @@ import java.io.FileWriter; // write to output file
 public class IO {
     private String inputFileName;
     private String outputFileName;
-    public ArrayList<String> outputStrings; // output strings array for outputs line
+    public static ArrayList<String> outputStrings; // output strings array for outputs line
 
     /*
      * Contructor method of this class,
@@ -24,7 +24,7 @@ public class IO {
     IO(String inputFileName, String outputFileName) {
         this.inputFileName = inputFileName;
         this.outputFileName = outputFileName;
-        this.outputStrings = new ArrayList<String>();
+        IO.outputStrings = new ArrayList<String>();
     }
 
     /*

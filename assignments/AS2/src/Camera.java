@@ -69,7 +69,7 @@ public class Camera extends SmartDevice {
         try {
             int megabyte = Integer.parseInt(megabytes);
             if (megabyte < 0) {
-                System.out.println("ERROR: Megabyte value must be a positive number!");
+                IO.outputStrings.add("ERROR: Megabyte value must be a positive number!");
                 return false;
             }
             return true;

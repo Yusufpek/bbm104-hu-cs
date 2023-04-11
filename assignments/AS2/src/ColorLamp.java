@@ -59,11 +59,11 @@ public class ColorLamp extends Lamp {
         try {
             int color = Integer.decode(colorCode);
             if (!(color > 0 && color < MAX_HEX)) {
-                System.out.println("ERROR: Color code value must be in range of 0x0-0xFFFFFF!");
+                IO.outputStrings.add("ERROR: Color code value must be in range of 0x0-0xFFFFFF!");
                 return false;
             }
         } catch (Exception e) {
-            System.out.println(CommandController.ERROR_COMMAND);
+            IO.outputStrings.add(CommandController.ERROR_COMMAND);
             return false;
         }
         return true;

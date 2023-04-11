@@ -126,7 +126,7 @@ public abstract class SmartDevice {
             else
                 this.switchtime = TimeController.dateFormat.parse(switchtime);
         } catch (ParseException e) {
-            System.out.println("Wrong date !");
+            IO.outputStrings.add("Wrong date !");
         }
     }
 
