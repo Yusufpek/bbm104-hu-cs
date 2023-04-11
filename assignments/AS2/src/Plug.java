@@ -7,6 +7,7 @@ public class Plug extends SmartDevice {
 
     Plug(Date now, String name) {
         super(now, name, DeviceType.PLUG);
+        this.setOldSwitchtime(null);
     }
 
     Plug(Date now, String name, String initialStatus) {
@@ -26,9 +27,17 @@ public class Plug extends SmartDevice {
      * 
      * @return consumed watt
      */
-    public void calculateWatt(double duration) {
-        // Watt = V * i * t
-        setWatt(getWatt() + VOLT * ampere * duration);
+    public void calculateWatt(Date time) {
+        if (ampere != 0) {
+            // Watt = V * i * t
+            // milliseconds to hour -> / 3600000
+            long duration = (time.getTime() - this.getOldSwitchtime().getTime()); // in milliseconds
+            setWatt(getWatt() + VOLT * ampere * duration / (60 * 60 * 1000));
+        }
+    }
+
+    public void setAmpereZero() {
+        this.ampere = 0;
     }
 
     public double getAmpere() {
@@ -53,7 +62,7 @@ public class Plug extends SmartDevice {
     boolean checkAmpere(String ampereStr) {
         try {
             double ampere = Double.parseDouble(ampereStr);
-            if (ampere < 0) {
+            if (ampere <= 0) {
                 System.out.println("ERROR: Ampere value must be a positive number!");
                 return false;
             }
@@ -63,10 +72,25 @@ public class Plug extends SmartDevice {
         }
     }
 
+    void plugIn(String ampere, Date now) {
+        if (this.setAmpere(ampere) && this.getStatus().equals("On")) {
+            this.setOldSwitchtime(now);
+        }
+    }
+
+    public void setStatus(Date now, String status) {
+        if (this.getAmpere() != 0)
+            if (status.equals("Off"))
+                this.calculateWatt(now);
+            else
+                this.setOldSwitchtime(now);
+        super.setStatus(status);
+    }
+
     @Override
     public String toString() {
         return String.format(
-                "%s and consumend %,.2fW so far (excluding current device), and its time to switch its status is %s.",
+                "%s consumend %.2fW so far (excluding current device), and its time to switch its status is %s.",
                 super.toString(), watt, getSwitchtimeString());
     }
 }

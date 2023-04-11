@@ -4,8 +4,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-//TODO: Güç hesaplamaları yapılacak !!!
-
 public class ItemController {
     List<SmartDevice> devices;
 
@@ -41,12 +39,15 @@ public class ItemController {
         device.setName(newName);
     }
 
-    void switchItem(Date time) {
+    void switchItems(Date time) {
         int index = 0;
         while (index < devices.size() && devices.get(index).getSwitchtime() != null) {
             final SmartDevice device = devices.get(index);
             if (device.getSwitchtime() != null && !device.getSwitchtime().after(time)) {
-                device.setStatus(changeStatus(device.getStatus()));
+                if (deviceTypeCheck(device, SmartDevice.DeviceType.PLUG))
+                    ((Plug) device).setStatus(time, changeStatus(device.getStatus()));
+                else
+                    device.setStatus(changeStatus(device.getStatus()));
                 device.setSwitchtime(""); // set null
             } else {
                 index++;
@@ -61,7 +62,7 @@ public class ItemController {
         return "On";
     }
 
-    void setStatus(String name, String status) {
+    void setStatus(String name, String status, Date time) {
         SmartDevice device = getItemByName(name);
         if (device == null) {
             System.out.println(NO_DEVICE_ERROR);
@@ -73,7 +74,10 @@ public class ItemController {
             System.out.println(String.format("ERROR: This device is already switched %s!", status.toLowerCase()));
             return;
         }
-        device.setStatus(status);
+        if (deviceTypeCheck(device, SmartDevice.DeviceType.PLUG)) {
+            ((Plug) device).setStatus(time, changeStatus(device.getStatus()));
+        } else
+            device.setStatus(status);
     }
 
     void setWhite(String name, String kelvin, String brightness) {
@@ -151,7 +155,7 @@ public class ItemController {
             deviceTypeErrorMessage(SmartDevice.DeviceType.LAMP);
     }
 
-    void plugIn(String name, String ampere) {
+    void plugIn(Date now, String name, String ampere) {
         SmartDevice device = getItemByName(name);
         if (device == null) {
             System.out.println(NO_DEVICE_ERROR);
@@ -161,10 +165,15 @@ public class ItemController {
             deviceTypeErrorMessage(SmartDevice.DeviceType.PLUG);
             return;
         }
-        ((Plug) device).setAmpere(ampere);
+        if (((Plug) device).getAmpere() != 0) {
+            System.out.println(PLUG_IN_ERROR);
+            return;
+        }
+        ((Plug) device).plugIn(ampere, now);
+
     }
 
-    void plugOut(String name) {
+    void plugOut(Date now, String name) {
         SmartDevice device = getItemByName(name);
         if (device == null) {
             System.out.println(NO_DEVICE_ERROR);
@@ -178,7 +187,8 @@ public class ItemController {
             System.out.println(PLUG_OUT_ERROR);
             return;
         }
-        ((Plug) device).setAmpere("0");
+        ((Plug) device).calculateWatt(now);
+        ((Plug) device).setAmpereZero();
     }
 
     void removeItem(String name) {
@@ -358,4 +368,5 @@ public class ItemController {
     private final String NO_DEVICE_ERROR = "ERROR: There is not such a device!";
     private final String SAME_NAME_ERROR = "ERROR: Both of the names are the same, nothing changed!";
     private final String PLUG_OUT_ERROR = "ERROR: This plug has no item to plug out from that plug!";
+    private final String PLUG_IN_ERROR = "ERROR: There is already an item plugged in to that plug!";
 }
