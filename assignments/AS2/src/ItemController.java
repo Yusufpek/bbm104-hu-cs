@@ -205,7 +205,8 @@ public class ItemController {
 
     void deviceTypeErrorMessage(SmartDevice.DeviceType type) {
         System.out.println(
-                String.format("ERROR: This device is not a %s!", type.toString().toLowerCase()));
+                String.format("ERROR: This device is not a smart %s!",
+                        type.toString().toLowerCase().replace('_', ' ')));
     }
 
     void addItem(Date now, String[] arr) {
@@ -282,7 +283,6 @@ public class ItemController {
             }
         }
         devices.add(clamp);
-        System.out.println("color lamp added " + clamp.getName());
     }
 
     // arr = command, device type, name, status, ampere

@@ -29,7 +29,6 @@ public class TimeController {
                 throw new ParseException("wrong date", 0); // throw error
             } else {
                 this.now = newDate;
-                System.out.println("Time set as " + getTime());
                 return true;
             }
         } catch (ParseException e) {

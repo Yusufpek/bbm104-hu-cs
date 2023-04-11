@@ -62,7 +62,6 @@ public class Camera extends SmartDevice {
             final long milliSecondsDifference = (this.getSwitchtime().getTime() - this.getOldSwitchtime().getTime());
             calculateUsedMegabyts(milliSecondsDifference / (1000 * 60));
         }
-        System.out.println("camera set status");
         super.setStatus(status);
     }
 
@@ -70,7 +69,7 @@ public class Camera extends SmartDevice {
         try {
             int megabyte = Integer.parseInt(megabytes);
             if (megabyte < 0) {
-                System.out.println("ERROR: Megabyte value has to be a positive number!");
+                System.out.println("ERROR: Megabyte value must be a positive number!");
                 return false;
             }
             return true;
@@ -83,7 +82,7 @@ public class Camera extends SmartDevice {
     @Override
     public String toString() {
         return String.format(
-                "%s and used %.2fMB of storage so far (excluding current device), and its time to switch its status is %s.",
+                "%s used %.2f MB of storage so far (excluding current status), and its time to switch its status is %s.",
                 super.toString(), getUsedMegabytes(), getSwitchtimeString());
     }
 }

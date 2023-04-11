@@ -20,7 +20,10 @@ public class CommandController {
                 if (timeController == null)
                     timeController = new TimeController(parsedLine[1]);
                 else
-                    System.out.println(ERROR_COMMAND);
+                    System.out.println(ERROR_COMMAND);// + " in set initial time controller is null");
+            } else if (timeController == null) {
+                System.out.println(ERROR_SET_INITIAL_TIME);
+                return;
             }
             // if there is no time controller do not look for any commands.
             // if there is a set initial time command time controller is not null.
@@ -30,11 +33,11 @@ public class CommandController {
                     switch (parsedLine[0]) {
                         case COMMAND_SET_TIME:
                             if (timeController.setTime(parsedLine[1]))
-                                itemController.switchItem(timeController.now);
+                                itemController.switchItems(timeController.now);
                             break;
                         case COMMAND_SKIP:
                             timeController.skipMinutes(Integer.parseInt(parsedLine[1]));
-                            itemController.switchItem(timeController.now);
+                            itemController.switchItems(timeController.now);
                             break;
                         case COMMAND_NOP:
                             nopCommand();
@@ -49,13 +52,13 @@ public class CommandController {
                             itemController.setBrightness(parsedLine[1], parsedLine[2]);
                             break;
                         case COMMAND_SWITCH:
-                            itemController.setStatus(parsedLine[1], parsedLine[2]);
+                            itemController.setStatus(parsedLine[1], parsedLine[2], timeController.now);
                             break;
                         case COMMAND_PLUG_IN:
-                            itemController.plugIn(parsedLine[1], parsedLine[2]);
+                            itemController.plugIn(timeController.now, parsedLine[1], parsedLine[2]);
                             break;
                         case COMMAND_PLUG_OUT:
-                            itemController.plugOut(parsedLine[1]);
+                            itemController.plugOut(timeController.now, parsedLine[1]);
                             break;
                         case COMMAND_KELVIN:
                             itemController.setKelvin(parsedLine[1], parsedLine[2]);
@@ -75,7 +78,7 @@ public class CommandController {
                             itemController.changeName(parsedLine[1], parsedLine[2]);
                             break;
                         case COMMAND_REPORT:
-                            System.out.println("Time is: " + timeController.getTime());
+                            System.out.println("Time is:\t" + timeController.getTime());
                             itemController.devices.forEach(device -> System.out.println(device.toString()));
                             break;
                         default:
@@ -83,9 +86,8 @@ public class CommandController {
                             break;
                     }
                 } catch (Exception exception) {
-                    System.out.println(ERROR_COMMAND);
+                    System.out.println(ERROR_COMMAND);// + " in command controller for");
                 }
-
             }
             lastLine = line;
         }
@@ -102,7 +104,7 @@ public class CommandController {
                 return;
             }
             timeController.setTime(time);
-            itemController.switchItem(timeController.now);
+            itemController.switchItems(timeController.now);
         } catch (IndexOutOfBoundsException exception) {
             System.out.println(ERROR_NOP);
         }
@@ -128,4 +130,5 @@ public class CommandController {
     // Error Messages
     static public final String ERROR_COMMAND = "ERROR: Erroneous command!";
     static public final String ERROR_NOP = "ERROR: There is nothing to switch!";
+    static public final String ERROR_SET_INITIAL_TIME = "ERROR: First command must be set initial time! Program is going to terminate!";
 }

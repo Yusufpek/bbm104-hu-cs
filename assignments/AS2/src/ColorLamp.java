@@ -59,7 +59,7 @@ public class ColorLamp extends Lamp {
         try {
             int color = Integer.decode(colorCode);
             if (!(color > 0 && color < MAX_HEX)) {
-                System.out.println("ERROR: Color code value must be in range of 0x0-0xFFFFFF");
+                System.out.println("ERROR: Color code value must be in range of 0x0-0xFFFFFF!");
                 return false;
             }
         } catch (Exception e) {
@@ -78,7 +78,7 @@ public class ColorLamp extends Lamp {
             colorText = getKelvin() + "K";
         }
         return String.format(
-                "%sand its color value is %s with %s%s brightness, and its time to switch its status is %s",
+                "%sand its color value is %s with %s%s brightness, and its time to switch its status is %s.",
                 super.toString().substring(0, super.toString().indexOf("and")), colorText, getBrightness(), "%",
                 getSwitchtimeString());
     }

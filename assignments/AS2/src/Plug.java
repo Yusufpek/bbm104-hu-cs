@@ -90,7 +90,7 @@ public class Plug extends SmartDevice {
     @Override
     public String toString() {
         return String.format(
-                "%s consumend %.2fW so far (excluding current device), and its time to switch its status is %s.",
+                "%s consumed %.2fW so far (excluding current device), and its time to switch its status is %s.",
                 super.toString(), watt, getSwitchtimeString());
     }
 }
