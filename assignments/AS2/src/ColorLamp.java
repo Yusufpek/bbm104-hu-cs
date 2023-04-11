@@ -42,7 +42,7 @@ public class ColorLamp extends Lamp {
     }
 
     public String getColorCodeString() {
-        return Integer.toHexString(colorCode);
+        return String.format("0x%06X", colorCode);
     }
 
     public boolean setColorCode(String colorCode) {
@@ -70,7 +70,7 @@ public class ColorLamp extends Lamp {
     public String toString() {
         String colorText = "";
         if (colorCode != 0) {
-            colorText = "" + colorCode;
+            colorText = getColorCodeString();
         } else {
             colorText = getKelvin() + "K";
         }

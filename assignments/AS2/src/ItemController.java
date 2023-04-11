@@ -77,8 +77,12 @@ public class ItemController {
         }
         if (deviceTypeCheck(device, SmartDevice.DeviceType.LAMP)
                 || deviceTypeCheck(device, SmartDevice.DeviceType.COLOR_LAMP)) {
-            ((Lamp) device).setKelvin(kelvin);
-            ((Lamp) device).setBrightness(brightness);
+            int oldKelvin = ((Lamp) device).getKelvin();
+            // if color code is proper but brightness is not change the color code with the
+            // old value
+            if (((Lamp) device).setKelvin(kelvin))
+                if (!((Lamp) device).setBrightness(brightness))
+                    ((Lamp) device).setKelvin(oldKelvin + "");
         } else
             deviceTypeErrorMessage(SmartDevice.DeviceType.LAMP);
     }
@@ -96,7 +100,27 @@ public class ItemController {
             deviceTypeErrorMessage(SmartDevice.DeviceType.LAMP);
     }
 
-    void setColor(String name, String color) {
+    void setColor(String name, String color, String brightness) {
+        SmartDevice device = getItemByName(name);
+        if (device == null) {
+            System.out.println(NO_DEVICE_ERROR);
+            return;
+        }
+        if (deviceTypeCheck(device, SmartDevice.DeviceType.COLOR_LAMP)) {
+            String oldColorCode = ((ColorLamp) device).getColorCodeString();
+            System.out.println(oldColorCode);
+            // if color code is proper but brightness is not change the color code with the
+            // old value
+            if (((ColorLamp) device).setColorCode(color))
+                if (!((ColorLamp) device).setBrightness(brightness)) {
+                    ((ColorLamp) device).setColorCode(oldColorCode);
+                    System.out.println("brightness is wrong");
+                }
+        } else
+            deviceTypeErrorMessage(SmartDevice.DeviceType.COLOR_LAMP);
+    }
+
+    void setColorCode(String name, String color) {
         SmartDevice device = getItemByName(name);
         if (device == null) {
             System.out.println(NO_DEVICE_ERROR);

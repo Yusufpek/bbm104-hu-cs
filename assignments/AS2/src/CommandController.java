@@ -63,8 +63,10 @@ public class CommandController {
                         case COMMAND_WHITE:
                             itemController.setWhite(parsedLine[1], parsedLine[2], parsedLine[3]);
                             break;
+                        case COMMAND_COLOR_CODE:
+                            itemController.setColorCode(parsedLine[1], parsedLine[2]);
                         case COMMAND_COLOR:
-                            itemController.setColor(parsedLine[1], parsedLine[2]);
+                            itemController.setColor(parsedLine[1], parsedLine[2], parsedLine[3]);
                             break;
                         case COMMAND_SWITCH_TIME:
                             itemController.setSwitchTime(parsedLine[1], parsedLine[2]);
@@ -119,7 +121,8 @@ public class CommandController {
     private final String COMMAND_BRIGHTNESS = "SetBrightness";
     private final String COMMAND_WHITE = "SetWhite";
     private final String COMMAND_KELVIN = "SetKelvin";
-    private final String COMMAND_COLOR = "SetColorCode";
+    private final String COMMAND_COLOR = "SetColor";
+    private final String COMMAND_COLOR_CODE = "SetColorCode";
     private final String COMMAND_SWITCH_TIME = "SetSwitchTime";
     private final String COMMAND_NAME = "ChangeName";
     // Error Messages
