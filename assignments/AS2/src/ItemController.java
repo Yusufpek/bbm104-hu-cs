@@ -42,19 +42,29 @@ public class ItemController {
 
     void switchItems(Date time) {
         int index = 0;
+        String lastSwitchTime = null;
         while (index < devices.size() && devices.get(index).getSwitchtime() != null) {
             final SmartDevice device = devices.get(index);
-            if (device.getSwitchtime() != null && !device.getSwitchtime().after(time)) {
+            if (!device.getSwitchtime().after(time)) {
+                if (lastSwitchTime == null) {
+                    lastSwitchTime = device.getSwitchtimeString();
+                    index++; // look for new device it status is changed
+                } else if (lastSwitchTime.equals(device.getSwitchtimeString()))
+                    index++; // look for new device these two devices satatus is same
+                else {
+                    sortDevices(); // sort the previous devices which times' are same
+                    lastSwitchTime = device.getSwitchtimeString();
+                }
                 if (device instanceof Plug)
                     ((Plug) device).setStatus(time, changeStatus(device.getStatus()));
                 else
                     device.setStatus(changeStatus(device.getStatus()));
                 device.setSwitchtime(""); // set null
             } else {
-                index++;
+                break;
             }
-            sortDevices();
         }
+        sortDevices();
     }
 
     String changeStatus(String currentStatus) {
