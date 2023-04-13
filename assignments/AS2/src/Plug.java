@@ -28,11 +28,12 @@ public class Plug extends SmartDevice {
      * @return consumed watt
      */
     public void calculateWatt(Date time) {
-        if (ampere != 0) {
+        if (ampere != 0 && this.getOldSwitchtime() != null) {
             // Watt = V * i * t
             // milliseconds to hour -> / 3600000
             long duration = (time.getTime() - this.getOldSwitchtime().getTime()); // in milliseconds
             setWatt(getWatt() + VOLT * ampere * duration / (60 * 60 * 1000));
+            this.setOldSwitchtime(time);
         }
     }
 
