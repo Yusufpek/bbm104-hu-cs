@@ -1,7 +1,7 @@
 import java.util.Date;
 
 public class ColorLamp extends Lamp {
-    private final int MAX_HEX = 214748347; // maximum color code value in integer
+    private final int MAX_HEX = 16777215; // maximum color code value in integer 0xffffff
     private int colorCode;
 
     /**
@@ -58,7 +58,7 @@ public class ColorLamp extends Lamp {
     boolean checkColorCode(String colorCode) {
         try {
             int color = Integer.decode(colorCode);
-            if (!(color > 0 && color < MAX_HEX)) {
+            if (!(color >= 0 && color <= MAX_HEX)) {
                 IO.outputStrings.add("ERROR: Color code value must be in range of 0x0-0xFFFFFF!");
                 return false;
             }

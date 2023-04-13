@@ -95,6 +95,8 @@ public class ItemController {
             if (((Lamp) device).setKelvin(kelvin))
                 if (!((Lamp) device).setBrightness(brightness))
                     ((Lamp) device).setKelvin(oldKelvin + "");
+                else if (device instanceof ColorLamp)
+                    ((ColorLamp) device).setColorCode("0"); // change the mode by assigning zero the color code value
         } else
             deviceTypeErrorMessage(SmartDevice.DeviceType.LAMP);
     }
@@ -106,9 +108,10 @@ public class ItemController {
             return;
         }
         if (deviceTypeCheck(device, SmartDevice.DeviceType.LAMP)
-                || deviceTypeCheck(device, SmartDevice.DeviceType.COLOR_LAMP))
-            ((Lamp) device).setKelvin(kelvin);
-        else
+                || deviceTypeCheck(device, SmartDevice.DeviceType.COLOR_LAMP)) {
+            if (((Lamp) device).setKelvin(kelvin) && device instanceof ColorLamp)
+                ((ColorLamp) device).setColorCode("0"); // change the mode by assigning zero the color code value
+        } else
             deviceTypeErrorMessage(SmartDevice.DeviceType.LAMP);
     }
 
