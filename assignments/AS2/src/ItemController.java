@@ -45,7 +45,7 @@ public class ItemController {
         while (index < devices.size() && devices.get(index).getSwitchtime() != null) {
             final SmartDevice device = devices.get(index);
             if (device.getSwitchtime() != null && !device.getSwitchtime().after(time)) {
-                if (deviceTypeCheck(device, SmartDevice.DeviceType.PLUG))
+                if (device instanceof Plug)
                     ((Plug) device).setStatus(time, changeStatus(device.getStatus()));
                 else
                     device.setStatus(changeStatus(device.getStatus()));
@@ -87,8 +87,7 @@ public class ItemController {
             IO.outputStrings.add(NO_DEVICE_ERROR);
             return;
         }
-        if (deviceTypeCheck(device, SmartDevice.DeviceType.LAMP)
-                || deviceTypeCheck(device, SmartDevice.DeviceType.COLOR_LAMP)) {
+        if (device instanceof Lamp) {
             int oldKelvin = ((Lamp) device).getKelvin();
             // if color code is proper but brightness is not change the color code with the
             // old value
@@ -107,8 +106,7 @@ public class ItemController {
             IO.outputStrings.add(NO_DEVICE_ERROR);
             return;
         }
-        if (deviceTypeCheck(device, SmartDevice.DeviceType.LAMP)
-                || deviceTypeCheck(device, SmartDevice.DeviceType.COLOR_LAMP)) {
+        if (device instanceof Lamp) {
             if (((Lamp) device).setKelvin(kelvin) && device instanceof ColorLamp)
                 ((ColorLamp) device).setColorCode("0"); // change the mode by assigning zero the color code value
         } else
@@ -121,7 +119,7 @@ public class ItemController {
             IO.outputStrings.add(NO_DEVICE_ERROR);
             return;
         }
-        if (deviceTypeCheck(device, SmartDevice.DeviceType.COLOR_LAMP)) {
+        if (device instanceof ColorLamp) {
             String oldColorCode = ((ColorLamp) device).getColorCodeString();
             // if color code is proper but brightness is not change the color code with the
             // old value
@@ -139,7 +137,7 @@ public class ItemController {
             IO.outputStrings.add(NO_DEVICE_ERROR);
             return;
         }
-        if (deviceTypeCheck(device, SmartDevice.DeviceType.COLOR_LAMP))
+        if (device instanceof ColorLamp)
             ((ColorLamp) device).setColorCode(color);
         else {
             deviceTypeErrorMessage(SmartDevice.DeviceType.COLOR_LAMP);
@@ -152,7 +150,7 @@ public class ItemController {
             IO.outputStrings.add(NO_DEVICE_ERROR);
             return;
         }
-        if (deviceTypeCheck(device, SmartDevice.DeviceType.LAMP))
+        if (device instanceof Lamp)
             ((Lamp) device).setBrightness(brightness);
         else
             deviceTypeErrorMessage(SmartDevice.DeviceType.LAMP);
@@ -164,7 +162,7 @@ public class ItemController {
             IO.outputStrings.add(NO_DEVICE_ERROR);
             return;
         }
-        if (!deviceTypeCheck(device, SmartDevice.DeviceType.PLUG)) {
+        if (!(device instanceof Plug)) {
             deviceTypeErrorMessage(SmartDevice.DeviceType.PLUG);
             return;
         }
@@ -182,7 +180,7 @@ public class ItemController {
             IO.outputStrings.add(NO_DEVICE_ERROR);
             return;
         }
-        if (!deviceTypeCheck(device, SmartDevice.DeviceType.PLUG)) {
+        if (!(device instanceof Plug)) {
             deviceTypeErrorMessage(SmartDevice.DeviceType.PLUG);
             return;
         }
@@ -343,12 +341,6 @@ public class ItemController {
         if (device == null)
             return false;
         return true;
-    }
-
-    boolean deviceTypeCheck(SmartDevice device, SmartDevice.DeviceType type) {
-        if (device.getDeviceType() == type)
-            return true;
-        return false;
     }
 
     SmartDevice getItemByName(String name) {
