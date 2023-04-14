@@ -17,33 +17,44 @@ public class CommandController {
             IO.outputStrings.add("COMMAND: " + line);
             String[] parsedLine = line.split("\t");
             if (parsedLine[0].equals(COMMAND_INITIAL_TIME)) {
+                if (TimeController.now != null) {
+                    IO.outputStrings.add(ERROR_COMMAND);
+                    continue;
+                }
+                if (parsedLine.length != 2) {
+                    IO.outputStrings.add(ERROR_SET_INITIAL_TIME);
+                    return;
+                }
                 if (timeController == null)
                     timeController = new TimeController(parsedLine[1]);
-                else
-                    IO.outputStrings.add(ERROR_COMMAND);// + " in set initial time controller is null");
-            } else if (timeController == null) {
+                if (TimeController.now == null) { // if "now" can not be assigned
+                    return;
+                }
+            } else if (timeController == null || TimeController.now == null) {
                 IO.outputStrings.add(ERROR_SET_INITIAL_TIME);
                 return;
             }
             // if there is no time controller do not look for any commands.
             // if there is a set initial time command time controller is not null.
-            else if (timeController != null && timeController.now != null) {
+            else if (timeController != null && TimeController.now != null) {
                 // commands
                 try {
                     switch (parsedLine[0]) {
                         case COMMAND_SET_TIME:
                             if (timeController.setTime(parsedLine[1]))
-                                itemController.switchItems(timeController.now);
+                                itemController.switchItems();
                             break;
                         case COMMAND_SKIP:
+                            if (parsedLine.length != 2)
+                                throw new IndexOutOfBoundsException();
                             timeController.skipMinutes(Integer.parseInt(parsedLine[1]));
-                            itemController.switchItems(timeController.now);
+                            itemController.switchItems();
                             break;
                         case COMMAND_NOP:
                             nopCommand();
                             break;
                         case COMMAND_ADD:
-                            itemController.addItem(timeController.now, parsedLine);
+                            itemController.addItem(parsedLine);
                             break;
                         case COMMAND_REMOVE:
                             itemController.removeItem(parsedLine[1]);
@@ -52,13 +63,13 @@ public class CommandController {
                             itemController.setBrightness(parsedLine[1], parsedLine[2]);
                             break;
                         case COMMAND_SWITCH:
-                            itemController.setStatus(parsedLine[1], parsedLine[2], timeController.now);
+                            itemController.setStatus(parsedLine[1], parsedLine[2]);
                             break;
                         case COMMAND_PLUG_IN:
-                            itemController.plugIn(timeController.now, parsedLine[1], parsedLine[2]);
+                            itemController.plugIn(parsedLine[1], parsedLine[2]);
                             break;
                         case COMMAND_PLUG_OUT:
-                            itemController.plugOut(timeController.now, parsedLine[1]);
+                            itemController.plugOut(parsedLine[1]);
                             break;
                         case COMMAND_KELVIN:
                             itemController.setKelvin(parsedLine[1], parsedLine[2]);
@@ -79,8 +90,7 @@ public class CommandController {
                             itemController.changeName(parsedLine[1], parsedLine[2]);
                             break;
                         case COMMAND_REPORT:
-                            IO.outputStrings.add("Time is:\t" + timeController.getTime());
-                            itemController.devices.forEach(device -> IO.outputStrings.add(device.toString()));
+                            zReport();
                             break;
                         default:
                             IO.outputStrings.add(ERROR_COMMAND);
@@ -93,8 +103,15 @@ public class CommandController {
             lastLine = line;
         }
         // if last command is not z report, write the z report
-        if (!lastLine.equals(COMMAND_REPORT))
-            itemController.devices.forEach(device -> IO.outputStrings.add(device.toString()));
+        if (!lastLine.equals(COMMAND_REPORT) && TimeController.now != null) {
+            IO.outputStrings.add("ZReport:");
+            zReport();
+        }
+    }
+
+    private void zReport() {
+        IO.outputStrings.add("Time is:\t" + timeController.getTime());
+        itemController.devices.forEach(device -> IO.outputStrings.add(device.toString()));
     }
 
     private void nopCommand() {
@@ -105,7 +122,7 @@ public class CommandController {
                 return;
             }
             timeController.setTime(time);
-            itemController.switchItems(timeController.now);
+            itemController.switchItems();
         } catch (IndexOutOfBoundsException exception) {
             IO.outputStrings.add(ERROR_NOP);
         }
