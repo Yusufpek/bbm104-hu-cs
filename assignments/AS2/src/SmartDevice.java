@@ -36,6 +36,7 @@ public abstract class SmartDevice {
         this.name = name;
         this.status = initialStatus;
         this.deviceType = type;
+        this.oldSwitchtime = now;
     }
 
     // return the device type string by lookin enum value
@@ -126,7 +127,7 @@ public abstract class SmartDevice {
             else
                 this.switchtime = TimeController.dateFormat.parse(switchtime);
         } catch (ParseException e) {
-            IO.outputStrings.add("Wrong date !");
+            IO.outputStrings.add("ERROR: Time format is not correct!");
         }
     }
 
