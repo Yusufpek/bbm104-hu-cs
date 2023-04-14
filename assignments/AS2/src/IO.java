@@ -68,10 +68,7 @@ public class IO {
         try {
             FileWriter myWriter = new FileWriter(outputFileName);
             for (String line : outputStrings) {
-                if (outputStrings.indexOf(line) == outputStrings.size() - 1)
-                    myWriter.write(line);
-                else
-                    myWriter.write(line + "\n");
+                myWriter.write(line + "\n");
             }
             myWriter.close();
             return true;
