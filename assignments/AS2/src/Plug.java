@@ -7,7 +7,6 @@ public class Plug extends SmartDevice {
 
     Plug(Date now, String name) {
         super(now, name, DeviceType.PLUG);
-        this.setOldSwitchtime(null);
     }
 
     Plug(Date now, String name, String initialStatus) {
@@ -69,6 +68,7 @@ public class Plug extends SmartDevice {
             }
             return true;
         } catch (Exception e) {
+            IO.outputStrings.add(CommandController.ERROR_COMMAND);
             return false;
         }
     }

@@ -1,7 +1,7 @@
 import java.util.Date;
 
 public class Camera extends SmartDevice {
-    private int mbPerMinute; // consumed megabyts per minute
+    private double mbPerMinute; // consumed megabyts per minute
     private double usedMegabytes; // consumed megabyts per minute
 
     /**
@@ -15,7 +15,7 @@ public class Camera extends SmartDevice {
      * @param name
      * @param mbPerMinute
      */
-    Camera(Date now, String name, int mbPerMinute) {
+    Camera(Date now, String name, double mbPerMinute) {
         super(now, name, DeviceType.CAMERA);
         this.mbPerMinute = mbPerMinute;
     }
@@ -25,7 +25,7 @@ public class Camera extends SmartDevice {
      * @param mbPerMinute
      * @param initialStatus
      */
-    Camera(Date now, String name, int mbPerMinute, String initialStatus) {
+    Camera(Date now, String name, double mbPerMinute, String initialStatus) {
         super(now, name, initialStatus, DeviceType.CAMERA);
         this.mbPerMinute = mbPerMinute;
     }
@@ -52,28 +52,33 @@ public class Camera extends SmartDevice {
     public boolean setMBPerMinute(String megabytes) {
         if (!checkMB(megabytes))
             return false;
-        this.mbPerMinute = Integer.parseInt(megabytes);
+        this.mbPerMinute = Double.parseDouble(megabytes);
         return true;
     }
 
     @Override
     public void setStatus(String status) {
-        if (status.equals("Off") && this.getStatus().equals("On")) {
-            final long milliSecondsDifference = (this.getSwitchtime().getTime() - this.getOldSwitchtime().getTime());
+        if (status.equals("Off")) {
+            final long milliSecondsDifference = ((this.getSwitchtime() == null)
+                    || this.getSwitchtime().after(TimeController.now))
+                            ? TimeController.now.getTime() - this.getOldSwitchtime().getTime()
+                            : this.getSwitchtime().getTime() - this.getOldSwitchtime().getTime();
             calculateUsedMegabyts(milliSecondsDifference / (1000 * 60));
+            this.setOldSwitchtime(getSwitchtime()); // update the old switch time
         }
         super.setStatus(status);
     }
 
     boolean checkMB(String megabytes) {
         try {
-            int megabyte = Integer.parseInt(megabytes);
-            if (megabyte < 0) {
+            double megabyte = Double.parseDouble(megabytes);
+            if (megabyte <= 0) {
                 IO.outputStrings.add("ERROR: Megabyte value must be a positive number!");
                 return false;
             }
             return true;
         } catch (Exception e) {
+            IO.outputStrings.add(CommandController.ERROR_COMMAND);
             return false;
         }
 
