@@ -13,7 +13,7 @@ public class ItemController {
     void setSwitchTime(String name, String date) {
         SmartDevice device = getItemByName(name);
         if (device == null) {
-            IO.outputStrings.add(NO_DEVICE_ERROR);
+            IO.outputStrings.add(SmartHomeConstants.NO_DEVICE_ERROR);
             return;
         }
         device.setSwitchtime(date);
@@ -23,17 +23,17 @@ public class ItemController {
 
     void changeName(String name, String newName) {
         if (name.equals(newName)) {
-            IO.outputStrings.add(SAME_NAME_ERROR);
+            IO.outputStrings.add(SmartHomeConstants.SAME_NAME_ERROR);
             return;
         }
 
         SmartDevice device = getItemByName(name);
         if (device == null) {
-            IO.outputStrings.add(NO_DEVICE_ERROR);
+            IO.outputStrings.add(SmartHomeConstants.NO_DEVICE_ERROR);
             return;
         }
         if (getItemByName(newName) != null) {
-            IO.outputStrings.add(NAME_ERROR);
+            IO.outputStrings.add(SmartHomeConstants.NAME_ERROR);
             return;
         }
         device.setName(newName);
@@ -75,7 +75,7 @@ public class ItemController {
     void setStatus(String name, String status) {
         SmartDevice device = getItemByName(name);
         if (device == null) {
-            IO.outputStrings.add(NO_DEVICE_ERROR);
+            IO.outputStrings.add(SmartHomeConstants.NO_DEVICE_ERROR);
             return;
         }
         if (!checkStatus(status))
@@ -97,7 +97,7 @@ public class ItemController {
     void setWhite(String name, String kelvin, String brightness) {
         SmartDevice device = getItemByName(name);
         if (device == null) {
-            IO.outputStrings.add(NO_DEVICE_ERROR);
+            IO.outputStrings.add(SmartHomeConstants.NO_DEVICE_ERROR);
             return;
         }
         if (device instanceof Lamp) {
@@ -116,7 +116,7 @@ public class ItemController {
     void setKelvin(String name, String kelvin) {
         SmartDevice device = getItemByName(name);
         if (device == null) {
-            IO.outputStrings.add(NO_DEVICE_ERROR);
+            IO.outputStrings.add(SmartHomeConstants.NO_DEVICE_ERROR);
             return;
         }
         if (device instanceof Lamp) {
@@ -129,7 +129,7 @@ public class ItemController {
     void setColor(String name, String color, String brightness) {
         SmartDevice device = getItemByName(name);
         if (device == null) {
-            IO.outputStrings.add(NO_DEVICE_ERROR);
+            IO.outputStrings.add(SmartHomeConstants.NO_DEVICE_ERROR);
             return;
         }
         if (device instanceof ColorLamp) {
@@ -147,7 +147,7 @@ public class ItemController {
     void setColorCode(String name, String color) {
         SmartDevice device = getItemByName(name);
         if (device == null) {
-            IO.outputStrings.add(NO_DEVICE_ERROR);
+            IO.outputStrings.add(SmartHomeConstants.NO_DEVICE_ERROR);
             return;
         }
         if (device instanceof ColorLamp)
@@ -160,7 +160,7 @@ public class ItemController {
     void setBrightness(String name, String brightness) {
         SmartDevice device = getItemByName(name);
         if (device == null) {
-            IO.outputStrings.add(NO_DEVICE_ERROR);
+            IO.outputStrings.add(SmartHomeConstants.NO_DEVICE_ERROR);
             return;
         }
         if (device instanceof Lamp)
@@ -172,7 +172,7 @@ public class ItemController {
     void plugIn(String name, String ampere) {
         SmartDevice device = getItemByName(name);
         if (device == null) {
-            IO.outputStrings.add(NO_DEVICE_ERROR);
+            IO.outputStrings.add(SmartHomeConstants.NO_DEVICE_ERROR);
             return;
         }
         if (!(device instanceof Plug)) {
@@ -180,7 +180,7 @@ public class ItemController {
             return;
         }
         if (((Plug) device).getAmpere() != 0) {
-            IO.outputStrings.add(PLUG_IN_ERROR);
+            IO.outputStrings.add(SmartHomeConstants.PLUG_IN_ERROR);
             return;
         }
         ((Plug) device).plugIn(ampere, TimeController.now);
@@ -190,7 +190,7 @@ public class ItemController {
     void plugOut(String name) {
         SmartDevice device = getItemByName(name);
         if (device == null) {
-            IO.outputStrings.add(NO_DEVICE_ERROR);
+            IO.outputStrings.add(SmartHomeConstants.NO_DEVICE_ERROR);
             return;
         }
         if (!(device instanceof Plug)) {
@@ -198,7 +198,7 @@ public class ItemController {
             return;
         }
         if (((Plug) device).getAmpere() == 0.0) {
-            IO.outputStrings.add(PLUG_OUT_ERROR);
+            IO.outputStrings.add(SmartHomeConstants.PLUG_OUT_ERROR);
             return;
         }
         if (device.getStatus().equals("On"))
@@ -209,7 +209,7 @@ public class ItemController {
     void removeItem(String name) {
         SmartDevice device = getItemByName(name);
         if (device == null) {
-            IO.outputStrings.add(NO_DEVICE_ERROR);
+            IO.outputStrings.add(SmartHomeConstants.NO_DEVICE_ERROR);
             return;
         }
         if (device.getStatus().equals("On"))
@@ -229,16 +229,16 @@ public class ItemController {
     void addItem(String[] arr) {
         String type = arr[1];
         switch (type) {
-            case LAMP:
+            case SmartHomeConstants.LAMP:
                 addLamp(arr);
                 break;
-            case COLOR_LAMP:
+            case SmartHomeConstants.COLOR_LAMP:
                 addColorLamp(arr);
                 break;
-            case PLUG:
+            case SmartHomeConstants.PLUG:
                 addPlug(arr);
                 break;
-            case CAMERA:
+            case SmartHomeConstants.CAMERA:
                 addCamera(arr);
                 break;
             default:
@@ -256,7 +256,7 @@ public class ItemController {
     // arr = command, device type, name, status, kelvin, brightness
     void addLamp(String[] arr) {
         if (checkName(arr[2])) {
-            IO.outputStrings.add(NAME_ERROR);
+            IO.outputStrings.add(SmartHomeConstants.NAME_ERROR);
             return;
         }
         Lamp lamp = new Lamp(TimeController.now, arr[2]);
@@ -279,7 +279,7 @@ public class ItemController {
         String name = arr[2];
         ColorLamp clamp = new ColorLamp(TimeController.now, name);
         if (checkName(arr[2])) {
-            IO.outputStrings.add(NAME_ERROR);
+            IO.outputStrings.add(SmartHomeConstants.NAME_ERROR);
             return;
         }
         if (arr.length > 3) {
@@ -306,7 +306,7 @@ public class ItemController {
     void addPlug(String[] arr) {
         Plug plug = new Plug(TimeController.now, arr[2]);
         if (checkName(arr[2])) {
-            IO.outputStrings.add(NAME_ERROR);
+            IO.outputStrings.add(SmartHomeConstants.NAME_ERROR);
             return;
         }
         if (arr.length >= 4) {
@@ -326,11 +326,11 @@ public class ItemController {
         String name = arr[2];
         Camera camera = new Camera(TimeController.now, name);
         if (arr.length < 4) {
-            IO.outputStrings.add(CommandController.ERROR_COMMAND);
+            IO.outputStrings.add(SmartHomeConstants.ERROR_COMMAND);
             return;
         }
         if (checkName(name)) {
-            IO.outputStrings.add(NAME_ERROR);
+            IO.outputStrings.add(SmartHomeConstants.NAME_ERROR);
             return;
         }
         if (!camera.setMBPerMinute(arr[3]))
@@ -346,7 +346,7 @@ public class ItemController {
 
     boolean checkStatus(String status) {
         if (!status.equals("On") && !status.equals("Off")) {
-            IO.outputStrings.add(CommandController.ERROR_COMMAND);
+            IO.outputStrings.add(SmartHomeConstants.ERROR_COMMAND);
             return false;
         }
         return true;
@@ -367,17 +367,4 @@ public class ItemController {
         }
         return null;
     }
-
-    private final String SMART = "Smart";
-    private final String LAMP = SMART + "Lamp";
-    private final String COLOR_LAMP = SMART + "ColorLamp";
-    private final String PLUG = SMART + "Plug";
-    private final String CAMERA = SMART + "Camera";
-
-    //
-    private final String NAME_ERROR = "ERROR: There is already a smart device with same name!";
-    private final String NO_DEVICE_ERROR = "ERROR: There is not such a device!";
-    private final String SAME_NAME_ERROR = "ERROR: Both of the names are the same, nothing changed!";
-    private final String PLUG_OUT_ERROR = "ERROR: This plug has no item to plug out from that plug!";
-    private final String PLUG_IN_ERROR = "ERROR: There is already an item plugged in to that plug!";
 }
