@@ -18,6 +18,159 @@ public class ItemController {
     }
 
     /**
+     * Adds a new smart device to the system based on the device type
+     * which is given with the input array.
+     * 
+     * @param arr An array of strings containing the command, device type, name,
+     *            and additional parameters like status, kelvin, brightness, ampere
+     *            (optional)
+     */
+    void addItem(String[] arr) {
+        String type = arr[1];
+        switch (type) {
+            case SmartHomeConstants.LAMP:
+                addLamp(arr);
+                break;
+            case SmartHomeConstants.COLOR_LAMP:
+                addColorLamp(arr);
+                break;
+            case SmartHomeConstants.PLUG:
+                addPlug(arr);
+                break;
+            case SmartHomeConstants.CAMERA:
+                addCamera(arr);
+                break;
+            default:
+                break;
+        }
+        sortDevices();
+    }
+
+    /**
+     * Adds a new lamp device to the system based on the input parameters
+     * 
+     * @param arr An array of strings containing the command, device type, name,
+     *            status (optional), kelvin (optional), and brightness (optional)
+     */
+    void addLamp(String[] arr) {
+        if (checkName(arr[2])) {
+            IO.outputStrings.add(SmartHomeConstants.NAME_ERROR);
+            return;
+        }
+        Lamp lamp = new Lamp(TimeController.now, arr[2]);
+        if (arr.length > 3) {
+            String status = arr[3];
+            if (!checkStatus(status))
+                return;
+            lamp.setStatus(status);
+            if (arr.length > 4) {
+                if (!lamp.setKelvin(arr[4]))
+                    return;
+                if (!lamp.setBrightness(arr[5]))
+                    return;
+            }
+        }
+        devices.add(lamp);
+    }
+
+    /**
+     * Adds a new color lamp device to the system based on the input parameters
+     * 
+     * @param arr An array of strings containing the command, device type, name,
+     *            status (optional), color code or kelvin value (optional), and
+     *            brightness (optional)
+     */
+    void addColorLamp(String[] arr) {
+        String name = arr[2];
+        ColorLamp clamp = new ColorLamp(TimeController.now, name);
+        if (checkName(arr[2])) {
+            IO.outputStrings.add(SmartHomeConstants.NAME_ERROR);
+            return;
+        }
+        if (arr.length > 3) {
+            String status = arr[3];
+            if (!checkStatus(status))
+                return;
+            clamp.setStatus(status);
+            if (arr.length > 4) {
+                if (arr[4].startsWith("0x")) {
+                    if (!clamp.setColorCode(arr[4]))
+                        return;
+                } else {
+                    if (!clamp.setKelvin(arr[4]))
+                        return;
+                }
+                if (!clamp.setBrightness(arr[5]))
+                    return;
+            }
+        }
+        devices.add(clamp);
+    }
+
+    /**
+     * Adds a new plug device to the system based on the input parameters
+     * 
+     * @param arr An array of strings containing the command, device type, name,
+     *            status (optional) and ampere (optional)
+     */
+    void addPlug(String[] arr) {
+        Plug plug = new Plug(TimeController.now, arr[2]);
+        if (checkName(arr[2])) {
+            IO.outputStrings.add(SmartHomeConstants.NAME_ERROR);
+            return;
+        }
+        if (arr.length >= 4) {
+            String status = arr[3];
+            if (!checkStatus(status))
+                return;
+            plug.setStatus(status);
+            if (arr.length == 5) {
+                if (!plug.setAmpere(arr[4]))
+                    return;
+            }
+        }
+        devices.add(plug);
+    }
+
+    /**
+     * Adds a new camera device to the system based on the input parameters
+     * 
+     * @param arr An array of strings containing the command, device type, name,
+     *            megabytes consumed per record value and status (optional)
+     */
+    void addCamera(String[] arr) {
+        String name = arr[2];
+        Camera camera = new Camera(TimeController.now, name);
+        if (arr.length < 4) {
+            IO.outputStrings.add(SmartHomeConstants.ERROR_COMMAND);
+            return;
+        }
+        if (checkName(name)) {
+            IO.outputStrings.add(SmartHomeConstants.NAME_ERROR);
+            return;
+        }
+        if (!camera.setMBPerMinute(arr[3]))
+            return;
+        if (arr.length == 5) {
+            String status = arr[4];
+            if (!checkStatus(status))
+                return;
+            camera.setStatus(status);
+        }
+        devices.add(camera);
+    }
+
+    /**
+     * Sorts the existing list of smart devices based on their switch time,
+     * use the Comparator.nullsLast for the null values
+     */
+    void sortDevices() {
+        Collections.sort(
+                devices,
+                Comparator.comparing(SmartDevice::getSwitchtime, Comparator.nullsLast(Comparator.naturalOrder())));
+    }
+
+    /**
      * Sets the switch time of a SmartDevice by name.
      * Write the error message if it is necessary.
      * 
@@ -405,159 +558,6 @@ public class ItemController {
         IO.outputStrings.add(
                 String.format("ERROR: This device is not a smart %s!",
                         type.toString().toLowerCase().replace('_', ' ')));
-    }
-
-    /**
-     * Adds a new smart device to the system based on the device type
-     * which is given with the input array.
-     * 
-     * @param arr An array of strings containing the command, device type, name,
-     *            and additional parameters like status, kelvin, brightness, ampere
-     *            (optional)
-     */
-    void addItem(String[] arr) {
-        String type = arr[1];
-        switch (type) {
-            case SmartHomeConstants.LAMP:
-                addLamp(arr);
-                break;
-            case SmartHomeConstants.COLOR_LAMP:
-                addColorLamp(arr);
-                break;
-            case SmartHomeConstants.PLUG:
-                addPlug(arr);
-                break;
-            case SmartHomeConstants.CAMERA:
-                addCamera(arr);
-                break;
-            default:
-                break;
-        }
-        sortDevices();
-    }
-
-    /**
-     * Sorts the existing list of smart devices based on their switch time,
-     * use the Comparator.nullsLast for the null values
-     */
-    void sortDevices() {
-        Collections.sort(
-                devices,
-                Comparator.comparing(SmartDevice::getSwitchtime, Comparator.nullsLast(Comparator.naturalOrder())));
-    }
-
-    /**
-     * Adds a new lamp device to the system based on the input parameters
-     * 
-     * @param arr An array of strings containing the command, device type, name,
-     *            status (optional), kelvin (optional), and brightness (optional)
-     */
-    void addLamp(String[] arr) {
-        if (checkName(arr[2])) {
-            IO.outputStrings.add(SmartHomeConstants.NAME_ERROR);
-            return;
-        }
-        Lamp lamp = new Lamp(TimeController.now, arr[2]);
-        if (arr.length > 3) {
-            String status = arr[3];
-            if (!checkStatus(status))
-                return;
-            lamp.setStatus(status);
-            if (arr.length > 4) {
-                if (!lamp.setKelvin(arr[4]))
-                    return;
-                if (!lamp.setBrightness(arr[5]))
-                    return;
-            }
-        }
-        devices.add(lamp);
-    }
-
-    /**
-     * Adds a new color lamp device to the system based on the input parameters
-     * 
-     * @param arr An array of strings containing the command, device type, name,
-     *            status (optional), color code or kelvin value (optional), and
-     *            brightness (optional)
-     */
-    void addColorLamp(String[] arr) {
-        String name = arr[2];
-        ColorLamp clamp = new ColorLamp(TimeController.now, name);
-        if (checkName(arr[2])) {
-            IO.outputStrings.add(SmartHomeConstants.NAME_ERROR);
-            return;
-        }
-        if (arr.length > 3) {
-            String status = arr[3];
-            if (!checkStatus(status))
-                return;
-            clamp.setStatus(status);
-            if (arr.length > 4) {
-                if (arr[4].startsWith("0x")) {
-                    if (!clamp.setColorCode(arr[4]))
-                        return;
-                } else {
-                    if (!clamp.setKelvin(arr[4]))
-                        return;
-                }
-                if (!clamp.setBrightness(arr[5]))
-                    return;
-            }
-        }
-        devices.add(clamp);
-    }
-
-    /**
-     * Adds a new plug device to the system based on the input parameters
-     * 
-     * @param arr An array of strings containing the command, device type, name,
-     *            status (optional) and ampere (optional)
-     */
-    void addPlug(String[] arr) {
-        Plug plug = new Plug(TimeController.now, arr[2]);
-        if (checkName(arr[2])) {
-            IO.outputStrings.add(SmartHomeConstants.NAME_ERROR);
-            return;
-        }
-        if (arr.length >= 4) {
-            String status = arr[3];
-            if (!checkStatus(status))
-                return;
-            plug.setStatus(status);
-            if (arr.length == 5) {
-                if (!plug.setAmpere(arr[4]))
-                    return;
-            }
-        }
-        devices.add(plug);
-    }
-
-    /**
-     * Adds a new camera device to the system based on the input parameters
-     * 
-     * @param arr An array of strings containing the command, device type, name,
-     *            megabytes consumed per record value and status (optional)
-     */
-    void addCamera(String[] arr) {
-        String name = arr[2];
-        Camera camera = new Camera(TimeController.now, name);
-        if (arr.length < 4) {
-            IO.outputStrings.add(SmartHomeConstants.ERROR_COMMAND);
-            return;
-        }
-        if (checkName(name)) {
-            IO.outputStrings.add(SmartHomeConstants.NAME_ERROR);
-            return;
-        }
-        if (!camera.setMBPerMinute(arr[3]))
-            return;
-        if (arr.length == 5) {
-            String status = arr[4];
-            if (!checkStatus(status))
-                return;
-            camera.setStatus(status);
-        }
-        devices.add(camera);
     }
 
     /**
