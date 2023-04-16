@@ -5,21 +5,23 @@ import java.util.ArrayList; //Output Strings
 import java.util.List;
 import java.io.FileWriter; // write to output file
 
-// Input Output file class
+/**
+ * This class represents Input/Output operations for the project.
+ * It includes methods for reading input file, writing to output file,
+ * and handling input and output file names.
+ */
 public class IO {
     private String inputFileName;
     private String outputFileName;
     public static ArrayList<String> outputStrings; // output strings array for outputs line
 
-    /*
-     * Contructor method of this class,
-     * Set the input and output files names
-     * Set the output strings array list as a empty list.
-     * 
-     * 
-     * @param outputFileName for setting the output file name.
-     * 
-     * @param inputFileName for setting the input file name.
+    /**
+     * Constructor of IO class.
+     * Sets the input and output file names and
+     * initializes the output strings array list.
+     *
+     * @param inputFileName  the name of the input file
+     * @param outputFileName the name of the output file
      */
     IO(String inputFileName, String outputFileName) {
         this.inputFileName = inputFileName;
@@ -27,14 +29,13 @@ public class IO {
         IO.outputStrings = new ArrayList<String>();
     }
 
-    /*
-     * Read the input file which is given in constructor
-     * 
-     * @param discardEmptyLines If true, discards empty lines with respect to trim
-     * by deleting.
-     * 
-     * @return Contents of the file as a list of string, returns null if there is
-     * any io exception.
+    /**
+     * Reads the input file and returns its contents as a list of strings.
+     *
+     * @param discardEmptyLines if true, discards empty lines with respect to trim
+     *                          by deleting.
+     * @return contents of the file as a list of strings, returns null if there is
+     *         any io exception.
      */
     List<String> readInputFile(boolean discardEmptyLines) {
         try {
@@ -56,13 +57,11 @@ public class IO {
         }
     }
 
-    /*
-     * Write to the output file which is given in constructor.
-     * Write the output strings array items which is contains each output line.
-     * Output strings is a list which items are added in <> class
-     * 
-     * @return Situation of function if the writing is succesfully return true, if
-     * there is any io error return false.
+    /**
+     * Writes to the output file.
+     * Writes the output strings array items which contain each output line.
+     *
+     * @return true if writing is successful, false if there is any io error.
      */
     boolean writeToFile() {
         try {
@@ -78,10 +77,8 @@ public class IO {
         }
     }
 
-    /*
-     *
-     * Getters and setters for inputFileName and outputFileName variables
-     * 
+    /**
+     * Getters and setters for inputFileName and outputFileName variables.
      */
 
     String getInputFileName() {
