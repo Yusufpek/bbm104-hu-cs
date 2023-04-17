@@ -19,11 +19,12 @@ public class TimeController {
      */
     TimeController(String time) {
         try {
-            if (!dateFormat.format(dateFormat.parse(time)).equals(time)) {
+            time = formatDate(time);
+            if (!PARSE_FORMAT.format(PARSE_FORMAT.parse(time)).equals(time)) {
                 throw new ParseException("wrong date", 0); // throw error
             }
-            TimeController.now = dateFormat.parse(time);
-            IO.outputStrings.add(String.format("SUCCESS: Time has been set to %s!", time));
+            TimeController.now = PARSE_FORMAT.parse(time);
+            IO.outputStrings.add(String.format("SUCCESS: Time has been set to %s!", getTime()));
         } catch (ParseException e) {
             TimeController.now = null;
             IO.outputStrings.add("ERROR: Format of the initial date is wrong! Program is going to terminate!");
@@ -39,7 +40,7 @@ public class TimeController {
      */
     boolean setTime(String time) {
         try {
-            Date newDate = dateFormat.parse(time);
+            Date newDate = PARSE_FORMAT.parse(formatDate(time));
             if (newDate.getTime() - TimeController.now.getTime() < 0) {
                 IO.outputStrings.add(REVERSED_TIME_ERROR);
             } else if (!dateFormat.format(dateFormat.parse(time)).equals(time)) {
@@ -91,6 +92,34 @@ public class TimeController {
         return dateFormat.format(TimeController.now);
     }
 
+    /**
+     * Converts the given time string from the format "yyyy-MM-dd_HH:mm:ss" to the
+     * format "yyyy-MM-dd-HH-mm-ss".
+     * If the input string at least 19 characters, returns new format;
+     * otherwise add "0" for the non padding digits "3-" to "03-"
+     * 
+     * @param time the time string to be formatted
+     * @return the formatted time string
+     */
+    String formatDate(String time) {
+        // 2023-3-31_14:0:0
+        // Converts to 2023-03-31-14-00-00
+        if (time.length() < 19) {
+            String formattedTime = "";
+            String[] date = time.split("[-_:]"); // regex for date parse
+            for (String part : date) {
+                if (part.length() != 4 && part.length() != 2)
+                    formattedTime += "0" + part; // add zero for padding
+                else
+                    formattedTime += part;
+                formattedTime += "-";
+            }
+            return formattedTime.substring(0, formattedTime.length() - 1); // remove last "-" char
+        }
+        return time.replaceAll(":", "-").replaceAll("_", "-");
+    }
+
     private final String REVERSED_TIME_ERROR = "ERROR: Time cannot be reversed!";
     public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+    public static final SimpleDateFormat PARSE_FORMAT = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 }
