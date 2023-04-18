@@ -53,6 +53,10 @@ public class ItemController {
      *            status (optional), kelvin (optional), and brightness (optional)
      */
     void addLamp(String[] arr) {
+        if (!(arr.length == 3 || arr.length == 6 || arr.length == 4)) { // check lenght of the command
+            IO.outputStrings.add(SmartHomeConstants.ERROR_COMMAND);
+            return;
+        }
         if (checkName(arr[2])) {
             IO.outputStrings.add(SmartHomeConstants.NAME_ERROR);
             return;
@@ -81,6 +85,10 @@ public class ItemController {
      *            brightness (optional)
      */
     void addColorLamp(String[] arr) {
+        if (!(arr.length == 3 || arr.length == 6 || arr.length == 4)) { // check lenght of the command
+            IO.outputStrings.add(SmartHomeConstants.ERROR_COMMAND);
+            return;
+        }
         String name = arr[2];
         ColorLamp clamp = new ColorLamp(TimeController.now, name);
         if (checkName(arr[2])) {
@@ -114,6 +122,10 @@ public class ItemController {
      *            status (optional) and ampere (optional)
      */
     void addPlug(String[] arr) {
+        if (arr.length < 3 || arr.length > 5) { // check lenght of the command
+            IO.outputStrings.add(SmartHomeConstants.ERROR_COMMAND);
+            return;
+        }
         Plug plug = new Plug(TimeController.now, arr[2]);
         if (checkName(arr[2])) {
             IO.outputStrings.add(SmartHomeConstants.NAME_ERROR);
@@ -139,12 +151,12 @@ public class ItemController {
      *            megabytes consumed per record value and status (optional)
      */
     void addCamera(String[] arr) {
-        String name = arr[2];
-        Camera camera = new Camera(TimeController.now, name);
-        if (arr.length < 4) {
+        if (arr.length < 4 || arr.length > 5) { // check lenght of the command
             IO.outputStrings.add(SmartHomeConstants.ERROR_COMMAND);
             return;
         }
+        String name = arr[2];
+        Camera camera = new Camera(TimeController.now, name);
         if (checkName(name)) {
             IO.outputStrings.add(SmartHomeConstants.NAME_ERROR);
             return;
