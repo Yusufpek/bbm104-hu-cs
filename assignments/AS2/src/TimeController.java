@@ -45,6 +45,9 @@ public class TimeController {
                 IO.outputStrings.add(REVERSED_TIME_ERROR);
             } else if (!dateFormat.format(dateFormat.parse(time)).equals(time)) {
                 throw new ParseException("wrong date", 0); // throw error
+            } else if (TimeController.now.equals(newDate)) {
+                IO.outputStrings.add(SmartHomeConstants.ERROR_SET_TIME);
+                return false;
             } else {
                 TimeController.now = newDate;
                 return true;
