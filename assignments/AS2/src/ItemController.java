@@ -185,6 +185,8 @@ public class ItemController {
     /**
      * Sets the switch time of a SmartDevice by name.
      * Write the error message if it is necessary.
+     * Check the time if now is equal to switch time switch the device
+     * and set null the switch time
      * 
      * @param name The name of the SmartDevice to set the switch time for.
      * @param date The date to set the switch time to.
@@ -196,8 +198,13 @@ public class ItemController {
             return;
         }
         device.setSwitchtime(date);
-
         sortDevices();
+        // check for the equation of switch time and now
+        if (device.getSwitchtime() != null && device.getSwitchtime().equals(TimeController.now)) {
+            setDeviceStatus(device, changeStatus(device.getStatus()));
+            device.setSwitchtime(""); // set null the switch time
+            sortDevices(); // sort again
+        }
     }
 
     /**
@@ -361,7 +368,7 @@ public class ItemController {
                 if (!((Lamp) device).setBrightness(brightness))
                     ((Lamp) device).setKelvin(oldKelvin + "");
                 else if (device instanceof ColorLamp)
-                    ((ColorLamp) device).setColorCode("0"); // change the mode by assigning zero the color code value
+                    ((ColorLamp) device).setColorCodeNull(); // change the mode by assigning (-1) the color code value
         } else
             deviceTypeErrorMessage(SmartDevice.DeviceType.LAMP);
     }
@@ -386,7 +393,7 @@ public class ItemController {
         }
         if (device instanceof Lamp) {
             if (((Lamp) device).setKelvin(kelvin) && device instanceof ColorLamp)
-                ((ColorLamp) device).setColorCode("0"); // change the mode by assigning zero the color code value
+                ((ColorLamp) device).setColorCodeNull(); // change the mode by assigning -1 the color code value
         } else
             deviceTypeErrorMessage(SmartDevice.DeviceType.LAMP);
     }
