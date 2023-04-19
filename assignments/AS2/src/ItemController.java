@@ -311,6 +311,7 @@ public class ItemController {
         }
         setDeviceStatus(device, status);
         device.setSwitchtime(""); // set the switch time null when switch command is used
+        sortDevices(); // switch time is changed so sort devices again
     }
 
     /**
