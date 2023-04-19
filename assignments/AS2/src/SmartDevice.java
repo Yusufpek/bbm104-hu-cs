@@ -191,7 +191,7 @@ public abstract class SmartDevice {
             else if (!TimeController.dateFormat.parse(switchtime).before(TimeController.now))
                 this.switchtime = TimeController.dateFormat.parse(switchtime);
             else
-                IO.outputStrings.add("ERROR: Switch time can not be in past");
+                IO.outputStrings.add(SmartHomeConstants.SWITCH_TIME_PAST_ERROR);
         } catch (ParseException e) {
             IO.outputStrings.add("ERROR: Time format is not correct!");
         }

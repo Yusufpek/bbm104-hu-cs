@@ -13,12 +13,14 @@ public class SmartHomeConstants {
     // Error messages
     static public final String ERROR_COMMAND = "ERROR: Erroneous command!";
     static public final String ERROR_NOP = "ERROR: There is nothing to switch!";
+    static public final String ERROR_SET_TIME = "ERROR: There is nothing to change!";
     static public final String ERROR_SET_INITIAL_TIME = "ERROR: First command must be set initial time! Program is going to terminate!";
     public static final String NAME_ERROR = "ERROR: There is already a smart device with same name!";
     public static final String NO_DEVICE_ERROR = "ERROR: There is not such a device!";
     public static final String SAME_NAME_ERROR = "ERROR: Both of the names are the same, nothing changed!";
     public static final String PLUG_OUT_ERROR = "ERROR: This plug has no item to plug out from that plug!";
     public static final String PLUG_IN_ERROR = "ERROR: There is already an item plugged in to that plug!";
+    public static final String SWITCH_TIME_PAST_ERROR = "ERROR: Switch time cannot be in the past!";
 
     // Command strings
     public static final String COMMAND_INITIAL_TIME = "SetInitialTime";
