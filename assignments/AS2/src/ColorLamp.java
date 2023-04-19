@@ -9,7 +9,7 @@ import java.text.ParseException;
  */
 public class ColorLamp extends Lamp {
     private final int MAX_HEX = 16777215; // maximum color code value in integer 0xffffff
-    private int colorCode;
+    private int colorCode = -1;
 
     /**
      * Constructor with all parameters.
