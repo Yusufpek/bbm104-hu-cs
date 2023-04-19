@@ -60,8 +60,10 @@ public class Plug extends SmartDevice {
         if (ampere != 0 && this.getOldSwitchtime() != null) {
             // Watt = V * i * t
             // milliseconds to hour -> / 3600000
-            long duration = this.getSwitchtime() == null ? (time.getTime() - this.getOldSwitchtime().getTime())
-                    : this.getSwitchtime().getTime() - this.getOldSwitchtime().getTime(); // in milliseconds
+            final long duration = ((this.getSwitchtime() == null)
+                    || this.getSwitchtime().after(TimeController.now))
+                            ? TimeController.now.getTime() - this.getOldSwitchtime().getTime()
+                            : this.getSwitchtime().getTime() - this.getOldSwitchtime().getTime();
             setWatt(getWatt() + VOLT * ampere * duration / (60 * 60 * 1000));
             this.setOldSwitchtime(time);
         }
@@ -162,8 +164,10 @@ public class Plug extends SmartDevice {
         if (this.getAmpere() != 0)
             if (status.equals("Off"))
                 this.calculateWatt(now);
-            else
+            else if (this.getSwitchtime() == null)
                 this.setOldSwitchtime(now);
+            else
+                this.setOldSwitchtime(this.getSwitchtime());
         super.setStatus(status);
     }
 
@@ -176,7 +180,7 @@ public class Plug extends SmartDevice {
     @Override
     public String toString() {
         return String.format(
-                "%s consumed %,.2fW so far (excluding current device), and its time to switch its status is %s.",
+                "%s consumed %.2fW so far (excluding current device), and its time to switch its status is %s.",
                 super.toString(), watt, getSwitchtimeString());
     }
 }
