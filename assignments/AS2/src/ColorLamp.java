@@ -1,4 +1,5 @@
 import java.util.Date;
+import java.text.ParseException;
 
 /**
  * A class represents a color lamp device, which is a subclass of the
@@ -89,6 +90,8 @@ public class ColorLamp extends Lamp {
     public boolean checkColorCode(String colorCode) {
         try {
             int color = Integer.decode(colorCode);
+            if (!colorCode.startsWith("0x"))
+                throw new ParseException("wrong hex value", 0);
             if (!(color >= 0 && color <= MAX_HEX)) {
                 IO.outputStrings.add("ERROR: Color code value must be in range of 0x0-0xFFFFFF!");
                 return false;
@@ -101,6 +104,14 @@ public class ColorLamp extends Lamp {
     }
 
     /**
+     * Sets the color code of this color lamp to null (-1).
+     * When kelvin value is active value
+     */
+    public void setColorCodeNull() {
+        this.colorCode = -1;
+    }
+
+    /**
      * Returns a string representation of this color lamp.
      * including lamp to string method (super), color value with looking which is
      * active kelvin or color code, brightness and the switch time.
@@ -110,7 +121,7 @@ public class ColorLamp extends Lamp {
     @Override
     public String toString() {
         String colorText = "";
-        if (colorCode != 0) {
+        if (colorCode != -1) {
             colorText = getColorCodeString();
         } else {
             colorText = getKelvin() + "K";
