@@ -10,4 +10,3 @@ COMMAND: SkipMinutes	0
 ERROR: There is nothing to skip!
 ZReport:
 Time is:	2023-04-08_16:17:18
-
