@@ -1,2 +1,5 @@
 src/*.class
 src/*.txt
+src/.idea/
+src/out/
+.idea/
