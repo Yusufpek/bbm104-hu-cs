@@ -83,7 +83,7 @@ public class TimeController {
             IO.outputStrings.add("ERROR: There is nothing to skip!");
             return;
         }
-        TimeController.now = new Date(now.getTime() + minute * 60 * 1000);
+        TimeController.now = new Date(now.getTime() + (long) minute * 60 * 1000);
     }
 
     /**

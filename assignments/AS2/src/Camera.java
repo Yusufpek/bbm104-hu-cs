@@ -1,7 +1,7 @@
 import java.util.Date;
 
 /**
- * A class represents a the smart camera device that can store video in it.
+ * A class represents the smart camera device that can store video in it.
  * This class extends the SmartDevice class and inherits its properties and
  * methods.
  */
@@ -53,7 +53,7 @@ public class Camera extends SmartDevice {
      * 
      * @param duration the duration of usage in minutes
      */
-    public void calculateUsedMegabyts(double duration) {
+    public void calculateUsedMegabytes(double duration) {
         setUsedMegabytes(getUsedMegabytes() + mbPerMinute * duration);
     }
 
@@ -105,7 +105,7 @@ public class Camera extends SmartDevice {
                     || this.getSwitchtime().after(TimeController.now))
                             ? TimeController.now.getTime() - this.getOldSwitchtime().getTime()
                             : this.getSwitchtime().getTime() - this.getOldSwitchtime().getTime();
-            calculateUsedMegabyts(milliSecondsDifference / (1000 * 60)); // convert to milliseconds to minutes.
+            calculateUsedMegabytes((double) milliSecondsDifference / (1000 * 60)); // convert to milliseconds to minutes.
             this.setOldSwitchtime(getSwitchtime()); // update the old switch time
         }
         super.setStatus(status);

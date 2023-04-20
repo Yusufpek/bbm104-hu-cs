@@ -71,7 +71,7 @@ public class ColorLamp extends Lamp {
      * Setter for colorCode.
      *
      * @param colorCode the color code to set
-     * @return true if the color code is valid and setted, false otherwise
+     * @return true if the color code is valid and set, false otherwise
      */
     public boolean setColorCode(String colorCode) {
         if (!checkColorCode(colorCode))
@@ -82,7 +82,7 @@ public class ColorLamp extends Lamp {
 
     /**
      * Check the given color code is valid.
-     * which means can decoded (is hexadecimal) and in the range
+     * which can be decoded (is hexadecimal) and in the range
      *
      * @param colorCode the color code to check
      * @return true if the color code is valid, false otherwise
@@ -120,7 +120,7 @@ public class ColorLamp extends Lamp {
      */
     @Override
     public String toString() {
-        String colorText = "";
+        String colorText;
         if (colorCode != -1) {
             colorText = getColorCodeString();
         } else {

@@ -16,7 +16,7 @@ public class CommandController {
      * 
      * The method parses each commands and executes the relevant operation using the
      * TimeController and ItemController instances.
-     * Also the method adds the error messages and information messages
+     * Also, the method adds the error messages and information messages
      * to output array list if it is necessary.
      */
     void parseCommands() {

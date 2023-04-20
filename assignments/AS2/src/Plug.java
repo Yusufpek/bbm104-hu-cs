@@ -173,7 +173,7 @@ public class Plug extends SmartDevice {
 
     /**
      * Returns a string representation of the device's current state.
-     * inculding watt and switch time.
+     * including watt and switch time.
      * 
      * @return A string representation of the device's current state.
      */

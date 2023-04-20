@@ -53,7 +53,7 @@ public class ItemController {
      *            status (optional), kelvin (optional), and brightness (optional)
      */
     void addLamp(String[] arr) {
-        if (!(arr.length == 3 || arr.length == 6 || arr.length == 4)) { // check lenght of the command
+        if (!(arr.length == 3 || arr.length == 6 || arr.length == 4)) { // check length of the command
             IO.outputStrings.add(SmartHomeConstants.ERROR_COMMAND);
             return;
         }
@@ -85,7 +85,7 @@ public class ItemController {
      *            brightness (optional)
      */
     void addColorLamp(String[] arr) {
-        if (!(arr.length == 3 || arr.length == 6 || arr.length == 4)) { // check lenght of the command
+        if (!(arr.length == 3 || arr.length == 6 || arr.length == 4)) { // check length of the command
             IO.outputStrings.add(SmartHomeConstants.ERROR_COMMAND);
             return;
         }
@@ -122,7 +122,7 @@ public class ItemController {
      *            status (optional) and ampere (optional)
      */
     void addPlug(String[] arr) {
-        if (arr.length < 3 || arr.length > 5) { // check lenght of the command
+        if (arr.length < 3 || arr.length > 5) { // check length of the command
             IO.outputStrings.add(SmartHomeConstants.ERROR_COMMAND);
             return;
         }
@@ -151,7 +151,7 @@ public class ItemController {
      *            megabytes consumed per record value and status (optional)
      */
     void addCamera(String[] arr) {
-        if (arr.length < 4 || arr.length > 5) { // check lenght of the command
+        if (arr.length < 4 || arr.length > 5) { // check length of the command
             IO.outputStrings.add(SmartHomeConstants.ERROR_COMMAND);
             return;
         }
@@ -239,7 +239,7 @@ public class ItemController {
      * Switches the status of the devices based on their switch time.
      * 
      * It checks the switch time of each device and switches their status if the
-     * switch time has passed the now which cames from the TimeController.
+     * switch time has passed the now which came from the TimeController.
      * 
      * If multiple devices have the same switch time, it sorts them together
      * and switches their status accordingly.
@@ -260,7 +260,7 @@ public class ItemController {
                     lastSwitchTime = device.getSwitchtimeString();
                     index++; // look for new device it status is changed
                 } else if (lastSwitchTime.equals(device.getSwitchtimeString()))
-                    index++; // look for new device these two devices satatus is same
+                    index++; // look for new device these two devices status is same
                 else {
                     sortDevices(); // sort the previous devices which times' are same
                     lastSwitchTime = device.getSwitchtimeString();
@@ -550,7 +550,7 @@ public class ItemController {
      * 
      * If the device is currently on, it turns it off before removing it.
      * 
-     * Also it adds the device's information to the output strings and sorts the
+     * Also, it adds the device's information to the output strings and sorts the
      * device list.
      * 
      * @param name The name of the smart device to be removed
@@ -603,9 +603,7 @@ public class ItemController {
      */
     boolean checkName(String name) {
         SmartDevice device = getItemByName(name);
-        if (device == null)
-            return false;
-        return true;
+        return !(device == null);
     }
 
     /**

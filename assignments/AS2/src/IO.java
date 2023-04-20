@@ -1,4 +1,4 @@
-import java.io.IOException; //Exceotion Handling
+import java.io.IOException; //Exception Handling
 import java.nio.file.Files; //Reading and writing
 import java.nio.file.Paths; //Reaching io files
 import java.util.ArrayList; //Output Strings
