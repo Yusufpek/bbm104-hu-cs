@@ -1,8 +1,12 @@
 
 class Main {
     public static void main(String[] args) {
-        IO io = new IO(args[0], "output.txt");
-        io.writeToFile();
+        if (args.length != 1) {
+            OutputWriter.writeToFile(Messages.PARAMETER_ERROR);
+        } else {
+            InputFileManager io = new InputFileManager(args[0]);
+            String result = io.readInputFile();
+            OutputWriter.writeToFile(result);
+        }
     }
-
 }
