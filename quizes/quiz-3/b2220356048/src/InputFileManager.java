@@ -24,7 +24,7 @@ public class InputFileManager {
             if (formattedInputs.replaceAll("([a-z A-Z])", "").length() != 0) {
                 throw new InvalidValueError();
             }
-            return Messages.NO_ERROR;
+            return formattedInputs;
             // return inputs;
         } catch (NoSuchFileException exception) {
             return Messages.INPUT_NOT_FOUND_ERROR;
