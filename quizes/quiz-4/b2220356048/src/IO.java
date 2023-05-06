@@ -1,23 +1,16 @@
 import java.io.IOException; //Exceotion Handling
 import java.nio.file.Files; //Reading and writing
 import java.nio.file.Paths; //Reaching io files
-import java.util.ArrayList; //Output Strings
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.io.FileWriter; // write to output file
 
 // Input Output file class
 public class IO {
-    private String inputFileName;
-    private String outputFileName;
-    public ArrayList<String> outputStrings;
 
-    IO(String inputFileName, String outputFileName) {
-        this.inputFileName = inputFileName;
-        this.outputFileName = outputFileName;
-        this.outputStrings = new ArrayList<String>();
-    }
-
-    List<String> readInputFile() {
+    static List<String> readInputFile(String inputFileName) {
         try {
             List<String> inputs = Files.readAllLines(Paths.get(inputFileName));
             return inputs;
@@ -27,14 +20,15 @@ public class IO {
         }
     }
 
-    boolean writeToFile() {
+    static boolean writeToFile(String outputFileName, Collection<String> outputStrings) {
         try {
-            FileWriter myWriter = new FileWriter(outputFileName);
-            for (String line : outputStrings) {
-                if (outputStrings.indexOf(line) == outputStrings.size() - 1)
-                    myWriter.write(line);
-                else
-                    myWriter.write(line + "\n");
+            FileWriter myWriter = new FileWriter("poem" + outputFileName + ".txt");
+            Iterator<String> iterator = outputStrings.iterator();
+            while (iterator.hasNext()) {
+                String line = iterator.next();
+                if (iterator.hasNext())
+                    line += "\n";
+                myWriter.write(line);
             }
             myWriter.close();
             return true;
@@ -44,19 +38,22 @@ public class IO {
         }
     }
 
-    String getInputFileName() {
-        return this.inputFileName;
-    }
-
-    String getOutputFileName() {
-        return this.outputFileName;
-    }
-
-    void setInputFileName(String inputFileName) {
-        this.inputFileName = inputFileName;
-    }
-
-    void setOutputFileName(String outputFileName) {
-        this.outputFileName = outputFileName;
+    static boolean writeToFileMap(String outputFileName, HashMap<Integer, String> output) {
+        try {
+            FileWriter myWriter = new FileWriter("poem" + outputFileName + ".txt");
+            int lineCount = 0;
+            for (HashMap.Entry<Integer, String> entry : output.entrySet()) {
+                lineCount++;
+                String line = String.format("%d\t%s", entry.getKey(), entry.getValue());
+                if (lineCount < output.size())
+                    line += "\n";
+                myWriter.write(line);
+            }
+            myWriter.close();
+            return true;
+        } catch (IOException exception) {
+            System.out.println(exception);
+            return false;
+        }
     }
 }
