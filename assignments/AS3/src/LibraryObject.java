@@ -12,4 +12,9 @@ public class LibraryObject {
     public void setId(int id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s [id: %s]", this.getClass().toString().replace("class ", ""), this.getId());
+    }
 }
