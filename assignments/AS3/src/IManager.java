@@ -4,6 +4,8 @@ import java.util.List;
 public interface IManager {
     List<Member> members = new ArrayList<Member>();
     List<Book> books = new ArrayList<Book>();
+    Log borrowedBooks = new Log();
+    Log readBooks = new Log();
 
     void addBook(String types);
 
