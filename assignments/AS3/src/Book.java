@@ -1,7 +1,9 @@
 import java.util.Date;
 
 public abstract class Book extends LibraryObject {
-    Date returnDate;
+
+    private Date borrowDate;
+    private Date returnDate;
 
     Book(int id, Date currentDate) {
         super(id);
@@ -18,5 +20,13 @@ public abstract class Book extends LibraryObject {
 
     public void setReturnDate(Date returnDate) {
         this.returnDate = returnDate;
+    }
+
+    public Date getBorrowDate() {
+        return borrowDate;
+    }
+
+    public void setBorrowDate(Date borrowDate) {
+        this.borrowDate = borrowDate;
     }
 }

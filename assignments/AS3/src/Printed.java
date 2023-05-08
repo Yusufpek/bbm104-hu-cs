@@ -10,11 +10,16 @@ public class Printed extends Book {
         super(id, new Date(calculateTime(currentDate, timeLimit)));
     }
 
-    public void setReturnDate(Date currentDate, int timeLimit) {
+    public void setBorrowDate(Date currentDate, int timeLimit) {
+        super.setBorrowDate(currentDate);
         super.setReturnDate(new Date(calculateTime(currentDate, timeLimit)));
     }
 
     private static long calculateTime(Date currentDate, int timeLimit) {
         return currentDate.getTime() + TimeManager.weekToTime(timeLimit);
+    }
+
+    public void extendDate(int timeLimit) {
+        super.setReturnDate(new Date(calculateTime(this.getReturnDate(), timeLimit)));
     }
 }

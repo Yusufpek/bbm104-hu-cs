@@ -1,4 +1,5 @@
 public abstract class Member extends LibraryObject {
+    boolean isMissed = false;
     int bookLimit;
     int timeLimitInWeek;
     MemberType type;
@@ -10,9 +11,20 @@ public abstract class Member extends LibraryObject {
         this.timeLimitInWeek = timeLimit;
     }
 
-    @Override
-    public String toString() {
-        return String.format("%s [id=%s]", type.toString(), getId());
+    void setBookLimit(int limit) {
+        this.bookLimit = limit;
+    }
+
+    int getBookLimit() {
+        return this.bookLimit;
+    }
+
+    int getTimeLimitInWeek() {
+        return this.timeLimitInWeek;
+    }
+
+    int getTimeLimitInDay() {
+        return this.timeLimitInWeek * 7;
     }
 }
 
