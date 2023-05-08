@@ -16,6 +16,10 @@ public class IO {
         IO.outputStrings = new ArrayList<String>();
     }
 
+    static void newLine() {
+        IO.outputStrings.add("");
+    }
+
     List<String> readInputFile(boolean discardEmptyLines) {
         try {
             List<String> inputs = Files.readAllLines(Paths.get(inputFileName));
@@ -39,8 +43,13 @@ public class IO {
     boolean writeToFile() {
         try {
             FileWriter myWriter = new FileWriter(outputFileName);
+            int counter = 0;
             for (String line : outputStrings) {
-                myWriter.write(line + "\n");
+                counter++;
+                if (counter == outputStrings.size())
+                    myWriter.write(line);
+                else
+                    myWriter.write(line + "\n");
             }
             myWriter.close();
             return true;
