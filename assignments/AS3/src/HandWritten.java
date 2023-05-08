@@ -1,12 +1,12 @@
 import java.util.Date;
 
-public class HandWritten extends Book {
+public class Handwritten extends Book {
 
-    HandWritten(int id) {
+    Handwritten(int id) {
         super(id);
     }
 
-    HandWritten(int id, Date currentDate) {
+    Handwritten(int id, Date currentDate) {
         super(id, currentDate);
     }
 
