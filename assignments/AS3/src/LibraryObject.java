@@ -1,4 +1,4 @@
-public class LibraryObject {
+public abstract class LibraryObject {
     private int id;
 
     public LibraryObject(int id) {
