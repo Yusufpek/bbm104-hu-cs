@@ -17,8 +17,9 @@ public class LibraryManager implements IManager {
                 memberId, date, fee);
     }
 
-    int getId(List<?> list) {
-        return list.size() > 0 ? ((LibraryObject) list.get(list.size() - 1)).getId() + 1 : 1;
+    Integer getId(List<?> list) {
+        int id = list.size() > 0 ? ((LibraryObject) list.get(list.size() - 1)).getId() + 1 : 1;
+        return Integer.toString(id).length() <= 6 ? id : null;
     }
 
     Book getBookByID(int id) {
@@ -41,18 +42,28 @@ public class LibraryManager implements IManager {
 
     @Override
     public void addBook(String type) {
+        Integer id = getId(books);
+        if (id == null) {
+            IO.outputStrings.add(Constants.NOT_ADD_ID_BOOK);
+            return;
+        }
         Book newBook = type.equals("P")
-                ? new Printed(getId(books)) // If member is Student
-                : new Handwritten(getId(books));
+                ? new Printed(id) // If member is Student
+                : new Handwritten(id);
         books.add(newBook);
         IO.outputStrings.add(Constants.NEW_BOOK + " " + newBook.toString());
     }
 
     @Override
     public void addMember(String type) {
+        Integer id = getId(members);
+        if (id == null) {
+            IO.outputStrings.add(Constants.NOT_ADD_ID_MEMBER);
+            return;
+        }
         Member newMember = type.equals("S")
-                ? new Student(getId(members)) // If member is Student
-                : new Academic(getId(members));
+                ? new Student(id) // If member is Student
+                : new Academic(id);
         members.add(newMember);
         IO.outputStrings.add(Constants.NEW_MEMBER + " " + newMember.toString());
     }

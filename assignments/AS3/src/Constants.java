@@ -18,6 +18,8 @@ public class Constants {
     public static final String CAN_NOT_READ = "You can not read this book!";
     public static final String CAN_NOT_READ_STUDENT = "Students can not read handwritten books!";
     public static final String PENALTY_BORROW = "You must pay a penalty!";
+    public static final String NOT_ADD_ID_BOOK = "You cannot add new book because id is more than 6 digits!";
+    public static final String NOT_ADD_ID_MEMBER = "You cannot add new member because id is more than 6 digits!";
 
     // log messages
     public static final String HISTORY = "History of library:";
