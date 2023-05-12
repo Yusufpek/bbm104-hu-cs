@@ -80,9 +80,13 @@ public class LibraryManager implements IManager {
             IO.outputStrings.add(Constants.CAN_NOT_BORROW);
         } else if (member.bookLimit <= 0) {
             IO.outputStrings.add(Constants.BORROW_LIMIT);
-
         } else {
+            if (member.isMissed) {
+                IO.outputStrings.add(Constants.PENALTY_BORROW);
+                member.isMissed = false;
+            }
             ((Printed) book).setBorrowDate(TimeManager.stringToDate(date), member.timeLimitInWeek);
+            book.setMemberId(member.getId());
             member.bookLimit--;
             borrowedBooks.add(borrowedMessage(book.getId(), member.getId(), date));
             IO.outputStrings.add(borrowedMessage(book.getId(), member.getId(), date));
@@ -99,13 +103,11 @@ public class LibraryManager implements IManager {
             IO.outputStrings.add(Constants.NOT_EXIST_MEMBER);
         } else if (book.getBorrowDate() == null) {
             IO.outputStrings.add(Constants.CAN_NOT_RETURN);
+        } else if (book.getMemberId() != member.getId()) {
+            IO.outputStrings.add(Constants.DIFFERENT_MEMBER);
         } else {
             int fee = 0;
             if (book.getReturnDate() != null) {
-                if (member.isMissed) {
-                    IO.outputStrings.add(Constants.PENALTY_BORROW);
-                    member.isMissed = false;
-                }
                 int difference = TimeManager.getDifference(TimeManager.stringToDate(date), book.getReturnDate());
                 if (difference <= 0) {
                     fee = 0;
@@ -161,6 +163,7 @@ public class LibraryManager implements IManager {
             IO.outputStrings.add(Constants.CAN_NOT_READ);
         } else {
             book.setBorrowDate(TimeManager.stringToDate(currentDate));
+            book.setMemberId(member.getId());
             readBooks.add(readMessage(book.getId(), member.getId(), currentDate));
             IO.outputStrings.add(readMessage(book.getId(), member.getId(), currentDate));
         }

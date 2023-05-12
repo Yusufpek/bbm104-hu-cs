@@ -20,6 +20,7 @@ public class Constants {
     public static final String PENALTY_BORROW = "You must pay a penalty!";
     public static final String NOT_ADD_ID_BOOK = "You cannot add new book because id is more than 6 digits!";
     public static final String NOT_ADD_ID_MEMBER = "You cannot add new member because id is more than 6 digits!";
+    public static final String DIFFERENT_MEMBER = "The book is taken by different member!";
 
     // log messages
     public static final String HISTORY = "History of library:";

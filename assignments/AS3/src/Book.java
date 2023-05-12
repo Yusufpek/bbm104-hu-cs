@@ -4,6 +4,7 @@ public abstract class Book extends LibraryObject {
 
     private Date borrowDate;
     private Date returnDate;
+    private int memberId;
 
     Book(int id, Date currentDate) {
         super(id);
@@ -28,5 +29,13 @@ public abstract class Book extends LibraryObject {
 
     public void setBorrowDate(Date borrowDate) {
         this.borrowDate = borrowDate;
+    }
+
+    public int getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(int memberId) {
+        this.memberId = memberId;
     }
 }
