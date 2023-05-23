@@ -10,6 +10,8 @@ public class Images {
 
     static final String DUCK = BASE + "duck_"; // 1-8.png
     static final String DUCK_BLACK = DUCK + "black/"; // 1-8.png
+    static final String DUCK_BLUE = DUCK + "blue/"; // 1-8.png
+    static final String DUCK_RED = DUCK + "red/"; // 1-8.png
 
     static String getName(String name, String path) {
         if (path != "") {
