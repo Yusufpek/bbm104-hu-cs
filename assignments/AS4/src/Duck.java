@@ -8,7 +8,7 @@ import javafx.util.Duration;
 
 public class Duck extends CustomImageView {
     // public final double radius = 15 * ScreenSize.SCALE;
-    public final double velocity = 8 * ScreenSize.SCALE;
+    private final double velocity = 8 * ScreenSize.SCALE;
     private String duck;
     private final Random random = new Random();
     private int index = 0;
@@ -17,6 +17,7 @@ public class Duck extends CustomImageView {
     private Image[] duckImages = new Image[3];
     private Image[] duckVerticalImages = new Image[3];
     private Timeline animation;
+    public boolean isKilled;
 
     public Duck(String duck, boolean isVertical, Level level) throws FileNotFoundException {
         super(new CustomImage("1", duck));
@@ -54,13 +55,8 @@ public class Duck extends CustomImageView {
         System.out.println("death animation");
         setDeathImage();
         animation = new Timeline(
-                new KeyFrame(Duration.millis(100), e -> deathDuck()));
+                new KeyFrame(Duration.millis(100), e -> deathDuck(func)));
         animation.setCycleCount(Timeline.INDEFINITE);
-        animation.setAutoReverse(true);
-        animation.setOnFinished(e -> {
-            func.onDuckKilled();
-            System.out.println("finished");
-        });
         animation.play();
         System.out.println("playing");
     }
@@ -112,14 +108,15 @@ public class Duck extends CustomImageView {
         this.setScaleX(this.getScaleX() * -1);
     }
 
-    private void deathDuck() {
+    private void deathDuck(Function func) {
         System.out.println("death duck func");
         System.out.println("y: " + y);
         System.out.println("velocity: " + velocity);
         if (y >= ScreenSize.SCREEN_HEIGHT) {
             System.out.println("animation stopped");
             animation.stop();
-
+            func.onDuckKilled();
+            isKilled = true;
         }
         y += velocity * 2;
         this.setTranslateY(y);
