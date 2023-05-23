@@ -7,6 +7,10 @@ public class Level {
     int killedDuckCount = 0;
     boolean[] duckVerticalMovement = new boolean[3];
 
+    Level() {
+        setLevel(1);
+    }
+
     private void setLevelDesign() {
         switch (level) {
             case 1:
