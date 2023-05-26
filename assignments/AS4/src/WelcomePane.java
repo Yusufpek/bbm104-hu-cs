@@ -1,16 +1,10 @@
 import java.io.FileNotFoundException;
 
-import javafx.animation.FadeTransition;
-import javafx.animation.Interpolator;
-import javafx.animation.TranslateTransition;
-import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
-import javafx.scene.text.TextFlow;
-import javafx.util.Duration;
 
 public class WelcomePane extends StackPane {
-    int currentBackgroundIndex;
-    int currentCross;
+    static int currentBackgroundIndex;
+    static int currentCross;
     public CustomImage[] backgrounds;
     public CustomImage[] crosshairs;
 
@@ -26,10 +20,9 @@ public class WelcomePane extends StackPane {
         } catch (FileNotFoundException e) {
             System.out.println("Welcome image could not find");
         }
-        TextFlow textflow = new TextFlow(Texts.welcomeEnterTextWidget, Texts.welcomeEscTextWidget);
-        textflow.setTranslateY(ScreenSize.getHeight(0.6));
-        animation(textflow);
-        this.getChildren().add(textflow);
+        Texts.welcomeTextFlow.setTranslateY(ScreenSize.getHeight(0.6));
+        FadeAnimation.animate(Texts.welcomeTextFlow);
+        this.getChildren().add(Texts.welcomeTextFlow);
     }
 
     private void getImages() {
@@ -44,32 +37,29 @@ public class WelcomePane extends StackPane {
         }
     }
 
-    private void animation(Node node) {
-        FadeTransition fade = new FadeTransition();
-        fade.setNode(node);
-        fade.setDuration(Duration.millis(1500));
-        fade.setCycleCount(TranslateTransition.INDEFINITE);
-        fade.setInterpolator(Interpolator.LINEAR);
-        fade.setFromValue(1);
-        fade.setToValue(0);
-        fade.play();
-    }
-
     public void navigateSettings() {
         System.out.println("navigate setting");
         updateScreen();
         backgroundView.setSize(backgroundView.getImage());
         crossView.setSize(crossView.getImage());
         this.getChildren().addAll(backgroundView, crossView);
+        showSettingsText();
     }
 
     public void updateScreen() {
         backgroundView.setImage(backgrounds[Math.abs(currentBackgroundIndex % backgrounds.length)]);
         crossView.setImage(crosshairs[Math.abs(currentCross % crosshairs.length)]);
+        showSettingsText();
+    }
+
+    private void showSettingsText() {
+        if (this.getChildren().contains(Texts.settingsTextFlow))
+            this.getChildren().remove(Texts.settingsTextFlow);
+        this.getChildren().add(Texts.settingsTextFlow);
     }
 
     public int getCurrentCross() {
-        return 0;
+        return currentCross;
     }
 
     public int getCurrentBackgroundIndex() {
