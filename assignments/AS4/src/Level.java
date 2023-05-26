@@ -18,12 +18,12 @@ public class Level {
                 duckVerticalMovement[0] = false;
                 break;
             case 2:
-                duckCount = 2;
-                duckVerticalMovement[1] = false;
+                duckCount = 1;
+                duckVerticalMovement[0] = true;
                 break;
             case 3:
                 duckCount = 2;
-                duckVerticalMovement[0] = true;
+                duckVerticalMovement[1] = false;
                 break;
             case 4:
                 duckCount = 2;
@@ -55,5 +55,10 @@ public class Level {
         setLevelDesign();
         ammo = duckCount * 3;
         killedDuckCount = 0;
+    }
+
+    public boolean isFinished() {
+        System.out.println(killedDuckCount);
+        return killedDuckCount == duckCount;
     }
 }
