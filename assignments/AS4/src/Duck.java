@@ -8,7 +8,7 @@ import javafx.util.Duration;
 
 public class Duck extends CustomImageView {
     // public final double radius = 15 * ScreenSize.SCALE;
-    private final double velocity = 8 * ScreenSize.SCALE;
+    private final double velocity = 8 * DuckHunt.SCALE;
     private String duck;
     private final Random random = new Random();
     private int index = 0;

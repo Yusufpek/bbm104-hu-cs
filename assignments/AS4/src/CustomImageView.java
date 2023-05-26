@@ -4,6 +4,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class CustomImageView extends ImageView {
+    public CustomImageView() {
+        super();
+    }
+
     public CustomImageView(String name, String path) throws FileNotFoundException {
         super();
         Image image = new CustomImage(name, path);
@@ -17,8 +21,8 @@ public class CustomImageView extends ImageView {
         setSize(duckImages);
     }
 
-    private void setSize(Image image) {
-        this.setFitHeight(ScreenSize.SCALE * image.getHeight());
-        this.setFitWidth(ScreenSize.SCALE * image.getWidth());
+    public void setSize(Image image) {
+        this.setFitHeight(DuckHunt.SCALE * image.getHeight());
+        this.setFitWidth(DuckHunt.SCALE * image.getWidth());
     }
 }
