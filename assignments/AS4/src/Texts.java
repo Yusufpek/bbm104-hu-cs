@@ -14,17 +14,17 @@ public class Texts {
         final static String GAME_COMPLETED = "You have completed the game!\n";
 
         // Text Widgets
-        static final Text welcomeEnterTextWidget = new CustomText(ENTER_TEXT, 12, 0);
-        static final Text welcomeEscTextWidget = new CustomText(ESC_TEXT.toUpperCase(), 12, 0);
+        static final Text welcomeEnterTextWidget = new CustomText(ENTER_TEXT, 12, 0, true);
+        static final Text welcomeEscTextWidget = new CustomText(ESC_TEXT.toUpperCase(), 12, 0, true);
         static final Text settingsNavigateTextWidget = new CustomText(SETTINGS_NAVIGATE_TEXT, 8, 0.06);
         static final Text settingsEnterTextWidget = new CustomText(ENTER_TEXT, 8, 0.07);
         static final Text settingsEscTextWidget = new CustomText(ESC_TEXT.toUpperCase(), 8, 0.08);
         static final CustomText winText = new CustomText(WIN, 12, 0.5);
-        static final private CustomText nextRoundText = new CustomText(NEXT_ROUND, 12, 0.5);
+        static final private CustomText nextRoundText = new CustomText(NEXT_ROUND, 12, 0.5, true);
         static final private CustomText gameOverText = new CustomText(GAME_OVER, 12, 0.4);
         static final private CustomText gameCompletedText = new CustomText(GAME_COMPLETED, 12, 0.4);
-        static final CustomText gameOverEnterText = new CustomText(GAME_OVER_ENTER, 12, 0.4);
-        static final CustomText gameOverEscapeText = new CustomText(ESC_TEXT, 12, 0.4);
+        static final CustomText gameOverEnterText = new CustomText(GAME_OVER_ENTER, 12, 0.4, true);
+        static final CustomText gameOverEscapeText = new CustomText(ESC_TEXT, 12, 0.4, true);
 
         static final TextFlow welcomeTextFlow = new TextFlow(welcomeEnterTextWidget, welcomeEscTextWidget);
         static final TextFlow settingsTextFlow = new TextFlow(settingsNavigateTextWidget, settingsEnterTextWidget,
