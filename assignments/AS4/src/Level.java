@@ -1,6 +1,9 @@
+import java.util.Arrays;
+import java.util.Collections;
+
 public class Level {
     final static int MAX_LEVEL = 6;
-    final String[] duckNames = new String[] { Images.DUCK_BLACK, Images.DUCK_BLUE, Images.DUCK_RED };
+    String[] duckNames = new String[] { Images.DUCK_BLACK, Images.DUCK_BLUE, Images.DUCK_RED };
     int level;
     int ammo;
     int duckCount = 1;
@@ -12,6 +15,7 @@ public class Level {
     }
 
     private void setLevelDesign() {
+        Collections.shuffle(Arrays.asList(duckNames));
         switch (level) {
             case 1:
                 duckCount = 1;
