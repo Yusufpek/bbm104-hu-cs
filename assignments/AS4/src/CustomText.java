@@ -8,7 +8,7 @@ public class CustomText extends Text {
     CustomText(String text, double fontSize, double verticalMultiplier, boolean isFadeAnimation) {
         this(text, fontSize, verticalMultiplier);
         if (isFadeAnimation)
-            FadeAnimation.animate(this);
+            VisibleAnimation.animate(this);
     }
 
     CustomText(String text, double fontSize, double verticalMultiplier) {

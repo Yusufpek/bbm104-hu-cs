@@ -21,7 +21,6 @@ public class WelcomePane extends StackPane {
             System.out.println("Welcome image could not find");
         }
         Texts.welcomeTextFlow.setTranslateY(ScreenSize.getHeight(0.6));
-        FadeAnimation.animate(Texts.welcomeTextFlow);
         this.getChildren().add(Texts.welcomeTextFlow);
     }
 
