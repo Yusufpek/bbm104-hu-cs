@@ -5,9 +5,15 @@ import javafx.scene.text.Text;
 
 public class CustomText extends Text {
 
+    CustomText(String text, double fontSize, double verticalMultiplier, boolean isFadeAnimation) {
+        this(text, fontSize, verticalMultiplier);
+        if (isFadeAnimation)
+            FadeAnimation.animate(this);
+    }
+
     CustomText(String text, double fontSize, double verticalMultiplier) {
         super(text);
-        this.setFont(Font.font("Ariel", FontWeight.BOLD, fontSize * ScreenSize.SCALE));
+        this.setFont(Font.font("Ariel", FontWeight.BOLD, fontSize * DuckHunt.SCALE));
         this.setFill(Color.ORANGE);
         horizontalCenterText(verticalMultiplier);
     }
