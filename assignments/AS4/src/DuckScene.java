@@ -1,7 +1,7 @@
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 
-public class DuckScene extends Scene {
+public class DuckScene extends Scene implements Function {
     private static WelcomePane welcomePane = new WelcomePane();
     private static GamePane gamePane = new GamePane();
     static boolean isSetting = false;
@@ -14,15 +14,17 @@ public class DuckScene extends Scene {
         this.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
             switch (key.getCode()) {
                 case ENTER:
-                    if (!isSetting) {
-                        isSetting = true;
-                        welcomePane.navigateSettings();
-                        System.out.println("navigate");
-                    } else {
-                        if (this.getRoot() != gamePane) {
-                            navigateGame();
+                    if (isFirst)
+                        if (!isSetting) {
+                            isSetting = true;
+                            welcomePane.navigateSettings();
+                            System.out.println("navigate");
+                        } else {
+                            if (this.getRoot() != gamePane) {
+                                navigateGame();
+                            }
                         }
-                    }
+                    isFirst = true;
                     break;
                 case ESCAPE:
                     System.out.println("Escape");
@@ -67,33 +69,48 @@ public class DuckScene extends Scene {
         });
     }
 
+    void setCurrentPane(Panes pane) {
+        isFirst = false;
+        isSetting = false;
+
+        if (pane == Panes.GAME) {
+            setGamePane();
+        } else {
+            welcomePane = new WelcomePane();
+            this.setRoot(welcomePane);
+        }
+    }
+
     void navigateGame() {
+        welcomePane.finish();
+        // play intro
+        CustomMediaView introEffect = new CustomMediaView(Effects.INTRO, 1);
+        introEffect.setOnfinished(this);
+        welcomePane.getChildren().add(introEffect);
+
+    }
+
+    private void setGamePane() {
         gamePane = new GamePane(this);
+        // get cross and background id
         int crossId = Math.abs(welcomePane.getCurrentCross() % welcomePane.crosshairs.length) + 1;
         int backgroundId = Math
                 .abs(welcomePane.getCurrentBackgroundIndex() % welcomePane.backgrounds.length) + 1;
-        System.out.println(crossId + " " + backgroundId);
+        // set background and cross in the game pane
         gamePane.setCrossId(crossId);
         gamePane.setBackgroundId(backgroundId);
-        gamePane.setFocusTraversable(true);
         this.setRoot(gamePane);
+        gamePane.setFocusTraversable(true);
         gamePane.requestFocus();
-    }
-
-    void setCurrentPane(Panes pane) {
-        isFirst = false;
-        gamePane = new GamePane(this);
-        welcomePane = new WelcomePane();
-        isSetting = false;
-
-        if (pane == Panes.GAME)
-            navigateGame();
-        else
-            this.setRoot(welcomePane);
     }
 
     enum Panes {
         WELCOME,
         GAME
+    }
+
+    @Override
+    public void onFinished() {
+        setGamePane();
     }
 }

@@ -11,6 +11,11 @@ public class GamePane extends Pane {
     int backgroundId;
     Level level;
     DuckScene scene;
+    private CustomMediaView levelCompletedEffect;
+    private CustomMediaView gameCompletedEffect;
+    private CustomMediaView gameOverEffect;
+    private CustomMediaView shotEffect;
+    private CustomMediaView fallEffect;
 
     GamePane() {
         super();
@@ -45,7 +50,8 @@ public class GamePane extends Pane {
     }
 
     public void setBackgroundId(int backgroundId) {
-        removeWidget(Texts.nextRoundTextFlow, Texts.noAmmoTextFlow);
+        removeWidget(Texts.nextRoundTextFlow, Texts.noAmmoTextFlow); // remove given texts
+        stopEffect(); // stop all effects
         this.backgroundId = backgroundId;
         try {
             CustomText levelText = new CustomText("Level: " + level.level + "/" + Level.MAX_LEVEL, 8, 0.05); // top of
@@ -75,10 +81,12 @@ public class GamePane extends Pane {
                     setBackgroundId(this.backgroundId);
                 } else if (this.getChildren().contains(Texts.noAmmoTextFlow)
                         || this.getChildren().contains(Texts.gameCompletedTextFlow)) {
-                    if (key.getCode() == KeyCode.ENTER)
+                    if (key.getCode() == KeyCode.ENTER) {
+                        stopEffect();
                         scene.setCurrentPane(DuckScene.Panes.GAME);
-                    else if (key.getCode() == KeyCode.ESCAPE) {
+                    } else if (key.getCode() == KeyCode.ESCAPE) {
                         System.out.println("go to welcome pane");
+                        stopEffect();
                         scene.setCurrentPane(DuckScene.Panes.WELCOME);
                     }
                 }
@@ -88,21 +96,31 @@ public class GamePane extends Pane {
                 System.out.println("ammo: " + level.ammo);
                 // duck kill check
                 if (level.ammo > 0) {
+                    shotEffect = new CustomMediaView(Effects.SHOT, 1); // gun shot effect
+                    this.getChildren().add(shotEffect);
                     for (Duck duck : ducks) {
                         if (duck.getBoundsInParent().contains(event.getX(), event.getY()) && !duck.isKilled) {
                             level.killedDuckCount++;
+                            // duck fall
                             duck.stop();
                             duck.setDeathImage();
                             duck.deathAnimation();
+                            // fall effect
+                            fallEffect = new CustomMediaView(Effects.FALL, 1);
+                            this.getChildren().add(fallEffect);
+                            // check level
                             if (level.level < Level.MAX_LEVEL && level.isFinished()) {
                                 this.getChildren().add(Texts.nextRoundTextFlow);
+                                levelCompletedEffect = new CustomMediaView(Effects.LEVEL_COMPLETED, 1);
+                                this.getChildren().add(levelCompletedEffect);
                             }
-                            System.out.println("duck dead");
                         }
                     }
                     // max level completed check
                     if (level.level == Level.MAX_LEVEL && level.isFinished()) {
                         this.getChildren().add(Texts.gameCompletedTextFlow);
+                        gameCompletedEffect = new CustomMediaView(Effects.GAME_COMPLETED, 1);
+                        this.getChildren().add(gameCompletedEffect);
                         System.out.println("game over, all levels finished");
                     }
                 }
@@ -119,7 +137,8 @@ public class GamePane extends Pane {
                                     Texts.gameOverEscapeText);
                         this.getChildren().add(Texts.noAmmoTextFlow);
                     }
-                    System.out.println(ScreenSize.SCREEN_HEIGHT);
+                    gameOverEffect = new CustomMediaView(Effects.GAME_OVER, 1);
+                    this.getChildren().add(gameOverEffect);
                     Arrays.stream(ducks).forEach(duck -> duck.stop());
                 }
             });
@@ -132,6 +151,15 @@ public class GamePane extends Pane {
         for (Node node : widgets) {
             if (this.getChildren().contains(node))
                 this.getChildren().remove(node);
+        }
+    }
+
+    private void stopEffect() {
+        CustomMediaView[] effects = new CustomMediaView[] { gameCompletedEffect, gameOverEffect, levelCompletedEffect,
+                shotEffect, fallEffect };
+        for (CustomMediaView effect : effects) {
+            if (effect != null)
+                effect.pauseMedia();
         }
     }
 }

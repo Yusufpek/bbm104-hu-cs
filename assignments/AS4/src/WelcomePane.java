@@ -10,6 +10,7 @@ public class WelcomePane extends StackPane {
 
     private final CustomImageView backgroundView = new CustomImageView();
     private final CustomImageView crossView = new CustomImageView();
+    private final CustomMediaView titleEffect;
 
     WelcomePane() {
         getImages();
@@ -22,6 +23,9 @@ public class WelcomePane extends StackPane {
         }
         Texts.welcomeTextFlow.setTranslateY(ScreenSize.getHeight(0.6));
         this.getChildren().add(Texts.welcomeTextFlow);
+        titleEffect = new CustomMediaView(Effects.TITLE);
+        titleEffect.playMedia();
+        this.getChildren().add(titleEffect);
     }
 
     private void getImages() {
@@ -63,5 +67,9 @@ public class WelcomePane extends StackPane {
 
     public int getCurrentBackgroundIndex() {
         return currentBackgroundIndex;
+    }
+
+    public void finish() {
+        titleEffect.pauseMedia();
     }
 }
