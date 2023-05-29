@@ -1,7 +1,4 @@
-public class Images {
-
-    static final String TYPE = ".png";
-    static final String BASE = "../assets/";
+public class Images extends Assets {
     static final String WELCOME = BASE + "welcome/"; // 1.png
     static final String BACKGROUND = BASE + "background/"; // 1-6.png
     static final String FOREGROUND = BASE + "foreground/"; // 1-6.png
@@ -14,6 +11,7 @@ public class Images {
     static final String DUCK_RED = DUCK + "red/"; // 1-8.png
 
     static String getName(String name, String path) {
+        Images.TYPE = ".png";
         if (path != "") {
             return path + name + TYPE;
         }
