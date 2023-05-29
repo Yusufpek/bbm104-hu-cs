@@ -51,11 +51,11 @@ public class Duck extends CustomImageView {
         animation.play();
     }
 
-    public void deathAnimation(Function func) {
+    public void deathAnimation() {
         System.out.println("death animation");
         setDeathImage();
         animation = new Timeline(
-                new KeyFrame(Duration.millis(100), e -> deathDuck(func)));
+                new KeyFrame(Duration.millis(100), e -> deathDuck()));
         animation.setCycleCount(Timeline.INDEFINITE);
         animation.play();
         System.out.println("playing");
@@ -108,14 +108,14 @@ public class Duck extends CustomImageView {
         this.setScaleX(this.getScaleX() * -1);
     }
 
-    private void deathDuck(Function func) {
+    private void deathDuck() {
         System.out.println("death duck func");
         System.out.println("y: " + y);
         System.out.println("velocity: " + velocity);
         if (y >= ScreenSize.SCREEN_HEIGHT) {
             System.out.println("animation stopped");
             animation.stop();
-            func.onDuckKilled();
+            // func.onFinished();
             isKilled = true;
         }
         y += velocity * 2;

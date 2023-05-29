@@ -1,3 +1,3 @@
 public interface Function {
-    abstract void onDuckKilled();
+    abstract void onFinished();
 }
