@@ -7,65 +7,67 @@ public class DuckScene extends Scene implements Function {
     static boolean isSetting = false;
     static boolean isUnlimitedAmmo = false;
     private boolean isFirst = true;
+    private boolean isEffectPlaying = false;
 
     DuckScene() {
         super(welcomePane, ScreenSize.SCREEN_WIDTH, ScreenSize.SCREEN_HEIGHT);
         gamePane = new GamePane(this);
         this.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
-            switch (key.getCode()) {
-                case ENTER:
-                    if (isFirst)
-                        if (!isSetting) {
-                            isSetting = true;
-                            welcomePane.navigateSettings();
-                            System.out.println("navigate");
-                        } else {
-                            if (this.getRoot() != gamePane) {
-                                navigateGame();
+            if (!isEffectPlaying)
+                switch (key.getCode()) {
+                    case ENTER:
+                        if (isFirst)
+                            if (!isSetting) {
+                                isSetting = true;
+                                welcomePane.navigateSettings();
+                                System.out.println("navigate");
+                            } else {
+                                if (this.getRoot() != gamePane) {
+                                    navigateGame();
+                                }
                             }
+                        isFirst = true;
+                        break;
+                    case ESCAPE:
+                        System.out.println("Escape");
+                        if (this.getRoot() == welcomePane && isFirst)
+                            System.exit(0);
+                        isFirst = true;
+                        break;
+                    case RIGHT:
+                        System.out.println("Right");
+                        if (isSetting) {
+                            WelcomePane.currentBackgroundIndex++;
+                            welcomePane.updateScreen();
                         }
-                    isFirst = true;
-                    break;
-                case ESCAPE:
-                    System.out.println("Escape");
-                    if (this.getRoot() == welcomePane && isFirst)
-                        System.exit(0);
-                    isFirst = true;
-                    break;
-                case RIGHT:
-                    System.out.println("Right");
-                    if (isSetting) {
-                        WelcomePane.currentBackgroundIndex++;
-                        welcomePane.updateScreen();
-                    }
-                    break;
-                case LEFT:
-                    if (isSetting) {
-                        WelcomePane.currentBackgroundIndex--;
-                        welcomePane.updateScreen();
-                    }
-                    break;
-                case UP:
-                    if (isSetting) {
-                        WelcomePane.currentCross++;
-                        welcomePane.updateScreen();
-                    }
-                    break;
-                case DOWN:
-                    if (isSetting) {
-                        WelcomePane.currentCross--;
-                        welcomePane.updateScreen();
-                    }
-                    break;
-                case U:
-                    if (isSetting) {
-                        isUnlimitedAmmo = !isUnlimitedAmmo;
-                        System.out.println("unlimited ammo");
-                    }
-                    break;
-                default:
-                    break;
-            }
+                        break;
+                    case LEFT:
+                        if (isSetting) {
+                            WelcomePane.currentBackgroundIndex--;
+                            welcomePane.updateScreen();
+                        }
+                        break;
+                    case UP:
+                        if (isSetting) {
+                            WelcomePane.currentCross++;
+                            welcomePane.updateScreen();
+                        }
+                        break;
+                    case DOWN:
+                        if (isSetting) {
+                            WelcomePane.currentCross--;
+                            welcomePane.updateScreen();
+                        }
+                        break;
+                    case U:
+                        if (isSetting) {
+                            isUnlimitedAmmo = !isUnlimitedAmmo;
+                            System.out.println("unlimited ammo");
+                        }
+                        break;
+                    default:
+                        break;
+                }
         });
     }
 
@@ -82,6 +84,7 @@ public class DuckScene extends Scene implements Function {
     }
 
     void navigateGame() {
+        isEffectPlaying = true;
         welcomePane.finish();
         // play intro
         CustomMediaView introEffect = new CustomMediaView(Effects.INTRO, 1);
@@ -112,5 +115,6 @@ public class DuckScene extends Scene implements Function {
     @Override
     public void onFinished() {
         setGamePane();
+        isEffectPlaying = false;
     }
 }
