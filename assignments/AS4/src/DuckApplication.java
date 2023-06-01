@@ -3,7 +3,7 @@ import java.io.FileNotFoundException;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public abstract class CustomApplication extends Application {
+public abstract class DuckApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws FileNotFoundException {
         DuckScene scene = new DuckScene();

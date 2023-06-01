@@ -1,4 +1,4 @@
-public class DuckHunt extends CustomApplication {
+public class DuckHunt extends DuckApplication {
     final static double SCALE = 3;
     final static double VOLUME = 0.025; // default 0.025
 
