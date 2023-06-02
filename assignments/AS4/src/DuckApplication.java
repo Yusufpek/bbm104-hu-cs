@@ -10,6 +10,9 @@ public abstract class DuckApplication extends Application {
         primaryStage.setTitle(Texts.WINDOW_TEXT);
         primaryStage.getIcons().add(new CustomImage("1", Images.FAVICON));
         primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
+        primaryStage.setMaxHeight(ScreenSize.SCREEN_HEIGHT);
+        primaryStage.setMaxWidth(ScreenSize.SCREEN_WIDTH);
         primaryStage.show();
 
     }
