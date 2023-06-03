@@ -21,7 +21,6 @@ public class CustomMediaView extends MediaView {
      */
     CustomMediaView(String name) {
         super();
-        System.out.println("Effects: " + name);
         Media media = new Media(new File(Effects.getEffect(name)).toURI().toString());
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setVolume(DuckHunt.VOLUME);

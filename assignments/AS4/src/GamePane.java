@@ -88,8 +88,6 @@ public class GamePane extends Pane {
                             || event.getY() > ScreenSize.getHeight(0.95) - crosshairHalfWidth)
                         removeWidget(crosshair);
                     else {
-                        System.out.println(event.getX());
-                        System.out.println(event.getSceneX());
                         crosshair.setTranslateX(event.getX() - crosshair.getFitWidth() / 2);
                         crosshair.setTranslateY(event.getY() - crosshair.getFitHeight() / 2);
                         removeWidget(crosshair);
@@ -142,11 +140,7 @@ public class GamePane extends Pane {
 
             // Key Control
             this.setOnKeyPressed(key -> {
-                System.out.println("Level: " + level.level);
-                System.out.println(key.getCode());
-                System.out.println("is finished: " + level.isFinished());
                 if (key.getCode() == KeyCode.ENTER && this.getChildren().contains(Texts.nextRoundTextFlow)) {
-                    System.out.println("round finish enter");
                     this.getChildren().remove(Texts.winText);
                     level.incrementLevelCount();
                     setBackgroundId(this.backgroundId);
@@ -156,7 +150,6 @@ public class GamePane extends Pane {
                         stopEffect();
                         scene.setCurrentPane(DuckScene.Panes.GAME);
                     } else if (key.getCode() == KeyCode.ESCAPE) {
-                        System.out.println("go to welcome pane");
                         stopEffect();
                         scene.setCurrentPane(DuckScene.Panes.WELCOME);
                     }
@@ -165,7 +158,6 @@ public class GamePane extends Pane {
 
             // Mouse click check
             this.setOnMouseClicked((event) -> {
-                System.out.println("ammo: " + level.ammo);
                 // duck kill check
                 if (level.ammo > 0) {
                     shotEffect = new CustomMediaView(Effects.SHOT, 1); // gun shot effect
@@ -193,7 +185,6 @@ public class GamePane extends Pane {
                         this.getChildren().add(Texts.gameCompletedTextFlow);
                         gameCompletedEffect = new CustomMediaView(Effects.GAME_COMPLETED, 1);
                         this.getChildren().add(gameCompletedEffect);
-                        System.out.println("game over, all levels finished");
                     }
                 }
                 // increase ammo

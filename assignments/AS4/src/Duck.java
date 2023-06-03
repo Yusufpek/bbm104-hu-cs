@@ -50,7 +50,6 @@ public class Duck extends CustomImageView {
         this.setTranslateX(x);
         this.setImage(duckImages[0]);
         y = random.nextInt((int) ScreenSize.getHeight(0.40)) + this.getFitHeight();
-        System.out.println("random y: " + y);
         this.setTranslateY(y);
 
         flyAnimation();
@@ -71,13 +70,11 @@ public class Duck extends CustomImageView {
      * Starts the death animation for the duck.
      */
     public void deathAnimation() {
-        System.out.println("death animation");
         setDeathImage();
         animation = new Timeline(
                 new KeyFrame(Duration.millis(100), e -> deathDuck()));
         animation.setCycleCount(Timeline.INDEFINITE);
         animation.play();
-        System.out.println("playing");
     }
 
     /**
@@ -86,9 +83,8 @@ public class Duck extends CustomImageView {
     public void setDeathImage() {
         try {
             this.setImage(new CustomImage("7", duck));
-            System.out.println("set the new image");
         } catch (FileNotFoundException e) {
-            System.out.println("Duck file not found!");
+            System.out.println("Duck death image not found !");
         }
     }
 
@@ -146,18 +142,13 @@ public class Duck extends CustomImageView {
     }
 
     private void deathDuck() {
-        System.out.println("death duck func");
-        System.out.println("y: " + y);
-        System.out.println("velocity: " + velocity);
         if (y >= ScreenSize.SCREEN_HEIGHT) {
-            System.out.println("animation stopped");
             animation.stop();
             // func.onFinished();
             isKilled = true;
         }
         y += velocity * 2;
         this.setTranslateY(y);
-        System.out.println("death y: " + y);
         try {
             this.setImage(new CustomImage("8", duck));
         } catch (FileNotFoundException e) {

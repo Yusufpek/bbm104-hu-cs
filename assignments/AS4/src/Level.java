@@ -93,7 +93,6 @@ public class Level {
      * @return true if all ducks have been killed, false otherwise
      */
     public boolean isFinished() {
-        System.out.println(killedDuckCount);
         return killedDuckCount == duckCount;
     }
 }

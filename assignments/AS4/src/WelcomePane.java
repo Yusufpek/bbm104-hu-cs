@@ -58,7 +58,6 @@ public class WelcomePane extends StackPane {
      * Updates the screen with the selected background and crosshair.
      */
     public void navigateSettings() {
-        System.out.println("navigate setting");
         updateScreen();
         backgroundView.setSize(backgroundView.getImage());
         crossView.setSize(crossView.getImage());

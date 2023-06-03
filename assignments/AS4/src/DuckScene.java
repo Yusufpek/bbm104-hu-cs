@@ -29,7 +29,6 @@ public class DuckScene extends Scene implements Function {
                             if (!isSetting) {
                                 isSetting = true;
                                 welcomePane.navigateSettings();
-                                System.out.println("navigate");
                             } else {
                                 if (this.getRoot() != gamePane) {
                                     navigateGame();
@@ -38,13 +37,11 @@ public class DuckScene extends Scene implements Function {
                         isFirst = true;
                         break;
                     case ESCAPE:
-                        System.out.println("Escape");
                         if (this.getRoot() == welcomePane && isFirst)
                             System.exit(0);
                         isFirst = true;
                         break;
                     case RIGHT:
-                        System.out.println("Right");
                         if (isSetting) {
                             WelcomePane.currentBackgroundIndex++;
                             welcomePane.updateScreen();
