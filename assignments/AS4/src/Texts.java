@@ -1,6 +1,9 @@
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
+/**
+ * A utility class that provides various text constants and text flow objects
+ */
 public class Texts {
         // Strings
         final static String WINDOW_TEXT = "HUBBM DUCK HUNT";
@@ -13,7 +16,7 @@ public class Texts {
         final static String GAME_OVER_ENTER = "Press ENTER to play again\n";
         final static String GAME_COMPLETED = "You have completed the game!\n";
 
-        // Text Widgets
+        // Text Nodes
         static final Text welcomeEnterTextWidget = new CustomText(ENTER_TEXT, 12, 0, true);
         static final Text welcomeEscTextWidget = new CustomText(ESC_TEXT.toUpperCase(), 12, 0, true);
         static final Text settingsNavigateTextWidget = new CustomText(SETTINGS_NAVIGATE_TEXT, 8, 0.06);
@@ -26,6 +29,7 @@ public class Texts {
         static final CustomText gameOverEnterText = new CustomText(GAME_OVER_ENTER, 12, 0.4, true);
         static final CustomText gameOverEscapeText = new CustomText(ESC_TEXT, 12, 0.4, true);
 
+        // Text Flow Nodes
         static final TextFlow welcomeTextFlow = new TextFlow(welcomeEnterTextWidget, welcomeEscTextWidget);
         static final TextFlow settingsTextFlow = new TextFlow(settingsNavigateTextWidget, settingsEnterTextWidget,
                         settingsEscTextWidget);

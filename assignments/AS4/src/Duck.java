@@ -6,8 +6,13 @@ import javafx.animation.Timeline;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
 
+/**
+ * The Duck class represents a duck in the Duck Hunt game, extends the
+ * CustomImageView class and encapsulates the some properties of custom image
+ * view and animations of a duck, including its movement, animations, and
+ * interaction with the game.
+ */
 public class Duck extends CustomImageView {
-    // public final double radius = 15 * ScreenSize.SCALE;
     private final double velocity = 8 * DuckHunt.SCALE;
     private String duck;
     private final Random random = new Random();
@@ -19,6 +24,14 @@ public class Duck extends CustomImageView {
     private Timeline animation;
     public boolean isKilled;
 
+    /**
+     * Constructs a new Duck instance.
+     *
+     * @param duck       The type of duck.
+     * @param isVertical True if the duck should fly vertically, false otherwise.
+     * @param level      The level of the game.
+     * @throws FileNotFoundException if the image file for the duck is not found.
+     */
     public Duck(String duck, boolean isVertical, Level level) throws FileNotFoundException {
         super(new CustomImage("1", duck));
         this.duck = duck;
@@ -43,6 +56,9 @@ public class Duck extends CustomImageView {
         flyAnimation();
     }
 
+    /**
+     * Starts the fly animation for the duck.
+     */
     public void flyAnimation() {
         animation = new Timeline(
                 new KeyFrame(Duration.millis(100), e -> moveDuck()));
@@ -51,6 +67,9 @@ public class Duck extends CustomImageView {
         animation.play();
     }
 
+    /**
+     * Starts the death animation for the duck.
+     */
     public void deathAnimation() {
         System.out.println("death animation");
         setDeathImage();
@@ -61,23 +80,35 @@ public class Duck extends CustomImageView {
         System.out.println("playing");
     }
 
+    /**
+     * Sets the image of the duck to the death image.
+     */
     public void setDeathImage() {
         try {
             this.setImage(new CustomImage("7", duck));
             System.out.println("set the new image");
         } catch (FileNotFoundException e) {
-            System.out.println("Duck file not found !");
+            System.out.println("Duck file not found!");
         }
     }
 
+    /**
+     * Plays the animation.
+     */
     public void play() {
         animation.play();
     }
 
+    /**
+     * Stops the animation.
+     */
     public void stop() {
         animation.stop();
     }
 
+    /**
+     * Move Duck, set the translate x and y values by looking velocity.
+     */
     private void moveDuck() {
         index++;
         // Check boundaries
@@ -91,20 +122,26 @@ public class Duck extends CustomImageView {
         y += dy;
         this.setTranslateX(x);
         this.setTranslateY(y);
-        // change images
+        // Change images
         if (dy == 0)
             this.setImage(duckImages[index % duckImages.length]);
         else
             this.setImage(duckVerticalImages[index % duckVerticalImages.length]);
     }
 
+    /**
+     * Reverses the direction of the duck's vertical movement.
+     */
     public void reverseDuckY() {
-        dy *= -1; // Change ball move direction
+        dy *= -1; // Change duck's vertical direction
         this.setScaleY(this.getScaleY() * -1);
     }
 
+    /**
+     * Reverses the direction of the duck's horizontal movement.
+     */
     public void reverseDuckX() {
-        dx *= -1; // Change ball move direction
+        dx *= -1; // Change duck's horizontal direction
         this.setScaleX(this.getScaleX() * -1);
     }
 

@@ -8,6 +8,10 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
+/**
+ * The GamePane class represents the main pane where the game is played.
+ * It contains the background, ducks, crosshair, and game-related functionality.
+ */
 public class GamePane extends Pane {
     int crossId;
     int backgroundId;
@@ -20,25 +24,50 @@ public class GamePane extends Pane {
     private CustomMediaView fallEffect;
     private CustomImageView crosshair;
 
+    /**
+     * Constructs a GamePane object with the default settings.
+     */
     GamePane() {
         super();
         level = new Level();
     }
 
+    /**
+     * Constructs a GamePane object with the given scene.
+     *
+     * @param scene the DuckScene object associated with this GamePane
+     */
     GamePane(DuckScene scene) {
         this();
         this.scene = scene;
     }
 
+    /**
+     * Constructs a GamePane object with the specified crosshair and background IDs.
+     *
+     * @param cross      the ID of the selected crosshair
+     * @param background the ID of the selected background
+     */
     GamePane(int cross, int background) {
         this.crossId = cross;
         this.backgroundId = background;
     }
 
+    /**
+     * Returns the ID of the selected crosshair.
+     *
+     * @return the crosshair ID
+     */
     public int getCrossId() {
         return crossId;
     }
 
+    /**
+     * Sets the ID of the selected crosshair and updates the crosshair image
+     * accordingly.
+     *
+     * @param crossId the ID of the selected crosshair
+     */
     public void setCrossId(int crossId) {
         this.crossId = crossId;
         this.setCursor(Cursor.NONE);
@@ -51,7 +80,7 @@ public class GamePane extends Pane {
             this.setOnMouseMoved(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    // remove image when the cursor get the out of the screen
+                    // remove image when the cursor gets outside the screen
                     double crosshairHalfWidth = crosshair.getFitWidth() / 2;
                     double crosshairHalfHeight = crosshair.getFitHeight() / 2;
                     if (event.getX() < crosshairHalfWidth - 10 || event.getY() < crosshairHalfHeight
@@ -69,14 +98,25 @@ public class GamePane extends Pane {
                 }
             });
         } catch (FileNotFoundException e) {
-            System.out.println("Cross hair file not found !");
+            System.out.println("Crosshair file not found!");
         }
     }
 
+    /**
+     * Returns the ID of the selected background.
+     *
+     * @return the background ID
+     */
     public int getBackgroundId() {
         return backgroundId;
     }
 
+    /**
+     * Sets the ID of the selected background and updates the game elements
+     * accordingly.
+     *
+     * @param backgroundId the ID of the selected background
+     */
     public void setBackgroundId(int backgroundId) {
         removeWidget(Texts.nextRoundTextFlow, Texts.noAmmoTextFlow, crosshair); // remove given texts
         stopEffect(); // stop all effects
@@ -85,18 +125,21 @@ public class GamePane extends Pane {
             CustomText levelText = new CustomText("Level: " + level.level + "/" + Level.MAX_LEVEL, 8, 0.05); // top of
             CustomText ammoText = new CustomText("Ammo Left: " + level.ammo, 8, 0.05); // top of the screen
             ammoText.setTranslateX(ScreenSize.getWidth(0.77)); // right of the screen
-            // set the ducks
+
+            // Set the ducks
             Duck[] ducks = new Duck[level.duckCount];
             for (int i = 0; i < level.duckCount; i++) {
                 ducks[i] = new Duck(level.duckNames[i], level.duckVerticalMovement[i], level);
                 if (i % 2 == 1 && level.duckVerticalMovement[i])
                     ducks[i].reverseDuckY();
             }
+            // Add the nodes to the pane
             this.getChildren().add(new CustomImageView(backgroundId + "", Images.BACKGROUND));
             this.getChildren().addAll(ducks);
             this.getChildren().add(new CustomImageView(backgroundId + "", Images.FOREGROUND));
             this.getChildren().addAll(levelText, ammoText);
             this.getChildren().add(crosshair);
+
             // Key Control
             this.setOnKeyPressed(key -> {
                 System.out.println("Level: " + level.level);
@@ -120,6 +163,7 @@ public class GamePane extends Pane {
                 }
             });
 
+            // Mouse click check
             this.setOnMouseClicked((event) -> {
                 System.out.println("ammo: " + level.ammo);
                 // duck kill check
@@ -171,10 +215,15 @@ public class GamePane extends Pane {
                 }
             });
         } catch (FileNotFoundException e) {
-            System.out.println("Cross hair file not found !");
+            System.out.println("Crosshair file not found!");
         }
     }
 
+    /**
+     * Removes the specified nodes from the list of children of this GamePane.
+     *
+     * @param widgets the nodes to be removed
+     */
     private void removeWidget(Node... widgets) {
         for (Node node : widgets) {
             if (this.getChildren().contains(node))
@@ -182,6 +231,10 @@ public class GamePane extends Pane {
         }
     }
 
+    /**
+     * Stops all the effects (media views) used in the GamePane.
+     * Pauses the media effects if they are not null.
+     */
     private void stopEffect() {
         CustomMediaView[] effects = new CustomMediaView[] { gameCompletedEffect, gameOverEffect, levelCompletedEffect,
                 shotEffect, fallEffect };

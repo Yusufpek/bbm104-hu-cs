@@ -1,6 +1,10 @@
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 
+/**
+ * A custom scene for the Duck Hunt game.
+ * Implements the Function interface.
+ */
 public class DuckScene extends Scene implements Function {
     private static WelcomePane welcomePane = new WelcomePane();
     private static GamePane gamePane = new GamePane();
@@ -9,6 +13,11 @@ public class DuckScene extends Scene implements Function {
     private boolean isFirst = true;
     private boolean isEffectPlaying = false;
 
+    /**
+     * Constructs a DuckScene object with the WelcomePane as the initial root and
+     * specified width, height size.
+     * Check for the pressed key.
+     */
     DuckScene() {
         super(welcomePane, ScreenSize.SCREEN_WIDTH, ScreenSize.SCREEN_HEIGHT);
         gamePane = new GamePane(this);
@@ -71,6 +80,12 @@ public class DuckScene extends Scene implements Function {
         });
     }
 
+    /**
+     * Sets the current pane based on the provided enum value.
+     * Updates the root of the scene accordingly.
+     *
+     * @param pane the pane to set as the current pane
+     */
     void setCurrentPane(Panes pane) {
         isFirst = false;
         isSetting = false;
@@ -83,6 +98,10 @@ public class DuckScene extends Scene implements Function {
         }
     }
 
+    /**
+     * Navigates to the game pane.
+     * Plays the intro effect and sets the game pane as the root when finished.
+     */
     void navigateGame() {
         isEffectPlaying = true;
         welcomePane.finish();
@@ -93,6 +112,11 @@ public class DuckScene extends Scene implements Function {
 
     }
 
+    /**
+     * Sets the game pane as the root of the scene.
+     * Retrieves the crosshair and background IDs from the welcome pane
+     * and sets them in the game pane accordingly.
+     */
     private void setGamePane() {
         gamePane = new GamePane(this);
         // get cross and background id
@@ -107,11 +131,19 @@ public class DuckScene extends Scene implements Function {
         gamePane.requestFocus();
     }
 
+    /**
+     * An enumeration representing the different panes in the DuckScene.
+     */
     enum Panes {
         WELCOME,
         GAME
     }
 
+    /**
+     * Called when the function is finished.
+     * Sets the game pane as the root of the scene and updates the effect playing
+     * status.
+     */
     @Override
     public void onFinished() {
         setGamePane();
