@@ -49,7 +49,7 @@ public class Duck extends CustomImageView {
         x = random.nextInt((int) ScreenSize.getWidth(0.8));
         this.setTranslateX(x);
         this.setImage(duckImages[0]);
-        y = random.nextInt((int) ScreenSize.getHeight(0.40)) + this.getFitHeight();
+        y = random.nextInt((int) ScreenSize.getHeight(0.30)) + this.getFitHeight();
         this.setTranslateY(y);
 
         flyAnimation();
