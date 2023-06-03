@@ -22,7 +22,7 @@ public class DuckScene extends Scene implements Function {
         super(welcomePane, ScreenSize.SCREEN_WIDTH, ScreenSize.SCREEN_HEIGHT);
         gamePane = new GamePane(this);
         this.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
-            if (!isEffectPlaying)
+            if (!isEffectPlaying && this.getRoot() == welcomePane)
                 switch (key.getCode()) {
                     case ENTER:
                         if (isFirst)
@@ -30,14 +30,12 @@ public class DuckScene extends Scene implements Function {
                                 isSetting = true;
                                 welcomePane.navigateSettings();
                             } else {
-                                if (this.getRoot() != gamePane) {
-                                    navigateGame();
-                                }
+                                navigateGame();
                             }
                         isFirst = true;
                         break;
                     case ESCAPE:
-                        if (this.getRoot() == welcomePane && isFirst)
+                        if (isFirst)
                             System.exit(0);
                         isFirst = true;
                         break;
