@@ -1,9 +1,11 @@
 import java.io.FileNotFoundException;
 import java.util.Arrays;
 
-import javafx.scene.ImageCursor;
+import javafx.event.EventHandler;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 public class GamePane extends Pane {
@@ -16,6 +18,7 @@ public class GamePane extends Pane {
     private CustomMediaView gameOverEffect;
     private CustomMediaView shotEffect;
     private CustomMediaView fallEffect;
+    private CustomImageView crosshair;
 
     GamePane() {
         super();
@@ -38,8 +41,33 @@ public class GamePane extends Pane {
 
     public void setCrossId(int crossId) {
         this.crossId = crossId;
+        this.setCursor(Cursor.NONE);
         try {
-            this.setCursor(new ImageCursor(new CustomImage(crossId + "", Images.CROSSHAIR)));
+            crosshair = new CustomImageView(crossId + "", Images.CROSSHAIR);
+            removeWidget(crosshair);
+            getChildren().add(crosshair);
+            crosshair.setTranslateY(ScreenSize.SCREEN_HEIGHT / 2);
+            crosshair.setTranslateX(ScreenSize.SCREEN_WIDTH / 2);
+            this.setOnMouseMoved(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    // remove image when the cursor get the out of the screen
+                    double crosshairHalfWidth = crosshair.getFitWidth() / 2;
+                    double crosshairHalfHeight = crosshair.getFitHeight() / 2;
+                    if (event.getX() < crosshairHalfWidth - 10 || event.getY() < crosshairHalfHeight
+                            || event.getX() > ScreenSize.SCREEN_WIDTH - crosshairHalfWidth
+                            || event.getY() > ScreenSize.getHeight(0.95) - crosshairHalfWidth)
+                        removeWidget(crosshair);
+                    else {
+                        System.out.println(event.getX());
+                        System.out.println(event.getSceneX());
+                        crosshair.setTranslateX(event.getX() - crosshair.getFitWidth() / 2);
+                        crosshair.setTranslateY(event.getY() - crosshair.getFitHeight() / 2);
+                        removeWidget(crosshair);
+                        getChildren().add(crosshair);
+                    }
+                }
+            });
         } catch (FileNotFoundException e) {
             System.out.println("Cross hair file not found !");
         }
@@ -50,7 +78,7 @@ public class GamePane extends Pane {
     }
 
     public void setBackgroundId(int backgroundId) {
-        removeWidget(Texts.nextRoundTextFlow, Texts.noAmmoTextFlow); // remove given texts
+        removeWidget(Texts.nextRoundTextFlow, Texts.noAmmoTextFlow, crosshair); // remove given texts
         stopEffect(); // stop all effects
         this.backgroundId = backgroundId;
         try {
@@ -68,7 +96,7 @@ public class GamePane extends Pane {
             this.getChildren().addAll(ducks);
             this.getChildren().add(new CustomImageView(backgroundId + "", Images.FOREGROUND));
             this.getChildren().addAll(levelText, ammoText);
-
+            this.getChildren().add(crosshair);
             // Key Control
             this.setOnKeyPressed(key -> {
                 System.out.println("Level: " + level.level);
