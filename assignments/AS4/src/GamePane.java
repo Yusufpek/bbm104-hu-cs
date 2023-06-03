@@ -84,7 +84,7 @@ public class GamePane extends Pane {
         try {
             CustomText levelText = new CustomText("Level: " + level.level + "/" + Level.MAX_LEVEL, 8, 0.05); // top of
             CustomText ammoText = new CustomText("Ammo Left: " + level.ammo, 8, 0.05); // top of the screen
-            ammoText.setTranslateX(ScreenSize.getWidth(0.8)); // right of the screen
+            ammoText.setTranslateX(ScreenSize.getWidth(0.77)); // right of the screen
             // set the ducks
             Duck[] ducks = new Duck[level.duckCount];
             for (int i = 0; i < level.duckCount; i++) {
