@@ -121,7 +121,8 @@ public class GamePane extends Pane {
         this.backgroundId = backgroundId;
         try {
             CustomText levelText = new CustomText("Level: " + level.level + "/" + Level.MAX_LEVEL, 8, 0.05); // top of
-            CustomText ammoText = new CustomText("Ammo Left: " + level.ammo, 8, 0.05); // top of the screen
+            CustomText ammoText = new CustomText(
+                    "Ammo Left: " + (DuckScene.isUnlimitedAmmo ? Character.toString('\u221E') : level.ammo), 8, 0.05); // top
             ammoText.setTranslateX(ScreenSize.getWidth(0.77)); // right of the screen
 
             // Set the ducks
