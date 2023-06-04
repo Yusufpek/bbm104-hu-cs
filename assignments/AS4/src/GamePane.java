@@ -196,9 +196,9 @@ public class GamePane extends Pane {
                             Texts.noAmmoTextFlow.getChildren().addAll(Texts.gameOverEnterText,
                                     Texts.gameOverEscapeText);
                         this.getChildren().add(Texts.noAmmoTextFlow);
+                        gameOverEffect = new CustomMediaView(Effects.GAME_OVER, 1);
+                        this.getChildren().add(gameOverEffect);
                     }
-                    gameOverEffect = new CustomMediaView(Effects.GAME_OVER, 1);
-                    this.getChildren().add(gameOverEffect);
                     Arrays.stream(ducks).forEach(duck -> duck.stop());
                 }
             });
