@@ -1,26 +1,28 @@
 import java.io.IOException; //Exceotion Handling
 import java.nio.file.Files; //Reading and writing
 import java.nio.file.Paths; //Reaching io files
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.io.FileWriter; // write to output file
 
 // Input Output file class
 public class IO {
     private String inputFileName;
     private String outputFileName;
-    static List<String> outputStrings;
+    static Queue<String> outputStrings;
 
     public IO(String inputFileName, String outputFileName) {
         this.inputFileName = inputFileName;
         this.outputFileName = outputFileName;
-        IO.outputStrings = new ArrayList<String>();
+        IO.outputStrings = new Queue<String>();
     }
 
-    List<String> readInputFile() {
+    Queue<String> readInputFile() {
         try {
-            final List<String> inputs = Files.readAllLines(Paths.get(inputFileName));
+            Queue<String> inputs = new Queue<String>();
+            System.out.println(inputs);
+            for (String line : Files.readAllLines(Paths.get(inputFileName))) {
+                inputs.add(line);
+            }
+            System.out.println("inputs added");
             return inputs;
         } catch (IOException exception) {
             System.out.println(exception);
@@ -31,10 +33,9 @@ public class IO {
     boolean writeToFile() {
         try {
             FileWriter myWriter = new FileWriter(outputFileName);
-            Iterator<String> iterator = outputStrings.iterator();
-            while (iterator.hasNext()) {
-                String line = iterator.next();
-                if (iterator.hasNext())
+            while (outputStrings.root != null && outputStrings.getValue() != null) {
+                String line = outputStrings.remove();
+                if (outputStrings.getValue() != null)
                     line += "\n";
                 myWriter.write(line);
             }
