@@ -18,11 +18,9 @@ public class IO {
     Queue<String> readInputFile() {
         try {
             Queue<String> inputs = new Queue<String>();
-            System.out.println(inputs);
             for (String line : Files.readAllLines(Paths.get(inputFileName))) {
                 inputs.add(line);
             }
-            System.out.println("inputs added");
             return inputs;
         } catch (IOException exception) {
             System.out.println(exception);
@@ -33,11 +31,8 @@ public class IO {
     boolean writeToFile() {
         try {
             FileWriter myWriter = new FileWriter(outputFileName);
-            while (outputStrings.root != null && outputStrings.getValue() != null) {
-                String line = outputStrings.remove();
-                if (outputStrings.getValue() != null)
-                    line += "\n";
-                myWriter.write(line);
+            while (outputStrings.getValue() != null) {
+                myWriter.write(outputStrings.remove() + "\n");
             }
             myWriter.close();
             return true;
