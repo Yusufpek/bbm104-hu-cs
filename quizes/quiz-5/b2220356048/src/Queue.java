@@ -1,9 +1,22 @@
+/**
+ * The Queue class represents a generic queue data structure.
+ *
+ * @param <T> the type of elements stored in the queue
+ */
 public class Queue<T> implements IDataStructure<T> {
     Node<T> root;
 
+    /**
+     * Constructs an empty queue.
+     */
     Queue() {
     }
 
+    /**
+     * Constructs a queue with a single element.
+     *
+     * @param value the value of the element
+     */
     Queue(T value) {
         this.root = new Node<T>(value);
     }
@@ -41,16 +54,31 @@ public class Queue<T> implements IDataStructure<T> {
         return oldRoot.data;
     }
 
+    /**
+     * Removes and returns the element at the front of the queue.
+     *
+     * @return the element at the front of the queue
+     */
     T pop() {
         Node<T> oldRoot = this.root;
         this.root = this.root.tail;
         return oldRoot.data;
     }
 
+    /**
+     * Returns the root node of the queue.
+     *
+     * @return the root node
+     */
     Node<T> getNode() {
         return root;
     }
 
+    /**
+     * Returns the value of the root node.
+     *
+     * @return the value of the root node, or null if the queue is empty
+     */
     T getValue() {
         if (root == null) {
             return null;

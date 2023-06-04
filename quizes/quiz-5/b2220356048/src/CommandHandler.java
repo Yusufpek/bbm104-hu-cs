@@ -1,4 +1,24 @@
+/**
+ * The CommandHandler class implements the ICommand interface and provides
+ * implementations for various commands.
+ */
 public class CommandHandler implements ICommand {
+
+    /**
+     * Converts a decimal number (base 10) to its binary representation (base 2).
+     *
+     * @param number the decimal number to convert
+     * @return the binary representation of the given decimal number
+     */
+    private String toBinary(int number) {
+        Stack<Integer> stack = new Stack<Integer>();
+        while (number > 1) {
+            stack.add(number % 2);
+            number /= 2;
+        }
+        stack.add(number); // add the remaining value
+        return stack.toString();
+    }
 
     @Override
     public String convertBinary(String value) {
@@ -9,16 +29,6 @@ public class CommandHandler implements ICommand {
             minus = "-";
         }
         return String.format("Equivalent of %s (base 10) in base 2 is: %s%s", value, minus, toBinary(number));
-    }
-
-    private String toBinary(int number) {
-        Stack<Integer> stack = new Stack<Integer>();
-        while (number > 1) {
-            stack.add(number % 2);
-            number /= 2;
-        }
-        stack.add(number); // add the remaining value
-        return stack.toString();
     }
 
     @Override

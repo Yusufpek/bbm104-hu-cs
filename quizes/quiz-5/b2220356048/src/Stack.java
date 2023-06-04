@@ -1,10 +1,23 @@
+/**
+ * The Stack class represents a generic stack data structure.
+ *
+ * @param <T> the type of elements stored in the stack
+ */
 public class Stack<T> implements IDataStructure<T> {
     Node<T> root;
 
+    /**
+     * Constructs an empty stack.
+     */
     Stack() {
 
     }
 
+    /**
+     * Constructs a stack with a single element.
+     *
+     * @param value the value of the element
+     */
     Stack(T value) {
         this.root = new Node<T>(value);
     }
@@ -43,6 +56,11 @@ public class Stack<T> implements IDataStructure<T> {
         return temp.data;
     }
 
+    /**
+     * Removes and returns the element at the top of the stack.
+     *
+     * @return the element at the top of the stack
+     */
     T pop() {
         if (this.root == null) {
             return null;
@@ -52,10 +70,20 @@ public class Stack<T> implements IDataStructure<T> {
         return oldRoot.data;
     }
 
+    /**
+     * Returns the root node of the stack.
+     *
+     * @return the root node
+     */
     Node<T> getNode() {
         return root;
     }
 
+    /**
+     * Returns the value of the root node.
+     *
+     * @return the value of the root node, or null if the stack is empty
+     */
     T getValue() {
         if (root == null) {
             return null;
