@@ -2,7 +2,7 @@
 ### Directory of code and assets
 > - The codes (java files) are in the [src/](src/)
 >
-> - The assets are in the [src/assets](assets/)
+> - The assets are in the [src/assets](src/assets/)
 
 ---
 
