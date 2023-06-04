@@ -1,11 +1,9 @@
 import java.io.FileNotFoundException;
 import java.util.Arrays;
 
-import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 /**
@@ -77,22 +75,20 @@ public class GamePane extends Pane {
             getChildren().add(crosshair);
             crosshair.setTranslateY(ScreenSize.SCREEN_HEIGHT / 2);
             crosshair.setTranslateX(ScreenSize.SCREEN_WIDTH / 2);
-            this.setOnMouseMoved(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    // remove image when the cursor gets outside the screen
-                    double crosshairHalfWidth = crosshair.getFitWidth() / 2;
-                    double crosshairHalfHeight = crosshair.getFitHeight() / 2;
-                    if (event.getX() < crosshairHalfWidth - 10 || event.getY() < crosshairHalfHeight
-                            || event.getX() > ScreenSize.SCREEN_WIDTH - crosshairHalfWidth
-                            || event.getY() > ScreenSize.getHeight(0.95) - crosshairHalfWidth)
-                        removeWidget(crosshair);
-                    else {
-                        crosshair.setTranslateX(event.getX() - crosshair.getFitWidth() / 2);
-                        crosshair.setTranslateY(event.getY() - crosshair.getFitHeight() / 2);
-                        removeWidget(crosshair);
-                        getChildren().add(crosshair);
-                    }
+            this.setOnMouseMoved(event -> {
+                // remove image when the cursor gets outside the screen
+                double crosshairHalfWidth = crosshair.getFitWidth() / 2;
+                double crosshairHalfHeight = crosshair.getFitHeight() / 2;
+                boolean isOutside = event.getX() < crosshairHalfWidth - 10 || event.getY() < crosshairHalfHeight
+                        || event.getX() > ScreenSize.SCREEN_WIDTH - crosshairHalfWidth
+                        || event.getY() > ScreenSize.getHeight(0.95) - crosshairHalfWidth;
+                if (isOutside)
+                    removeWidget(crosshair);
+                else {
+                    crosshair.setTranslateX(event.getX() - crosshair.getFitWidth() / 2);
+                    crosshair.setTranslateY(event.getY() - crosshair.getFitHeight() / 2);
+                    removeWidget(crosshair);
+                    getChildren().add(crosshair);
                 }
             });
         } catch (FileNotFoundException e) {
