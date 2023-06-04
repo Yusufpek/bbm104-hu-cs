@@ -1,6 +1,6 @@
 
 ### Directory of code and assets
-> - The codes (java files) are in the [src/](/)
+> - The codes (java files) are in the [src/](./)
 >
 > - The assets are in the [src/assets](assets/)
 
