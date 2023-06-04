@@ -38,7 +38,8 @@ src/assets
 
 Please specify extra information if you have any
 ////////// Type Below: EXTRA INFORMATION //////////
-
+- You can change the scale and volume values in DuckHunt.java.
+    * You have to recompile the codes with `javac *.java` when you change the value.
 - I did not implement extra part of the assignment.
 - I randomised the ducks' colors and ducks' starting positions.
 - I added unlimited ammo mode
