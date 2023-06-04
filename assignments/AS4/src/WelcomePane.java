@@ -22,6 +22,8 @@ public class WelcomePane extends StackPane {
      * Initializes the welcome image, text, and title effect.
      */
     WelcomePane() {
+        WelcomePane.currentBackgroundIndex = 0;
+        WelcomePane.currentCross = 0;
         getImages();
         CustomImageView welcomeImage;
         try {
