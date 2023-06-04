@@ -89,6 +89,7 @@ public class DuckScene extends Scene implements Function {
             setGamePane();
         } else {
             welcomePane = new WelcomePane();
+            isEffectPlaying = false;
             this.setRoot(welcomePane);
         }
     }
