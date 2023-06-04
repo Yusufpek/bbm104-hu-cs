@@ -44,6 +44,9 @@ public class Stack<T> implements IDataStructure<T> {
     }
 
     T pop() {
+        if (this.root == null) {
+            return null;
+        }
         Node<T> oldRoot = this.root;
         this.root = this.root.tail;
         return oldRoot.data;
@@ -54,6 +57,18 @@ public class Stack<T> implements IDataStructure<T> {
     }
 
     T getValue() {
+        if (root == null) {
+            return null;
+        }
         return root.data;
+    }
+
+    @Override
+    public String toString() {
+        String stackString = "";
+        while (this.getValue() != null) {
+            stackString += this.pop();
+        }
+        return stackString;
     }
 }
