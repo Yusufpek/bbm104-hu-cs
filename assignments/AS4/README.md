@@ -45,8 +45,4 @@ Please specify extra information if you have any
 - I added unlimited ammo mode
     * When you are in the background selection screen you can activate or deactivate unlimited ammo mode.
     * If it is activated, your remaining ammo is showing with "∞" and does not increase.
-- There is a wierd problem which i want to mention here.
-    * When the game completed all levels are finished the "Press Enter...Press ESC..." text is not showing sometimes.
-    * "Game Completed" text is showing always but the others not showing, i did not understand and solve this problem.
-
 ///////////////////////////////////////////////////
