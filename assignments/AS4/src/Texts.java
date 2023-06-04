@@ -35,6 +35,11 @@ public class Texts {
                         settingsEscTextWidget);
         static final TextFlow nextRoundTextFlow = new TextFlow(winText, nextRoundText);
         static final TextFlow noAmmoTextFlow = new TextFlow(gameOverText, gameOverEnterText, gameOverEscapeText);
-        static final TextFlow gameCompletedTextFlow = new TextFlow(gameCompletedText, gameOverEnterText,
-                        gameOverEscapeText);
+        static final TextFlow gameCompletedTextFlow = new TextFlow(gameCompletedText);
+
+        public static TextFlow getGamecompletedtextflow() {
+                if (!gameCompletedTextFlow.getChildren().contains(gameOverEnterText))
+                        gameCompletedTextFlow.getChildren().addAll(gameOverEnterText, gameOverEscapeText);
+                return gameCompletedTextFlow;
+        }
 }

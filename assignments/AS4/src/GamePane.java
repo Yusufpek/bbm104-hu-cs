@@ -142,7 +142,7 @@ public class GamePane extends Pane {
                     level.incrementLevelCount();
                     setBackgroundId(this.backgroundId);
                 } else if (this.getChildren().contains(Texts.noAmmoTextFlow)
-                        || this.getChildren().contains(Texts.gameCompletedTextFlow)) {
+                        || this.getChildren().contains(Texts.getGamecompletedtextflow())) {
                     if (key.getCode() == KeyCode.ENTER) {
                         stopEffect();
                         scene.setCurrentPane(DuckScene.Panes.GAME);
@@ -155,8 +155,13 @@ public class GamePane extends Pane {
 
             // Mouse click check
             this.setOnMouseClicked((event) -> {
+                // increase ammo
+                if (level.ammo > 0 && !DuckScene.isUnlimitedAmmo && !level.isFinished()) {
+                    level.ammo -= 1;
+                    ammoText.setText("Ammo Left: " + level.ammo);
+                }
                 // duck kill check
-                if (level.ammo > 0) {
+                if (level.ammo > 0 && !level.isFinished()) {
                     shotEffect = new CustomMediaView(Effects.SHOT, 1); // gun shot effect
                     this.getChildren().add(shotEffect);
                     for (Duck duck : ducks) {
@@ -179,15 +184,10 @@ public class GamePane extends Pane {
                     }
                     // max level completed check
                     if (level.level == Level.MAX_LEVEL && level.isFinished()) {
-                        this.getChildren().add(Texts.gameCompletedTextFlow);
+                        this.getChildren().add(Texts.getGamecompletedtextflow());
                         gameCompletedEffect = new CustomMediaView(Effects.GAME_COMPLETED, 1);
                         this.getChildren().add(gameCompletedEffect);
                     }
-                }
-                // increase ammo
-                if (level.ammo > 0 && !DuckScene.isUnlimitedAmmo) {
-                    level.ammo -= 1;
-                    ammoText.setText("Ammo Left: " + level.ammo);
                 }
                 // ammo check
                 if (level.ammo <= 0 && !level.isFinished()) {
