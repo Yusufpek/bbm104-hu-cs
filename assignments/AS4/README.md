@@ -2,6 +2,8 @@ Please specify the location (e.g. src/ or src/mypackage)
 where your implementation should be compiled at:
 /////////// Type Below: LOCATION OF DIR ///////////
 
+src/
+
 ///////////////////////////////////////////////////
 
 
@@ -10,6 +12,8 @@ to COMPILE your implementation:
 (e.g. javac Main.java)
 Note that any external libraries are not allowed!
 ///////////// Type Below: COMPILATION //////////////
+
+javac *.java
 
 ///////////////////////////////////////////////////
 
@@ -20,15 +24,28 @@ to RUN your implementation:
 Note that any external libraries are not allowed!
 ///////////////// Type Below: RUN /////////////////
 
+java DuckHunt
+
 ///////////////////////////////////////////////////
 
 Please specify the location (e.g. src/ or src/mypackage)
 where assets folder should be inserted:
 ////////// Type Below: LOCATION OF ASSETS //////////
 
+src/assets
+
 ///////////////////////////////////////////////////
 
 Please specify extra information if you have any
 ////////// Type Below: EXTRA INFORMATION //////////
+
+- I did not implement extra part of the assignment.
+- I randomised the ducks' colors and ducks' starting positions.
+- I added unlimited ammo mode
+    * When you are in the background selection screen you can activate or deactivate unlimited ammo mode.
+    * If it is activated, your remaining ammo is showing with "∞" and does not increase.
+- There is a wierd problem which i want to mention here.
+    * When the game completed all levels are finished the "Press Enter...Press ESC..." text is not showing sometimes.
+    * "Game Completed" text is showing always but the others not showing, i did not understand and solve this problem.
 
 ///////////////////////////////////////////////////
